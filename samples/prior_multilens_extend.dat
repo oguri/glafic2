@@ -1,0 +1,10 @@
+#gauss lens 1 3 0.82 0.04
+#gauss lens 1 4 0.17 0.04
+gauss extend 3 1 0.69 0.02
+match extlens 1 3 1 3 1.0 0.0
+match extlens 1 4 1 4 1.0 0.0
+match extlens 2 3 2 3 1.0 0.0
+match extlens 2 4 2 4 1.0 0.0
+match extlens 3 1 3 1 1.0 0.0
+match extlens 3 3 3 3 1.0 0.0
+match extlens 3 4 3 4 1.0 0.0

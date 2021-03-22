@@ -1,0 +1,8 @@
+gauss lens 1 3 0.82 0.04
+gauss lens 1 4 0.17 0.04
+match poilens 2 1 2 1 1.0 0.0
+match poilens 2 2 2 3 1.0 0.0
+match poilens 2 3 2 4 1.0 0.0
+match poilens 3 1 3 1 1.0 0.0
+match poilens 3 2 3 3 1.0 0.0
+match poilens 3 3 3 4 1.0 0.0

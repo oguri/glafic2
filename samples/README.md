@@ -1,4 +1,4 @@
-# sample files for glafic ver. 2
+# sample files for glafic version 2
 
 Here are a few examples of how the code works. Note that these examples may require some input files which are also located here - so please run them right in this directory! Note that the example input files are updated (including `.dat` and `.fits` files) so they are not exactly same as those in version 1.
 

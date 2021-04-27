@@ -607,17 +607,19 @@ void writetd_poi(void)
   read obsimage (extend)
 */
 
-void readobs_extend(char *infile)
+void readobs_extend(char *infile, int verb)
 {
   long num[2], num2[2];
   int status = 0;
   int nkeys, it, naxis, anynul;
   long fpixel[] = {1, 1};
   int nn;
-  
-  fprintf(stderr, "######## reading obs fits file for extend\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
 
+  if(verb == 1){
+    fprintf(stderr, "######## reading obs fits file for extend\n");
+    fprintf(stderr, " input file name = %s \n\n", infile);
+  }
+  
   if(flag_arrayobs == 0){
     flag_arrayobs = 1;
 
@@ -649,7 +651,9 @@ void readobs_extend(char *infile)
 
     fits_close_file(fptr, &status);
   } else {
-    fprintf(stderr, " [skipped because the obs file already read]\n\n");
+    if(verb == 1){
+      fprintf(stderr, " [skipped because the obs file already read]\n\n");
+    }
   }
 
   return;
@@ -659,7 +663,7 @@ void readobs_extend(char *infile)
   read noise image
 */
 
-void readnoise_extend(char *infile)
+void readnoise_extend(char *infile, int verb)
 {
   long num[2], num2[2];
   int status = 0;
@@ -667,9 +671,11 @@ void readnoise_extend(char *infile)
   long fpixel[] = {1, 1};
   int nn;
   
-  fprintf(stderr, "######## reading noise fits file for extend\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
-
+  if(verb == 1){
+     fprintf(stderr, "######## reading noise fits file for extend\n");
+     fprintf(stderr, " input file name = %s \n\n", infile);
+   }
+   
   if(flag_obssig == 0){
     flag_obssig = 1;
    
@@ -702,13 +708,15 @@ void readnoise_extend(char *infile)
     fits_close_file(fptr, &status);
  
   } else {
-    fprintf(stderr, " [skipped because the noise file already read]\n\n");
+    if(verb == 1){
+      fprintf(stderr, " [skipped because the noise file already read]\n\n");
+    }
   }
  
   return;
 }
 
-void readmask(char *infile)
+void readmask(char *infile, int verb)
 {
   long num[2], num2[2];
   int status = 0;
@@ -716,9 +724,11 @@ void readmask(char *infile)
   long fpixel[] = {1, 1};
   int nn;
   
-  fprintf(stderr, "######## reading mask file for extend\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
-
+  if(verb == 1){
+    fprintf(stderr, "######## reading mask file for extend\n");
+    fprintf(stderr, " input file name = %s \n\n", infile);
+  }
+  
   if(flag_obsmask == 0){
     flag_obsmask = 1;
 
@@ -751,7 +761,9 @@ void readmask(char *infile)
     
     fits_close_file(fptr, &status);
   } else {
-    fprintf(stderr, " [skipped because the mask file already read]\n\n");
+    if(verb == 1){
+      fprintf(stderr, " [skipped because the mask file already read]\n\n");
+    }
   }
   
   return;
@@ -1016,7 +1028,7 @@ void writepsf(void)
   read PSF fits file
 */
 
-void read_psffits(char *infile)
+void read_psffits(char *infile, int verb)
 {
   long num[2];
   int status = 0;
@@ -1025,9 +1037,11 @@ void read_psffits(char *infile)
   double f;
   fitsfile *fptr;
 
-  fprintf(stderr, "######## reading PSF file for extend\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
-
+  if(verb == 1){
+    fprintf(stderr, "######## reading PSF file for extend\n");
+    fprintf(stderr, " input file name = %s \n\n", infile);
+  }
+  
   fits_open_file(&fptr, infile, READONLY, &status);
   if(status > 100) terminator("failed at open PSF fits file");
 

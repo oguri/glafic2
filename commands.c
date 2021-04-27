@@ -131,7 +131,7 @@ int do_command(char *buffer)
       
       if(strcmp(keyword, "readpsf") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
-	read_psffits(fname);
+	read_psffits(fname, 1);
        }
       
       /*------------------------------------
@@ -265,14 +265,14 @@ int do_command(char *buffer)
       */
       if(strcmp(keyword, "readobs_extend") == 0){
 	i = sscanf(buffer, "%s %s %s", cdummy, fname, fname2);
-	readobs_extend(fname);
-	if(i == 3) readmask(fname2);
+	readobs_extend(fname, 1);
+	if(i == 3) readmask(fname2, 1);
 	calc_obsnoise();
       }
       
       if(strcmp(keyword, "readnoise_extend") == 0){
 	i = sscanf(buffer, "%s %s", cdummy, fname);
-	readnoise_extend(fname);
+	readnoise_extend(fname, 1);
       }
       
       if(strcmp(keyword, "writenoise") == 0){
@@ -287,17 +287,17 @@ int do_command(char *buffer)
       
       if(strcmp(keyword, "readobs_point") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
-	readobs_point(fname);
+	readobs_point(fname, 1);
       }
       
       if(strcmp(keyword, "parprior") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
-	parprior(fname);
+	parprior(fname, 1);
       }
       
       if(strcmp(keyword, "mapprior") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
-	mapprior(fname);
+	mapprior(fname, 1);
       }
 
       /*------------------------------------
@@ -417,8 +417,8 @@ int do_command(char *buffer)
 	sscanf(buffer, "%s", keyword);
 	fprintf(stderr, "######## re-setting parameter \n\n");
 	
-	init_para_body_ano(keyword, buffer);
-	init_para2_body(keyword, buffer);
+	init_para_body(keyword, buffer, 1);
+	init_para2_body(keyword, buffer, 1);
 	fprintf(stderr, "\n");
 	
 	if(strcmp(keyword, "ran_seed") == 0){
@@ -447,6 +447,7 @@ int do_command(char *buffer)
 	  ext_unset_table();
 	  poi_unset_table();
 	  obs_unset_table();
+	  poimg_unset_table();
 	}
       }
       
@@ -465,6 +466,7 @@ int do_command(char *buffer)
 	if(j == 1) set_distance_lpl_init();
 	poi_unset_table();
 	ext_unset_table();
+	poimg_unset_table();
       }
        
       if(strcmp(keyword, "reset_extend") == 0){
@@ -494,7 +496,10 @@ int do_command(char *buffer)
 	  terminator("invalid input parameter (reset_point)");
 	
 	para_poi[i - 1][j - 1] = x;
-	if(j == 1) poi_unset_table();
+	if(j == 1){
+	  poi_unset_table();
+	  poimg_unset_table();
+	}
       }
        
       if(strcmp(keyword, "reset_psf") == 0){
@@ -572,6 +577,7 @@ int do_command(char *buffer)
 	para_lens[i - 1][3] = y;
 	poi_unset_table();
 	ext_unset_table();
+	poimg_unset_table();
 
 	if(check_para_lens_all() > 0)
 	  terminator("invalid input parameter (mv_lens)");
@@ -711,6 +717,15 @@ void interactive(void)
     r = do_command(buffer);
   }while(r == 0);
 
+  return;
+}
+
+/*--------------------------------------------------------------
+  for debug
+*/
+
+void deb(void)
+{
   return;
 }
 

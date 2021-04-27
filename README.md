@@ -1,6 +1,6 @@
 # glafic version 2
 
-glafic is a software for studying gravitational lensing. Use it at your own risk; the author shall not take any responsibility for loss or damage caused by the use of this software. The binary files are available at [this URL](https://www.slac.stanford.edu/~oguri/glafic/).
+glafic is a software for studying gravitational lensing. Use it at your own risk; the author shall not take any responsibility for loss or damage caused by the use of this software. The binary files are available at [this URL](https://www.slac.stanford.edu/~oguri/glafic/). Please cite [M. Oguri, PASJ, 62, 1017 (2010)](https://ui.adsabs.harvard.edu/abs/2010PASJ...62.1017O/abstract) if you use this software for your research work. 
 
 ## Installation
 
@@ -14,6 +14,8 @@ Because of new implementation of multiple lens plane gravitational lensing, inpu
 
 * In version 2 routines from Numerical Recipes are no longer used in order to make the source code publicly available. Several routines such as numerical integrations, random number generation, optimizations, and interpolations, are changed from version 1 to version 2. In addition, some constants such as speed of light are also updated to include more digits. Because of these changes, output values can be slightly different between version 1 and 2, even for the exactly same input parameters. The differences should be small enough in most cases though.
 
+* Python interface is added such that some glafic routines can be called from python. The module can be created by running `make all`. Some examples can be found in `test_python` directory. 
+
 ## Feedback
 
 If you have any questions, suggestions, or comments regarding glafic, please contact [Masamune Oguri](https://oguri.github.io/).
@@ -22,4 +24,5 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2021.04.27 | 2.0b2   | python interface added |
 | 2021.03.23 | 2.0b1   | uploaded beta 1 version to github |

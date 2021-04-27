@@ -32,13 +32,7 @@ void calcein(double zs)
   set_distance_lpl_zs(zs);
   
   for(i=0;i<num_len;i++){
-
-    if(para_lens[i][0] >= zs){
-      ein = CALCEIN_NAN;
-    } else {
-      set_distance_lpl_i(lens_lpl_id[i]);
-      ein = calcein_i(i);
-    }
+    ein = calcein_i_calc(i, zs);
     
     fprintf(stderr, "lens id = %-2d [%-7s] : ", i + 1, inttolmodel(model_lens[i]));
     if(ein > 0.0){ 
@@ -59,6 +53,20 @@ void calcein(double zs)
   fclose(fptr);
   
   return;
+}
+
+double calcein_i_calc(int i, double zs)
+{
+  double ein;
+  
+  if(para_lens[i][0] >= zs){
+    ein = CALCEIN_NAN;
+  } else {
+    set_distance_lpl_i(lens_lpl_id[i]);
+    ein = calcein_i(i);
+  }
+
+  return ein;
 }
 
 double calcein_i(int i)

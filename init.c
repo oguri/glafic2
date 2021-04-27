@@ -5,21 +5,15 @@
 
 #include "glafic.h"
 
-#define PAREAD1E(s1, s2) \
-  if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %lf", cdummy, &s2); }
-#define PAREAD1D(s1, s2) \
-  if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %d", cdummy, &s2); }
-#define PAREAD1S(s1, s2) \
-  if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %s", cdummy, s2); }
-#define PAREAD2E(s1, s2) \
+#define PAREADXE(s1, s2, f)						\
   if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %lf", cdummy, &s2); \
-    fprintf(stderr, "%-15s =  %e\n", cdummy, s2); }
-#define PAREAD2D(s1, s2) \
+     if(f == 1){ fprintf(stderr, "%-15s =  %e\n", cdummy, s2); } }
+#define PAREADXD(s1, s2, f)					       \
   if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %d", cdummy, &s2); \
-    fprintf(stderr, "%-15s =  %d\n", cdummy, s2); }
-#define PAREAD2S(s1, s2) \
+     if(f == 1){ fprintf(stderr, "%-15s =  %d\n", cdummy, s2); } }
+#define PAREADXS(s1, s2, f)					      \
   if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %s", cdummy, s2); \
-    fprintf(stderr, "%-15s =  %s\n", cdummy, s2); }
+     if(f == 1){ fprintf(stderr, "%-15s =  %s\n", cdummy, s2); } }
 
 static int order_opt[NMAX_LEN + NMAX_EXT + NMAX_POI + 1];
 
@@ -40,10 +34,10 @@ void init_para(char *infile)
   if(fptr == NULL) terminator("failed at fopen (input file)");
   
   while(fgets(buffer, INPUT_MAXCHAR, fptr)){
-    if (sscanf(buffer, "%s", keyword) != EOF){
+    if(sscanf(buffer, "%s", keyword) != EOF){
       if(keyword[0] != '#'){
 
-	init_para_body(keyword, buffer);
+	init_para_body(keyword, buffer, 0);
 
 	/* error if version 1 input file is fed */
 	if(strcmp(keyword, "zl") == 0)
@@ -57,6 +51,14 @@ void init_para(char *infile)
   
   fclose(fptr);
   
+  set_npix();
+  out_para();
+  
+  return;
+}
+
+void set_npix(void)
+{
   nx_ext = (int)((xmax - xmin + NPIX_SMALL_OFFSET) / pix_ext);
   ny_ext = (int)((ymax - ymin + NPIX_SMALL_OFFSET) / pix_ext);
   /* xmax = xmin + ((double)nx_ext) * pix_ext;
@@ -70,8 +72,6 @@ void init_para(char *infile)
   if(maxlev < 1) maxlev = 1;
   if(maxlev > NMAX_MAXLEV) maxlev = NMAX_MAXLEV;
 
-  out_para();
-  
   if((nx_ext > NMAX_PIXEL) || (ny_ext > NMAX_PIXEL) || ((nx_poi * ny_poi) > NMAX_PIXEL_POINT)){
     terminator("pixel number exceeds the limit");
   }
@@ -81,45 +81,24 @@ void init_para(char *infile)
   }
 
   return;
-  
 }
 
-void init_para_body(char *keyword, char *buffer)
+void init_para_body(char *keyword, char *buffer, int verb)
 {
   char cdummy[INPUT_MAXCHAR];
 
-  PAREAD1E(omega, omega)
-  PAREAD1E(lambda, lambda)
-  PAREAD1E(weos, weos)
-  PAREAD1E(hubble, hubble)
-  PAREAD1S(prefix, file_prefix)
-  PAREAD1E(xmin, xmin)
-  PAREAD1E(ymin, ymin)
-  PAREAD1E(xmax, xmax)
-  PAREAD1E(ymax, ymax)
-  PAREAD1E(pix_ext, pix_ext)
-  PAREAD1E(pix_poi, pix_poi)
-  PAREAD1D(maxlev, maxlev)
-
-  return;
-}
-
-void init_para_body_ano(char *keyword, char *buffer)
-{
-  char cdummy[INPUT_MAXCHAR];
-
-  PAREAD2E(omega, omega)
-  PAREAD2E(lambda, lambda)
-  PAREAD2E(weos, weos)
-  PAREAD2E(hubble, hubble)
-  PAREAD2S(prefix, file_prefix)
-  PAREAD2E(xmin, xmin)
-  PAREAD2E(ymin, ymin)
-  PAREAD2E(xmax, xmax)
-  PAREAD2E(ymax, ymax)
-  PAREAD2E(pix_ext, pix_ext)
-  PAREAD2E(pix_poi, pix_poi)
-  PAREAD2D(maxlev, maxlev)
+  PAREADXE(omega, omega, verb)
+  PAREADXE(lambda, lambda, verb)
+  PAREADXE(weos, weos, verb)
+  PAREADXE(hubble, hubble, verb)
+  PAREADXS(prefix, file_prefix, verb)
+  PAREADXE(xmin, xmin, verb)
+  PAREADXE(ymin, ymin, verb)
+  PAREADXE(xmax, xmax, verb)
+  PAREADXE(ymax, ymax, verb)
+  PAREADXE(pix_ext, pix_ext, verb)
+  PAREADXE(pix_poi, pix_poi, verb)
+  PAREADXD(maxlev, maxlev, verb)
 
   return;
 }
@@ -137,11 +116,11 @@ void init_para2(char *infile)
   fprintf(stderr, "\n");
 
   while(fgets(buffer, INPUT_MAXCHAR, fptr)){
-    if (sscanf(buffer, "%s", keyword) != EOF){
+    if(sscanf(buffer, "%s", keyword) != EOF){
       if(keyword[0] != '#'){
 	
 	/* secondary parameters */
-	init_para2_body(keyword, buffer);
+	init_para2_body(keyword, buffer, 1);
 
 	/* end of parameter setting */
 	if(strcmp(keyword, "startup") == 0) break;
@@ -157,84 +136,84 @@ void init_para2(char *infile)
   return;
 }
 
-void init_para2_body(char *keyword, char *buffer)
+void init_para2_body(char *keyword, char *buffer, int verb)
 {
   char cdummy[INPUT_MAXCHAR];
 
-  PAREAD2D(ovary, ovary)
-  PAREAD2D(lvary, lvary)
-  PAREAD2D(wvary, wvary)
-  PAREAD2D(hvary, hvary)
+  PAREADXD(ovary, ovary, verb)
+  PAREADXD(lvary, lvary, verb)
+  PAREADXD(wvary, wvary, verb)
+  PAREADXD(hvary, hvary, verb)
 
-  PAREAD2S(galfile, file_gal)
-  PAREAD2S(srcfile, file_src)
-  PAREAD2D(ran_seed, ran_seed)
-  PAREAD2D(flag_hodensity, flag_hodensity)
-  PAREAD2E(hodensity, hodensity)
-  PAREAD2D(gnfw_usetab, gnfw_usetab)
-  PAREAD2D(ein_usetab, ein_usetab)
-  PAREAD2D(nfw_users, nfw_users)
-  PAREAD2D(nmax_poi_ite, nmax_poi_ite)
-  PAREAD2E(max_poi_tol, max_poi_tol)
-  PAREAD2E(poi_imag_max, poi_imag_max)
-  PAREAD2E(poi_imag_min, poi_imag_min)
-  PAREAD2D(ang_step, center_ang_step)
-  PAREAD2E(imag_ceil, imag_ceil)
-  PAREAD2E(smallcore, smallcore)
-  PAREAD2D(outformat_exp, outformat_exp)
+  PAREADXS(galfile, file_gal, verb)
+  PAREADXS(srcfile, file_src, verb)
+  PAREADXD(ran_seed, ran_seed, verb)
+  PAREADXD(flag_hodensity, flag_hodensity, verb)
+  PAREADXE(hodensity, hodensity, verb)
+  PAREADXD(gnfw_usetab, gnfw_usetab, verb)
+  PAREADXD(ein_usetab, ein_usetab, verb)
+  PAREADXD(nfw_users, nfw_users, verb)
+  PAREADXD(nmax_poi_ite, nmax_poi_ite, verb)
+  PAREADXE(max_poi_tol, max_poi_tol, verb)
+  PAREADXE(poi_imag_max, poi_imag_max, verb)
+  PAREADXE(poi_imag_min, poi_imag_min, verb)
+  PAREADXD(ang_step, center_ang_step, verb)
+  PAREADXE(imag_ceil, imag_ceil, verb)
+  PAREADXE(smallcore, smallcore, verb)
+  PAREADXD(outformat_exp, outformat_exp, verb)
   
-  PAREAD2E(amoeba_tol1, tol_amoeba_lens)
-  PAREAD2E(amoeba_tol2, tol_amoeba)
-  PAREAD2D(nmax_amoeba, nmax_amoeba)
-  PAREAD2D(nmax_amoeba_point, nmax_amoeba_point)
-  PAREAD2E(amoeba_dp_mass, amoeba_dp_mass)
-  PAREAD2E(amoeba_dp_xy, amoeba_dp_xy)
-  PAREAD2E(amoeba_dp_e, amoeba_dp_e)
-  PAREAD2E(amoeba_dp_ang, amoeba_dp_ang)
-  PAREAD2E(amoeba_dp_r, amoeba_dp_r)
-  PAREAD2E(amoeba_dp_n, amoeba_dp_n)
-  PAREAD2E(amoeba_dp_z, amoeba_dp_z)
-  PAREAD2E(amoeba_dp_cos, amoeba_dp_cosmo)
-  PAREAD2E(amoeba_delmin, amoeba_delmin)
-  PAREAD2E(amoeba_delmax, amoeba_delmax)
+  PAREADXE(amoeba_tol1, tol_amoeba_lens, verb)
+  PAREADXE(amoeba_tol2, tol_amoeba, verb)
+  PAREADXD(nmax_amoeba, nmax_amoeba, verb)
+  PAREADXD(nmax_amoeba_point, nmax_amoeba_point, verb)
+  PAREADXE(amoeba_dp_mass, amoeba_dp_mass, verb)
+  PAREADXE(amoeba_dp_xy, amoeba_dp_xy, verb)
+  PAREADXE(amoeba_dp_e, amoeba_dp_e, verb)
+  PAREADXE(amoeba_dp_ang, amoeba_dp_ang, verb)
+  PAREADXE(amoeba_dp_r, amoeba_dp_r, verb)
+  PAREADXE(amoeba_dp_n, amoeba_dp_n, verb)
+  PAREADXE(amoeba_dp_z, amoeba_dp_z, verb)
+  PAREADXE(amoeba_dp_cos, amoeba_dp_cosmo, verb)
+  PAREADXE(amoeba_delmin, amoeba_delmin, verb)
+  PAREADXE(amoeba_delmax, amoeba_delmax, verb)
 
-  PAREAD2E(amoeba_dp_psfw, amoeba_dp_psfw)
-  PAREAD2E(amoeba_dp_psfe, amoeba_dp_psfe)
-  PAREAD2E(amoeba_dp_psfpa, amoeba_dp_psfpa)
-  PAREAD2E(amoeba_dp_psfb, amoeba_dp_psfb)
-  PAREAD2E(amoeba_dp_psff, amoeba_dp_psff)
+  PAREADXE(amoeba_dp_psfw, amoeba_dp_psfw, verb)
+  PAREADXE(amoeba_dp_psfe, amoeba_dp_psfe, verb)
+  PAREADXE(amoeba_dp_psfpa, amoeba_dp_psfpa, verb)
+  PAREADXE(amoeba_dp_psfb, amoeba_dp_psfb, verb)
+  PAREADXE(amoeba_dp_psff, amoeba_dp_psff, verb)
 
-  PAREAD2D(chi2_splane, chi2_point_splane)
-  PAREAD2D(chi2_checknimg, chi2_checknimg)
-  PAREAD2D(chi2_usemag, chi2_usemag)
-  PAREAD2D(chi2_restart, chi2_restart)
-  PAREAD2E(chi2pen_range, chi2pen_range)
-  PAREAD2E(chi2pen_nimg, chi2pen_nimg)
-  PAREAD2E(chi2pen_parity, chi2pen_parity)
-  PAREAD2D(chi2_restart_max, chi2_restart_max)
-  PAREAD2E(obs_gain, obs_gain)
-  PAREAD2D(obs_ncomb, obs_ncomb)
-  PAREAD2E(obs_readnoise, obs_readnoise)
-  PAREAD2E(noise_clip, noise_clip)
-  PAREAD2D(skyfix, skyfix)
-  PAREAD2E(skyfix_value, skyfix_value)
-  PAREAD2E(psfconv_size, psfconv_size)
-  PAREAD2D(seeing_sub, seeing_sub)
-  PAREAD2E(bicub_a, bicub_a)
-  PAREAD2E(source_calcr0, source_calcr0)
-  PAREAD2D(flag_extref, flag_extref)
-  PAREAD2E(source_refr0, source_refr0)
-  PAREAD2D(num_pixint, num_pixint)
-  PAREAD2D(flag_srcsbin, flag_srcsbin)
-  PAREAD2E(srcsbinsize, srcsbinsize)
-  PAREAD2D(flag_extnorm, flag_extnorm)
-  PAREAD2D(nmax_srcs, nmax_srcs)
-  PAREAD2D(nmax_fft, nmax_fft)
-  PAREAD2D(addwcs, flag_addwcs)
-  PAREAD2D(flag_mcmcall, flag_mcmcall)
-  PAREAD2E(wcs_ra0, wcs_ra0)
-  PAREAD2E(wcs_dec0, wcs_dec0)
-  PAREAD2E(dr_lens_center, dr_lens_center)
+  PAREADXD(chi2_splane, chi2_point_splane, verb)
+  PAREADXD(chi2_checknimg, chi2_checknimg, verb)
+  PAREADXD(chi2_usemag, chi2_usemag, verb)
+  PAREADXD(chi2_restart, chi2_restart, verb)
+  PAREADXE(chi2pen_range, chi2pen_range, verb)
+  PAREADXE(chi2pen_nimg, chi2pen_nimg, verb)
+  PAREADXE(chi2pen_parity, chi2pen_parity, verb)
+  PAREADXD(chi2_restart_max, chi2_restart_max, verb)
+  PAREADXE(obs_gain, obs_gain, verb)
+  PAREADXD(obs_ncomb, obs_ncomb, verb)
+  PAREADXE(obs_readnoise, obs_readnoise, verb)
+  PAREADXE(noise_clip, noise_clip, verb)
+  PAREADXD(skyfix, skyfix, verb)
+  PAREADXE(skyfix_value, skyfix_value, verb)
+  PAREADXE(psfconv_size, psfconv_size, verb)
+  PAREADXD(seeing_sub, seeing_sub, verb)
+  PAREADXE(bicub_a, bicub_a, verb)
+  PAREADXE(source_calcr0, source_calcr0, verb)
+  PAREADXD(flag_extref, flag_extref, verb)
+  PAREADXE(source_refr0, source_refr0, verb)
+  PAREADXD(num_pixint, num_pixint, verb)
+  PAREADXD(flag_srcsbin, flag_srcsbin, verb)
+  PAREADXE(srcsbinsize, srcsbinsize, verb)
+  PAREADXD(flag_extnorm, flag_extnorm, verb)
+  PAREADXD(nmax_srcs, nmax_srcs, verb)
+  PAREADXD(nmax_fft, nmax_fft, verb)
+  PAREADXD(addwcs, flag_addwcs, verb)
+  PAREADXD(flag_mcmcall, flag_mcmcall, verb)
+  PAREADXE(wcs_ra0, wcs_ra0, verb)
+  PAREADXE(wcs_dec0, wcs_dec0, verb)
+  PAREADXE(dr_lens_center, dr_lens_center, verb)
     
   return;
 }
@@ -278,7 +257,7 @@ void startup(char *infile)
 
   do{
     fgets(buffer, INPUT_MAXCHAR, fptr);
-    if (sscanf(buffer, "%s", keyword) != EOF){
+    if(sscanf(buffer, "%s", keyword) != EOF){
       if(keyword[0] != '#'){
 	
 	if(strcmp(keyword, "lens") == 0){
@@ -789,6 +768,27 @@ void def_parameters(void)
   return;
 }
 
+void init_flags(void)
+{
+  flag_set_array = 0;
+  flag_set_point = 0;
+  flag_arrayobs = 0;
+  flag_obsmask = 0;
+  flag_pointobs = 0;
+  flag_computeall = 1;
+  flag_set_srcs = 0;
+  flag_obssig = 0;
+  flag_seeing = 0;
+
+  num_gal = 0;
+  num_src = 0;
+  num_mapprior = 0;
+  num_lcent = 0;
+  i_ext_fid = -1;
+
+  return;
+}
+
 /*--------------------------------------------------------------
   dump current model
 */
@@ -896,7 +896,7 @@ void out_para(void)
   set parameter range
 */
 
-void parprior(char *infile)
+void parprior(char *infile, int verb)
 {
   int i, j, k, ii, jj, n, nn;
   double xx, yy, min, max, med, rat, sig;
@@ -907,16 +907,18 @@ void parprior(char *infile)
 
   fptr = fopen(infile, "r");
 
-  fprintf(stderr, "######## reading parameter prior file\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
-
+  if(verb == 1){
+    fprintf(stderr, "######## reading parameter prior file\n");
+    fprintf(stderr, " input file name = %s \n\n", infile);
+  }
+  
   if(fptr == NULL) terminator("failed at fopen (parprior)");
   
   n = 0;
 
   while(fgets(buffer, INPUT_MAXCHAR, fptr)){
     nn = sscanf(buffer, "%s %s", ptype, keyword);
-    if (nn != EOF){
+    if(nn != EOF){
       if(ptype[0] != '#'){
 	if(strcmp(ptype, "range") == 0){
 	  if((strcmp(keyword, "lens") == 0) || (strcmp(keyword, "extend") == 0) || (strcmp(keyword, "point") == 0)){
@@ -1100,8 +1102,10 @@ void parprior(char *infile)
 
   fclose(fptr);
 
-  fprintf(stderr, "read %d priors\n\n", n);
-
+  if(verb == 1){
+    fprintf(stderr, "read %d priors\n\n", n);
+  }
+  
   return;
 }
 
@@ -1109,7 +1113,7 @@ void parprior(char *infile)
   read galaxy file
 */
 
-void mapprior(char *infile)
+void mapprior(char *infile, int verb)
 {
   int n, nn;
   double x, y, z, p, e;
@@ -1119,9 +1123,11 @@ void mapprior(char *infile)
 
   fptr = fopen(infile, "r");
 
-  fprintf(stderr, "######## reading map prior file\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
-
+  if(verb == 1){
+    fprintf(stderr, "######## reading map prior file\n");
+    fprintf(stderr, " input file name = %s \n\n", infile);
+  }
+  
   if(fptr == NULL) terminator("failed at fopen (mapprior)");
   
   n = 0;
@@ -1156,8 +1162,10 @@ void mapprior(char *infile)
 
   fclose(fptr);
 
-  fprintf(stderr, "read %d priors\n\n", n);
-
+  if(verb == 1){
+    fprintf(stderr, "read %d priors\n\n", n);
+  }
+  
   return;
 }
 
@@ -1292,16 +1300,18 @@ void unset_srcs(void)
   read obs file (point)
 */
 
-void readobs_point(char *infile)
+void readobs_point(char *infile, int verb)
 {
   int i, j, k, ii, jj, jjj, nn;
   double zs, zserr;
   char buffer[INPUT_MAXCHAR];
   FILE* fptr;
 
-  fprintf(stderr, "######## reading obs file for point\n");
-  fprintf(stderr, " input file name = %s \n\n", infile);
-
+  if(verb == 1){
+    fprintf(stderr, "######## reading obs file for point\n");
+    fprintf(stderr, " input file name = %s \n\n", infile);
+  }
+  
   fptr = fopen(infile, "r");
 
   if(fptr == NULL) terminator("failed at fopen (readobs_point)");
@@ -1317,7 +1327,7 @@ void readobs_point(char *infile)
     zserr = 0.0;
     if(buffer[0] != '#'){
       nn = sscanf(buffer, "%d %d %lf %lf", &i, &j, &zs, &zserr);
-      if (nn != EOF){
+      if(nn != EOF){
 	if((i < 1) || (i > num_poi)){
 	  terminator("id out of range (readobs_point)"); 
 	}
@@ -1351,19 +1361,16 @@ void readobs_point(char *infile)
     }
   }
 
-  
-
-  fprintf(stderr, "read %d sources, %d images in total\n\n", ii, jjj);
-
+  if(verb == 1){
+    fprintf(stderr, "read %d sources, %d images in total\n\n", ii, jjj);
+  }
+ 
   fclose(fptr);
 
   return;
 
 }
 
-#undef PAREAD1E
-#undef PAREAD1D
-#undef PAREAD1S
-#undef PAREAD2E
-#undef PAREAD2D
-#undef PAREAD2S
+#undef PAREADXE
+#undef PAREADXD
+#undef PAREADXS

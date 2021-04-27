@@ -17,21 +17,7 @@ int main(int argc, char **argv)
   char keyword[INPUT_MAXCHAR];
   FILE* fptr;
   
-  flag_set_array = 0;
-  flag_set_point = 0;
-  flag_arrayobs = 0;
-  flag_obsmask = 0;
-  flag_pointobs = 0;
-  flag_computeall = 1;
-  flag_set_srcs = 0;
-  flag_obssig = 0;
-  flag_seeing = 0;
-
-  num_gal = 0;
-  num_src = 0;
-  num_mapprior = 0;
-  num_lcent = 0;
-  i_ext_fid = -1;
+  init_flags();
 
   fprintf(stderr, "\n");
   fprintf(stderr, "glafic  ver. %s (%s) by Masamune Oguri\n", VERSION, RELEASE_DATE);
@@ -87,6 +73,7 @@ int main(int argc, char **argv)
   ext_unset_table();
   obs_unset_table();
   poi_unset_table();
+  poimg_unset_table();
   unset_srcs();
   unset_tab_calc_src();
   gsl_rng_free(ran_gsl);
@@ -94,15 +81,6 @@ int main(int argc, char **argv)
   fclose(fptr);
 
   return 0;
-}
-
-/*--------------------------------------------------------------
-  for debug
-*/
-
-void deb(void)
-{
-  return;
 }
 
 #undef GLOBAL

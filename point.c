@@ -117,7 +117,7 @@ void poi_set_table(double zs, int flag_setlcenter, int verb)
     array_poi_smag[0] = (float*)malloc(sizeof(float) * (4 * array_poi_nbox[0]));
     array_poi_flag[0] = (int*)malloc(sizeof(int) * array_poi_nbox[0]);
     
-    if((array_poi_defx[0] == NULL) || (array_poi_defy[0] == NULL) || (array_poi_smag[0] == NULL) || (array_poi_flag[0] == NULL)) 
+    if((array_tmp == NULL) || (array_poi_defx[0] == NULL) || (array_poi_defy[0] == NULL) || (array_poi_smag[0] == NULL) || (array_poi_flag[0] == NULL)) 
       terminator("memory allocation failed");
     
     for(k=0;k<nn;k++){
@@ -728,7 +728,7 @@ void lenscenter(double zs)
   write critcurves and caustics
 */
 
-void writecrit(double zs, double causize[4], int flag_newcent, int verb)
+void writecrit(double zs, double causize[NPAR_CAUSIZE ], int flag_newcent, int verb)
 {
   int lev, i, ii, k, stot, kk[4];
   int l[4] = {0, 0, 0, 0};

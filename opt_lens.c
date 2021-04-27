@@ -288,11 +288,16 @@ double opt_lens(int flag, int verb)
 
 double chi2calc(double par[NDIMMAX + 1])
 {
+  partopara(par);
+  
+  return chi2calc_nopar();
+}
+
+double chi2calc_nopar(void)
+{
   double chi2min_point[NMAX_POI][NPAR_CHI2];
   double chi2min_extend[NPAR_CHI2MIN];
 
-  partopara(par);
-  
   parmatch_lens();
   parmatch_ext();
 
@@ -309,14 +314,14 @@ double chi2tot(double chi2min_point[NMAX_POI][NPAR_CHI2],  double chi2min_extend
   
   r = 0.0;
   
-  if((flag_sav != 2) && (ne > 0)){
+  if(((flag_sav != 2) && (ne > 0)) || ((flag_sav == (-1)) && (flag_arrayobs == 1))){
     if(check_para_ext_all() > 0) return chi2pen_range; 
     flag_computeall = 0;
     i_ext_fid = -1;
     r = r + chi2calc_extend(chi2min_extend);
   }
 
-  if((flag_sav != 1) && (np > 0)) r = r + chi2calc_opt_point(chi2min_point, 0);
+  if(((flag_sav != 1) && (np > 0)) || ((flag_sav == (-1)) && (flag_pointobs == 1))) r = r + chi2calc_opt_point(chi2min_point, 0);
   
   r = r + chi2prior_lens() + chi2prior_map();
   

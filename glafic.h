@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.0b1"
-#define RELEASE_DATE "2021.3.23"
+#define VERSION "2.0b2"
+#define RELEASE_DATE "2021.4.27"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -412,8 +412,6 @@
   glafic.c
 */
 
-void deb(void);
-
 /*--------------------------------------------------------------
   amoeba_opt.c
 */
@@ -425,6 +423,7 @@ double simplex(double v[][NDIMMAX + 1], double f[], int n, double ftol, double (
 */
 
 void calcein(double zs);
+double calcein_i_calc(int i, double zs);
 double calcein_i(int i);
 double calcein_jaffe(int i, double rco);
 double calcein_nfw(int i);
@@ -459,12 +458,65 @@ void calcmr(void);
 void calcmr_i(int i, double *mtot, double *mdel, double *rdel);
 
 /*--------------------------------------------------------------
+  call.c 
+*/
+
+void glafic_init(double in_omega, double in_lambda, double in_weos, double in_hubble, char *in_file_prefix, double in_xmin, double in_ymin, double in_xmax, double in_ymax, double in_pix_ext, double in_pix_poi, int in_maxlev, int in_ran_seed, int verb);
+void glafic_set_primary(double in_omega, double in_lambda, double in_weos, double in_hubble, char *in_file_prefix, double in_xmin, double in_ymin, double in_xmax, double in_ymax, double in_pix_ext, double in_pix_poi, int in_maxlev, int verb);
+void glafic_set_cosmo(double in_omega, double in_lambda, double in_weos, double in_hubble);
+void glafic_quit(void);
+void glafic_set_secondary(char *buffer, int verb);
+
+void glafic_startup_setnum(int in_num_len, int in_num_ext, int in_num_poi);
+void glafic_set_lens(int id, char *model, double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8);
+void glafic_set_extend(int id, char *model, double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8);
+void glafic_set_point(int id, double p1, double p2, double p3);
+void glafic_set_psf(double p1, double p2, double p3, double p4, double p5, double p6, double p7, double p8, double p9);
+void glafic_setopt_lens(int id, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8);
+void glafic_setopt_extend(int id, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8);
+void glafic_setopt_point(int id, int p1, int p2, int p3);
+void glafic_setopt_psf(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, int p9);
+void glafic_model_init(int verb);
+
+void glafic_calcimage(double zs, double x, double y, double pout[NPAR_LMODEL], int alponly, int verb);
+double glafic_calcein_i(int id, double zs);
+double glafic_calcein2(int id, double zs, double x0, double y0);
+double glafic_kappa_ave(int id, double zs, double r, double x0, double y0);
+double glafic_kappa_cum(int id, double zs, double r, double x0, double y0);
+
+void glafic_point_solve(double zs, double x, double y, int *ni, double rr[NMAX_POIMG][NPAR_IMAGE], int verb);
+void glafic_findimg_i(int id, int *ni, double rr[NMAX_POIMG][NPAR_IMAGE], int verb);
+void glafic_findimg(void);
+void glafic_writelens(double zs);
+void glafic_writecrit(double zs);
+void glafic_writemesh(double zs);
+void glafic_lenscenter(double zs);
+
+void glafic_set_array_extend(int id, double sky, double noise, int flag_source);
+void glafic_unset_array_extend(void);
+void glafic_readpsf(char *fname, int verb);
+double glafic_extend_array_ij(int i, int j);
+double glafic_extend_array_k(int k);
+void glafic_extend_array_ktoxy(int k, double *x, double *y);
+void glafic_writepsf(void);
+
+void glafic_readobs_extend(char *fname, char *fname_mask, int verb);
+void glafic_readnoise_extend(char *fname, int verb);
+void glafic_readobs_point(char *fname, int verb);
+void glafic_parprior(char *fname, int verb);
+void glafic_mapprior(char *fname, int verb);
+
+void glafic_optimize(int verb);
+double glafic_c2calc(void);
+
+/*--------------------------------------------------------------
   commands.c
 */
 
 int do_command(char *buffer);
 int command_srcflag(char *keyword);
 void interactive(void);
+void deb(void);
 
 /*--------------------------------------------------------------
   distance.c
@@ -544,15 +596,15 @@ double calc_pix_noise(double flux, double sky, double sigma);
 void writeimageall(double sky, double sigma, int flag_source);
 void writetd_ext(void);
 void writetd_poi(void);
-void readobs_extend(char *infile);
-void readnoise_extend(char *infile);
-void readmask(char *infile);
+void readobs_extend(char *infile, int verb);
+void readnoise_extend(char *infile, int verb);
+void readmask(char *infile, int verb);
 void calc_obsnoise(void);
 void obs_unset_table(void);
 void writenoise(void);
 void addnoise(double sky, double sigma);
 void writepsf(void);
-void read_psffits(char *infile);
+void read_psffits(char *infile, int verb);
 
 /*--------------------------------------------------------------
   gnfw_tab.c
@@ -583,10 +635,10 @@ double gsl_zbrent(double (*func)(double), double x_lo, double x_hi, double tol);
 */
 
 void init_para(char *infile);
-void init_para_body(char *keyword, char *buffer);
-void init_para_body_ano(char *keyword, char *buffer);
+void set_npix(void);
+void init_para_body(char *keyword, char *buffer, int verb);
 void init_para2(char *infile);
-void init_para2_body(char *keyword, char *buffer);
+void init_para2_body(char *keyword, char *buffer, int verb);
 void startup(char *infile);
 void startup_lens(char *buffer, int n1);
 void startup_extend(char *buffer, int n2);
@@ -598,17 +650,18 @@ void setopt_lens(char *buffer, int n1);
 void setopt_extend(char *buffer, int n2);
 void setopt_point(char *buffer, int n3);
 void def_parameters(void);
+void init_flags(void);
 void setopt_psf(char *buffer);
 void dump_model(FILE* fptr);
 void dump_opt_flag(FILE* fptr);
 void dump_lensplane(FILE* fptr);
 void out_para(void);
-void parprior(char *infile);
-void mapprior(char *infile);
+void parprior(char *infile, int verb);
+void mapprior(char *infile, int verb);
 void readgals(void);
 void readsrcs(void);
 void unset_srcs(void);
-void readobs_point(char *infile);
+void readobs_point(char *infile, int verb);
 
 /*--------------------------------------------------------------
   mass.c
@@ -797,6 +850,7 @@ void mockext3(int n, int id, double fac, double e1, double e2, double sbth, doub
 
 double opt_lens(int flag, int verb);
 double chi2calc(double par[]);
+double chi2calc_nopar(void);
 double chi2tot(double chi2min_point[][NPAR_CHI2], double chi2min_extend[]);
 void partopara(double par[]);
 int opt_lens_calcndim(void);

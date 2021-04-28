@@ -3,7 +3,13 @@ CFLAGS	= -O2 -Wall
 #CFLAGS	= 
 CFLAGS2 = -static
 #LIBS    = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
-LIBS	= -lm /usr/local/lib/libcfitsio.a /usr/local/lib/libfftw3.a /usr/local/lib/libgsl.a /usr/local/lib/libgslcblas.a -lcurl
+LIBS	= -lm /usr/local/lib/libcfitsio.a /usr/local/lib/libfftw3.a /usr/local/lib/libgsl.a /usr/local/lib/libgslcblas.a 
+
+ifeq ($(HOSTTYPE),intel-mac)
+	CFLAGS2 = -lcurl
+else
+	CFLAGS2 = 
+endif
 
 # for binary program
 BIN	= glafic
@@ -20,35 +26,31 @@ AR	= ar
 AFLAGS	= r
 
 # for python interface
-PYT	= glafic.so
-OBJ_PYT	= python.o
+PY	= glafic.so
+OBJ_PY	= python.o
 CFLAGS3	= -Wall -shared 
-PINCDIR	= /usr/local/Cellar/python@3.8/3.8.5/Frameworks/Python.framework/Versions/3.8/include/python3.8/
-PLIBDIR	= /usr/local/Cellar/python@3.8/3.8.5/Frameworks/Python.framework/Versions/3.8/lib
-PLIBS	= -lpython3.8 -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
-
-ifeq ($(HOSTTYPE),intel-mac)
-	CFLAGS2 = 
-endif
+PY_INC  := $(shell python3-config --includes)
+PY_LDS  := $(shell python3-config --ldflags --embed)
+PY_LIBS = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
 
 default: bin
 
 all: bin lib python
 
 bin: $(OBJ_BIN) $(OBJS)
-	$(CC) $(CFLAGS) $(CFLAGS2) -o $(BIN) $(OBJ_BIN) $(OBJS) $(LIBS) 
+	$(CC) $(CFLAGS) -o $(BIN) $(OBJ_BIN) $(OBJS) $(CFLAGS2) $(LIBS) 
 
 lib: $(OBJS)
 	$(AR) $(AFLAGS) $(LIB) $(OBJS) 
 
-python: $(OBJ_PYT) $(OBJS)
-	$(CC) $(CFLAGS3) -L$(PLIBDIR) $(PLIBS) -o $(PYT) $(OBJ_PYT) $(OBJS)
+python: $(OBJ_PY) $(OBJS)
+	$(CC) $(CFLAGS3) -o $(PY) $(OBJ_PY) $(OBJS) $(PY_LDS) $(PY_LIBS) 
 
 python.o:python.c glafic.h 
-	$(CC) $(CFLAGS) -I$(PINCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(PY_INC) -c $< -o $@
 
 %.o:%.c glafic.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	-rm -f $(BIN) $(OBJ_BIN) $(OBJS) $(LIB) $(PYT) $(OBJ_PYT) *~ \#* core* 
+	-rm -f $(BIN) $(OBJ_BIN) $(OBJS) $(LIB) $(PY) $(OBJ_PY) *~ \#* core* 

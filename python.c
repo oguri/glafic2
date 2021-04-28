@@ -1,3 +1,6 @@
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+
 #define GLOBAL_SET
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,7 +8,6 @@
 #include <math.h>
 
 #include "glafic.h"
-#include <Python.h>
 
 /*--------------------------------------------------------------
   initialization, quit

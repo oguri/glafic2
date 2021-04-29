@@ -431,17 +431,17 @@ double calc_pixpsf(void)
 
 int calc_psfnk(void)
 {
-  double sig;
+  /* double sig; */
   
   if(flag_seeing == 1){
     
-    if(para_psf[0] > para_psf[4]){ 
+    /* convolve within seeing_calcsig */
+    /* if(para_psf[0] > para_psf[4]){ 
       sig = INVSIG2FWHM * para_psf[0]; 
     } else { 
       sig = INVSIG2FWHM * para_psf[4]; 
     }
-    /* convolve within seeing_calcsig */
-    /* nk = ((int)((seeing_calcsig * sig / pix_ext) + 1)) * seeing_sub; */
+    nk = ((int)((seeing_calcsig * sig / pix_ext) + 1)) * seeing_sub; */
     return ((int)((psfconv_size / pix_ext) + 1)) * seeing_sub;
   } else if(flag_seeing == (-1)){
     return fpsf_nk;

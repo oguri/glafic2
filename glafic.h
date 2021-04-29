@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.0b3"
-#define RELEASE_DATE "2021.4.28"
+#define VERSION "2.0b4"
+#define RELEASE_DATE "2021.4.29"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -1006,7 +1006,7 @@ GLOBAL int i_ext_fid;
 
 GLOBAL int ovary, lvary, wvary, hvary;
 GLOBAL double omedian, lmedian, wmedian, hmedian;
-GLOBAL double oerror, lerror, werror, herror;
+GLOBAL double o_error, l_error, w_error, h_error;
 GLOBAL double omega_min, lambda_min, weos_min, hubble_min;
 GLOBAL double omega_max, lambda_max, weos_max, hubble_max;
 

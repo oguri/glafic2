@@ -563,32 +563,32 @@ double chi2prior_lens(void)
     }
   }
   
-  if(oerror > 0.0){ c2 = c2 + (omega - omedian) * (omega - omedian) / (oerror * oerror); 
-  } else if(oerror < 0.0){
+  if(o_error > 0.0){ c2 = c2 + (omega - omedian) * (omega - omedian) / (o_error * o_error); 
+  } else if(o_error < 0.0){
     if((omega < 0.0) || (omedian < 0.0)) return chi2pen_range; 
     lp = log10(omega); lm = log10(omedian);
-    c2 = c2 + (lp - lm) * (lp - lm) / (oerror * oerror); 
+    c2 = c2 + (lp - lm) * (lp - lm) / (o_error * o_error); 
   }
   
-  if(lerror > 0.0){ c2 = c2 + (lambda - lmedian) * (lambda - lmedian) / (lerror * lerror); 
-  } else if(lerror < 0.0){
+  if(l_error > 0.0){ c2 = c2 + (lambda - lmedian) * (lambda - lmedian) / (l_error * l_error); 
+  } else if(l_error < 0.0){
     if((lambda < 0.0) || (lmedian < 0.0)) return chi2pen_range; 
     lp = log10(lambda); lm = log10(lmedian);
-    c2 = c2 + (lp - lm) * (lp - lm) / (lerror * lerror); 
+    c2 = c2 + (lp - lm) * (lp - lm) / (l_error * l_error); 
   }
   
-  if(werror > 0.0){ c2 = c2 + (weos - wmedian) * (weos - wmedian) / (werror * werror); 
-  } else if(werror < 0.0){
+  if(w_error > 0.0){ c2 = c2 + (weos - wmedian) * (weos - wmedian) / (w_error * w_error); 
+  } else if(w_error < 0.0){
     if((weos < 0.0) || (wmedian < 0.0)) return chi2pen_range; 
     lp = log10(weos); lm = log10(wmedian);
-    c2 = c2 + (lp - lm) * (lp - lm) / (werror * werror); 
+    c2 = c2 + (lp - lm) * (lp - lm) / (w_error * w_error); 
   }
   
-  if(herror > 0.0){ c2 = c2 + (hubble - hmedian) * (hubble - hmedian) / (herror * herror); 
-  } else if(herror < 0.0){
+  if(h_error > 0.0){ c2 = c2 + (hubble - hmedian) * (hubble - hmedian) / (h_error * h_error); 
+  } else if(h_error < 0.0){
     if((hubble < 0.0) || (hmedian < 0.0)) return chi2pen_range; 
     lp = log10(hubble); lm = log10(hmedian);
-    c2 = c2 + (lp - lm) * (lp - lm) / (herror * herror); 
+    c2 = c2 + (lp - lm) * (lp - lm) / (h_error * h_error); 
   }
   
   for(i=0;i < num_ext;i++){

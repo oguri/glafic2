@@ -103,7 +103,6 @@ void dump_optpoint(char *infile, double c2, int ntot, int nfunc, double c2min[NM
 double chi2calc_opt_iplane(double c2min[NMAX_POI][NPAR_CHI2], int verb)
 {
   int i, k, l, f, nfunc;
-  double t1, t2;
   static double p[NDIMMAX + 2][NDIMMAX + 1]; 
   double xs[2 * NMAX_POIMG], ys[2 * NMAX_POIMG], c2m, c2tot;
   double c2[NPAR_CHI2];
@@ -116,8 +115,6 @@ double chi2calc_opt_iplane(double c2min[NMAX_POI][NPAR_CHI2], int verb)
   }
 
   c2tot = 0.0;
-  t1 = 0.0;
-  t2 = 0.0;
 
   for(i=0;i<num_poi;i++){
     ndim[i] = flag_para_poi[i][1] + flag_para_poi[i][2];

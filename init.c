@@ -561,7 +561,7 @@ void def_parameters(void)
   maxlev = DEF_MAXLEV;
 
   ovary = lvary = wvary = hvary = 0;
-  oerror = lerror = werror = herror = 0.0;
+  o_error = l_error = w_error = h_error = 0.0;
   omedian = omega;
   lmedian = lambda;
   wmedian = weos;
@@ -1009,19 +1009,19 @@ void parprior(char *infile, int verb)
 	    
 	    if(strcmp(keyword, "omega") == 0){
 	      omedian = med;
-	      oerror = sig;
+	      o_error = sig;
 	      n++;
 	    } else if(strcmp(keyword, "lambda") == 0){
 	      lmedian = med;
-	      lerror = sig;
+	      l_error = sig;
 	      n++;
 	    } else if(strcmp(keyword, "weos") == 0){
 	      wmedian = med;
-	      werror = sig;
+	      w_error = sig;
 	      n++;
 	    } else if(strcmp(keyword, "hubble") == 0){
 	      hmedian = med;
-	      herror = sig;
+	      h_error = sig;
 	      n++;
 	    }
 	  }

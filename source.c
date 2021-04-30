@@ -5,8 +5,8 @@
 
 #include "glafic.h"
 
-#define NM 6
-static char smodelname[NM][10] = {"gauss", "sersic", "tophat", "moffat", "srcs", "point"};
+#define NM 7
+static char smodelname[NM][10] = {"gauss", "sersic", "tophat", "moffat", "jaffe", "srcs", "point"};
 
 static double xsmin, xsmax, ysmin, ysmax;
 static int nxtab, nytab;
@@ -42,10 +42,14 @@ double sourcemodel(double x, double y, int i, double pxx, double pxy, double pyx
     break;
 
   case 5:
-    f = calc_srcs(x, y, i, 0, pxx, pxy, pyx, pyy, pix);
+    f = para_ext[i][1] * source_all(5, x, y, para_ext[i][2], para_ext[i][3], para_ext[i][4], para_ext[i][5], para_ext[i][6], para_ext[i][7], pxx, pxy, pyx, pyy, pix);
     break;
 
   case 6:
+    f = calc_srcs(x, y, i, 0, pxx, pxy, pyx, pyy, pix);
+    break;
+
+  case 7:
     f = 0.0;
     break;
   }
@@ -226,7 +230,7 @@ void unset_tab_calc_src(void)
 }
 
 /*--------------------------------------------------------------
-  all sources (1 = Gaussian, 2 = Sersic, 3 = tophat, 4 = moffat)
+  all sources (1 = Gaussian, 2 = Sersic, 3 = tophat, 4 = moffat, 5 = jaffe)
 */
 
 double source_all(int id, double x, double y, double x0, double y0, double e, double pa, double r0, double n, double pxx, double pxy, double pyx, double pyy, double pix)
@@ -260,6 +264,7 @@ double source_all(int id, double x, double y, double x0, double y0, double e, do
 	if(id == 1) f = f + source_gauss(x + dsx, y + dsy, x0, y0, e, pa, r0) * hh * hh;
 	if(id == 2) f = f + source_sersic(x + dsx, y + dsy, x0, y0, e, pa, r0, n) * hh * hh;
 	if(id == 4) f = f + source_moffat(x + dsx, y + dsy, x0, y0, e, pa, r0, n) * hh * hh;
+	if(id == 5) f = f + source_jaffe(x + dsx, y + dsy, x0, y0, e, pa, r0, n) * hh * hh;
       }
     }
     
@@ -268,6 +273,7 @@ double source_all(int id, double x, double y, double x0, double y0, double e, do
     if(id == 2) f = source_sersic(x, y, x0, y0, e, pa, r0, n);
     if(id == 3) f = source_tophat(x, y, x0, y0, e, pa, r0);
     if(id == 4) f = source_moffat(x, y, x0, y0, e, pa, r0, n);
+    if(id == 5) f = source_jaffe(x, y, x0, y0, e, pa, r0, n);
   }
 
   if(flag_extnorm != 0) f = f / source_all_norm(id, r0, n, pix_ext);
@@ -295,6 +301,11 @@ double source_all_norm(int id, double r0, double n, double pix)
 
   case 4:
     ftot = M_PI * r0 * r0 / ((n - 1.0) * (pix * pix));
+    break;
+
+  case 5:
+    if(n < smallcore) n = smallcore;
+    ftot = 2.0 * M_PI * r0 * n / (pix * pix);
     break;
 
   }
@@ -524,6 +535,35 @@ double moffat_fwhmtoa(double fwhm, double b)
   }
 
   return fwhm * aa;
+}
+
+/*--------------------------------------------------------------
+  sersic
+*/
+
+double source_jaffe(double x, double y, double x0, double y0, double e, double pa, double a, double rco)
+{
+  double u, f1, f2;
+  
+  if(source_checkdis(x, y, x0, y0, a) > 0) return 0.0;
+
+  if(a > rco){
+    checkmodelpar_mineq(e, 0.0);
+    checkmodelpar_max(e, 1.0);
+    checkmodelpar_min(a, 0.0);
+    checkmodelpar_mineq(rco, 0.0);
+    
+    if(rco < smallcore) rco = smallcore;
+    
+    u = ucalc(x - x0, y - y0, e, pa);
+    
+    f1 = 1.0 / sqrt(rco * rco + u);
+    f2 = 1.0 / sqrt(a * a + u);
+    
+    return (f1 - f2) / ((1.0 / rco) - (1.0 / a));
+  } else {
+    return 0.0;
+  } 
 }
 
 /*--------------------------------------------------------------

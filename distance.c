@@ -309,14 +309,17 @@ void set_distance_facext(void)
 
 double disratio(double zl, double zs_fid, double zs)
 {
-  if(zs_fid <= zl) terminator("irrelevant source redshift");
-
-  double d1, d2;
-
-  d1 = dis_angulard(zl, zs_fid) / dis_angulard(0.0, zs_fid);
-  d2 = dis_angulard(zl, zs) / dis_angulard(0.0, zs);
+  if(zs_fid <= zl){
+    /* terminator("irrelevant source redshift"); */
+    return 0.0;
+  } else {
+    double d1, d2;
+    
+    d1 = dis_angulard(zl, zs_fid) / dis_angulard(0.0, zs_fid);
+    d2 = dis_angulard(zl, zs) / dis_angulard(0.0, zs);
   
-  return d2 / d1;
+    return d2 / d1;
+  }
 } 
 
 /*--------------------------------------------------------------

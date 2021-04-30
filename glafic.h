@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.0b4"
-#define RELEASE_DATE "2021.4.29"
+#define VERSION "2.0b5"
+#define RELEASE_DATE "2021.4.30"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -953,6 +953,7 @@ double source_tophat(double x, double y, double x0, double y0, double e, double 
 double source_moffat_psf(double x, double y, double x0, double y0, double e, double pa, double fwhm, double b);
 double source_moffat(double x, double y, double x0, double y0, double e, double pa, double a, double b);
 double moffat_fwhmtoa(double fwhm, double b);
+double source_jaffe(double x, double y, double x0, double y0, double e, double pa, double a, double rco);
 int source_checkdis(double x, double y, double x0, double y0, double r0);
 double ucalc(double dx, double dy, double e, double pa);
 

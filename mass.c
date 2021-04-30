@@ -616,39 +616,47 @@ void kapgam_jaffe(double tx, double ty, double tx0, double ty0, double sig, doub
 
   if(rco < smallcore) rco = smallcore;
 
-  checkmodelpar_min(a, rco);
-  checkmodelpar_mineq(e, 0.0);
-  checkmodelpar_max(e, 1.0);
-
-  q = 1.0 - e;
-  bb = b_sie(sig, q);
-
-  dx = tx - tx0;
-  dy = ty - ty0;
-
-  if((ff != 1) || (papa != pa)){
-    ff = 1;
-    papa = pa;
-    si = sin((-1.0) * (pa - 90.0) * M_PI / 180.0);
-    co = cos((-1.0) * (pa - 90.0) * M_PI / 180.0);
-  }
-
-  alpha_sie_bq(dx, dy, bb, rco, q, si, co, &ax1, &ay1);
-  alpha_sie_bq(dx, dy, bb, a, q, si, co, &ax2, &ay2);
-  
-  *ax = ax1 - ax2;
-  *ay = ay1 - ay2;
-
-  if(alponly != 1){
-    kapgam_sie_bq(dx, dy, bb, rco, q, si, co, &k1, &g1, &r1, &p1, alponly);
-    kapgam_sie_bq(dx, dy, bb, a, q, si, co, &k2, &g2, &r2, &p2, alponly);
+  /* checkmodelpar_min(a, rco); */
+  if(a > rco){
+    checkmodelpar_mineq(e, 0.0);
+    checkmodelpar_max(e, 1.0);
     
-    *kap = k1 - k2;
-    *gam1 = g1 - g2;
-    *gam2 = r1 - r2;
-    if(alponly < 0) *phi = p1 - p2;
-  }
+    q = 1.0 - e;
+    bb = b_sie(sig, q);
+    
+    dx = tx - tx0;
+    dy = ty - ty0;
+    
+    if((ff != 1) || (papa != pa)){
+      ff = 1;
+      papa = pa;
+      si = sin((-1.0) * (pa - 90.0) * M_PI / 180.0);
+      co = cos((-1.0) * (pa - 90.0) * M_PI / 180.0);
+    }
+    
+    alpha_sie_bq(dx, dy, bb, rco, q, si, co, &ax1, &ay1);
+    alpha_sie_bq(dx, dy, bb, a, q, si, co, &ax2, &ay2);
+    
+    *ax = ax1 - ax2;
+    *ay = ay1 - ay2;
 
+    if(alponly != 1){
+      kapgam_sie_bq(dx, dy, bb, rco, q, si, co, &k1, &g1, &r1, &p1, alponly);
+      kapgam_sie_bq(dx, dy, bb, a, q, si, co, &k2, &g2, &r2, &p2, alponly);
+      
+      *kap = k1 - k2;
+      *gam1 = g1 - g2;
+      *gam2 = r1 - r2;
+      if(alponly < 0) *phi = p1 - p2;
+    }
+  } else {
+    *kap  = 0.0;
+    *gam1 = 0.0;
+    *gam2 = 0.0;
+    *phi  = 0.0;
+    *ax   = 0.0;
+    *ay   = 0.0;
+  }
   return;
 
 }

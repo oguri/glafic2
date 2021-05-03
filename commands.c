@@ -49,7 +49,7 @@ int do_command(char *buffer)
       
       if(strcmp(keyword, "calcein2") == 0){
 	zs = DEF_COMMAND_ZS;
-	x = DEF_COMMAND_ZS; y = DEF_COMMAND_XY; i = DEF_COMMAND_I;
+	x = DEF_COMMAND_XY; y = DEF_COMMAND_XY; i = DEF_COMMAND_I;
 	sscanf(buffer, "%s %lf %lf %lf %d", cdummy, &zs, &x, &y, &i);
 	calcein2(zs, x, y, i);
       }

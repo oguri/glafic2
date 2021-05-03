@@ -24,6 +24,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2021.05.03 | 2.0b6   | use a fast analytic calculation for `pow` by default |
 | 2021.04.30 | 2.0b5   | `jaffe` extended source model added |
 | 2021.04.27 | 2.0b2   | python interface added |
 | 2021.03.23 | 2.0b1   | uploaded beta 1 version to github |

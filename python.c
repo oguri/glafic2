@@ -86,6 +86,13 @@ PyObject* python_get_nxy_ext(PyObject* self, PyObject* args)
   return Py_BuildValue("ii", nx_ext, ny_ext);
 }
 
+PyObject* python_version(PyObject* self, PyObject* args)
+{
+  printf("%s\n", VERSION);
+
+  return Py_BuildValue("");
+}
+
 /*--------------------------------------------------------------
   setting lens model
 */
@@ -594,6 +601,7 @@ static PyMethodDef methods[] = {
   {"quit", python_quit, METH_VARARGS},
   {"set_secondary", (PyCFunction)python_set_secondary, METH_VARARGS|METH_KEYWORDS},
   {"get_nxy_ext", python_get_nxy_ext, METH_VARARGS},
+  {"version", python_version, METH_VARARGS},
   {"startup_setnum", python_startup_setnum, METH_VARARGS},
   {"set_lens", python_set_lens, METH_VARARGS},
   {"set_extend", python_set_extend, METH_VARARGS},

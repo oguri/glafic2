@@ -214,6 +214,8 @@ void init_para2_body(char *keyword, char *buffer, int verb)
   PAREADXE(wcs_ra0, wcs_ra0, verb)
   PAREADXE(wcs_dec0, wcs_dec0, verb)
   PAREADXE(dr_lens_center, dr_lens_center, verb)
+  PAREADXD(flag_pow_tm15, flag_pow_tm15, verb)
+  PAREADXE(tol_pow_tm15, tol_pow_tm15, verb)
     
   return;
 }
@@ -636,6 +638,8 @@ void def_parameters(void)
   wcs_ra0 = DEF_WCS_RA0;
   wcs_dec0 = DEF_WCS_DEC0;
   dr_lens_center = DEF_DR_LENS_CENTER;
+  flag_pow_tm15 = DEF_FLAG_POW_TM15;
+  tol_pow_tm15 = DEF_TOL_POW_TM15;
     
   for(i=0;i<NMAX_LEN;i++){
     para_lens_min[i][0] = INIT_ZMIN;   /* zl */

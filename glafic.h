@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.0b5"
-#define RELEASE_DATE "2021.4.30"
+#define VERSION "2.0b6"
+#define RELEASE_DATE "2021.5.3"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -132,6 +132,7 @@
 #define DEF_CHI2PEN_PARITY 1.0e30
 /* maximum number of restarts (for chi2_restart<0) */
 #define DEF_CHI2_RESTART_MAX 1000
+
 /* gain for obs fits file [e-/ADU] */
 #define DEF_OBS_GAIN 3.0
 /* number of frame combine for obs fits file */
@@ -189,6 +190,10 @@
 #define DEF_WCS_DEC0 30.0
 /* radius to search for lens center for multiple lens planes */
 #define DEF_DR_LENS_CENTER 0.9
+/* use tm15 analytic model for pow or not */
+#define DEF_FLAG_POW_TM15 1
+/* torelance to calculate omega in tm15  */
+#define DEF_TOL_POW_TM15 1.0e-8
 
 /*--------------------------------------------------------------
   numerical parameters fixed throughout the code
@@ -752,6 +757,11 @@ double phi_pow_dl(double x);
 
 void kapgam_pow(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 
+void kapgam_pow_direct(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+
+void kapgam_pow_tm15(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+void pow_tm15_omega(double psi, double q, double gam, double ome[]);
+
 void kapgam_serspot(double tx, double ty, double tx0, double ty0, double m, double re, double n, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 double b_func_sers(double m, double rs, double n);
 double bn_sers(double n);
@@ -1085,6 +1095,8 @@ GLOBAL int nmax_srcs;
 GLOBAL int nmax_fft;
 GLOBAL int flag_mcmcall;
 GLOBAL double dr_lens_center;
+GLOBAL int flag_pow_tm15;
+GLOBAL double tol_pow_tm15;
 
 GLOBAL double para_lens[NMAX_LEN][NPAR_LEN];
 GLOBAL int model_lens[NMAX_LEN];

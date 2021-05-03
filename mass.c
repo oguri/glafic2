@@ -1608,6 +1608,20 @@ double phi_pow_dl(double x)
 
 void kapgam_pow(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
 {
+  if(flag_pow_tm15 == 0){
+    kapgam_pow_direct(tx, ty, tx0, ty0, zs_fid, re, gam, e, pa, kap, gam1, gam2, phi, ax, ay, alponly);
+  } else {
+    kapgam_pow_tm15(tx, ty, tx0, ty0, zs_fid, re, gam, e, pa, kap, gam1, gam2, phi, ax, ay, alponly);
+  }
+  return;
+}
+
+/*--------------------------------------------------------------
+  power-law density, direct integration
+*/
+
+void kapgam_pow_direct(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
   static int ff;
   static double papa, si, co;
   double fac, q, tt, j0, j1;
@@ -1677,6 +1691,111 @@ void kapgam_pow(double tx, double ty, double tx0, double ty0, double zs_fid, dou
 
   return;
 } 
+
+/*--------------------------------------------------------------
+  power-law density, using Tessore & Metcalf 2015
+*/
+
+void kapgam_pow_tm15(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
+  static int ff;
+  static double papa, si, co;
+  double fac, q, tt;
+  double ddx, ddy, r, psi, aa, aax, aay, dx, dy;
+  double g1, g2, c1, s1, c2, s2;
+  double ome[2];
+  
+  checkmodelpar_mineq(e, 0.0);
+  checkmodelpar_max(e, 1.0);
+  checkmodelpar_min(re, 0.0);
+  checkmodelpar_min(gam, 1.0);
+  checkmodelpar_max(gam, 3.0);
+
+  q = 1.0 - e;
+  fac = fac_pert(zs_fid);
+  tt = re * sqrt(q);
+  dx = tx - tx0;
+  dy = ty - ty0;
+  
+  if((ff != 1) || (papa != pa)){
+    ff = 1;
+    papa = pa;
+    si = sin((-1.0) * (pa - 90.0) * M_PI / 180.0);
+    co = cos((-1.0) * (pa - 90.0) * M_PI / 180.0);
+  }
+
+  ddx = co * dx - si * dy;
+  ddy = si * dx + co * dy;
+
+  r  = sqrt(q * q * ddx * ddx + ddy * ddy) + smallcore;
+  psi = atan2(ddy, q * ddx);
+  aa = 2.0 * tt * pow(tt / r, gam - 2.0) / (1.0 + q);
+  pow_tm15_omega(psi, q, gam, ome);
+ 
+  aax = aa * ome[0];
+  aay = aa * ome[1];
+  
+  *ax = fac * (aax * co + aay * si);
+  *ay = fac * (aax * (-1.0) * si + aay * co);
+ 
+  if(alponly != 1){
+    *kap = fac * 0.5 * (3.0 - gam) * pow(r / tt, 1.0 - gam);
+    r = sqrt(ddx * ddx + ddy * ddy) + smallcore;
+    c1 = ddx / r;
+    s1 = ddy / r;
+    c2 = c1 * c1 - s1 * s1;
+    s2 = 2.0 * c1 * s1;
+    g1 = (-1.0) * c2 * (*kap) + fac * (2.0 - gam) * (c1 * aax - s1 * aay) / r;
+    g2 = (-1.0) * s2 * (*kap) + fac * (2.0 - gam) * (c1 * aay + s1 * aax) / r;
+    c2 = co * co - si * si;
+    s2 = 2.0 * co * si;
+    *gam1 = c2 * g1 + s2 * g2;
+    *gam2 = (-1.0) * s2 * g1 + c2 * g2;
+    if(alponly < 0) *phi = fac * (ddx * aax + ddy * aay) / (3.0 - gam);
+  }
+  
+  return;
+}
+
+void pow_tm15_omega(double psi, double q, double gam, double ome[])
+{
+  int k;
+  double t, f, kk, fac, c1, s1, c2, s2;
+  double a[2], b[2];
+  
+  t = 3.0 - gam;
+  f = (1.0 - q) / (1.0 + q);
+    
+  c1 = cos(psi);
+  s1 = sin(psi);
+  c2 = c1 * c1 - s1 * s1;
+  s2 = 2.0 * c1 * s1;
+
+  a[0] = c1;
+  a[1] = s1;
+  
+  ome[0] = a[0];
+  ome[1] = a[1];
+
+  k=0;
+  do{
+    k++;
+    kk = (double)k;
+    fac = (-1.0) * f * (2.0 * kk - t) / (2.0 * kk + t);
+
+    b[0] = fac * (c2 * a[0] - s2 * a[1]);
+    b[1] = fac * (s2 * a[0] + c2 * a[1]);
+      
+    a[0] = b[0];
+    a[1] = b[1];
+
+    ome[0] += a[0];
+    ome[1] += a[1];
+
+  } while((fabs(a[0]) > tol_pow_tm15) || (fabs(a[1]) > tol_pow_tm15));
+
+  return;
+}
 
 /*--------------------------------------------------------------
   Sersic potential

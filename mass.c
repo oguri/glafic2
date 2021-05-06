@@ -569,6 +569,8 @@ void kapgam_point(double tx, double ty, double tx0, double ty0, double m, double
 {
   double r2, rr, dx, dy, re2;
 
+  checkmodelpar_mineq(m, 0.0);
+
   re2 = re2_point(m);
   dx = tx - tx0;
   dy = ty - ty0;
@@ -613,6 +615,10 @@ void kapgam_jaffe(double tx, double ty, double tx0, double ty0, double sig, doub
   static int ff;
   static double si, co, papa;
   double bb, q, dx, dy, ax1, ay1, ax2, ay2, k1, k2, g1, g2, r1, r2, p1, p2;
+
+  checkmodelpar_mineq(sig, 0.0);
+  checkmodelpar_mineq(rco, 0.0);
+  checkmodelpar_min(a, 0.0);
 
   if(rco < smallcore) rco = smallcore;
 
@@ -671,9 +677,11 @@ void kapgam_sie(double tx, double ty, double tx0, double ty0, double sig, double
   static double si, co, papa;
   double q, bb;
   
+  checkmodelpar_mineq(sig, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
-
+  checkmodelpar_mineq(s, 0.0);
+  
   q = 1.0 - e;
   bb = b_sie(sig, q);
   if(s < smallcore) s = smallcore;  /* avoid error at the center */
@@ -824,6 +832,7 @@ void kapgam_nfwpot(double tx, double ty, double tx0, double ty0, double m, doubl
   double bb, tt, a, b, pxx, pxy, pyy;
   double u[6];
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -1000,6 +1009,7 @@ void kapgam_nfw(double tx, double ty, double tx0, double ty0, double m, double c
   double q, bb, tt, uu, j0, j1;
   double bx, by, px, py, bpx, bpy, pxx, pxy, pyy, bpxx, bpxy, bpyy;
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -1069,6 +1079,7 @@ void kapgam_gnfwpot(double tx, double ty, double tx0, double ty0, double m, doub
   double bb, tt, a, b, pxx, pxy, pyy;
   double u[6];
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -1277,6 +1288,7 @@ void kapgam_gnfw(double tx, double ty, double tx0, double ty0, double m, double 
   double bb, tt, q, uu, j0, j1;
   double bx, by, px, py, bpx, bpy, pxx, pxy, pyy, bpxx, bpxy, bpyy;
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -1355,6 +1367,7 @@ void kapgam_hernpot(double tx, double ty, double tx0, double ty0, double m, doub
   double bb, tt, a, b, pxx, pxy, pyy;
   double u[6];
 
+  checkmodelpar_mineq(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(rb, 0.0);
@@ -1469,6 +1482,7 @@ void kapgam_hern(double tx, double ty, double tx0, double ty0, double m, double 
   double q, bb, tt, uu, j0, j1;
   double bx, by, px, py, bpx, bpy, pxx, pxy, pyy, bpxx, bpxy, bpyy;
 
+  checkmodelpar_mineq(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(rb, 0.0);
@@ -1808,6 +1822,7 @@ void kapgam_serspot(double tx, double ty, double tx0, double ty0, double m, doub
   double bb, tt, a, b, pxx, pxy, pyy;
   double u[6];
 
+  checkmodelpar_mineq(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(re, 0.0);
@@ -1961,6 +1976,7 @@ void kapgam_sers(double tx, double ty, double tx0, double ty0, double m, double 
   double q, bb, tt, uu, j0, j1;
   double bx, by, px, py, bpx, bpy, pxx, pxy, pyy, bpxx, bpxy, bpyy;
 
+  checkmodelpar_mineq(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(re, 0.0);
@@ -2034,6 +2050,7 @@ void kapgam_tnfwpot(double tx, double ty, double tx0, double ty0, double m, doub
   double bb, tt, cc, a, b, pxx, pxy, pyy;
   double u[6];
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -2313,6 +2330,7 @@ void kapgam_tnfw(double tx, double ty, double tx0, double ty0, double m, double 
   double q, bb, tt, cc, uu, j0, j1;
   double bx, by, px, py, bpx, bpy, pxx, pxy, pyy, bpxx, bpxy, bpyy;
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -2384,6 +2402,7 @@ void kapgam_einpot(double tx, double ty, double tx0, double ty0, double m, doubl
   double bb, tt, a, b, pxx, pxy, pyy;
   double u[6];
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);
@@ -2588,6 +2607,7 @@ void kapgam_ein(double tx, double ty, double tx0, double ty0, double m, double c
   double bb, tt, q, uu, j0, j1;
   double bx, by, px, py, bpx, bpy, pxx, pxy, pyy, bpxx, bpxy, bpyy;
 
+  checkmodelpar_min(m, 0.0);
   checkmodelpar_mineq(e, 0.0);
   checkmodelpar_max(e, 1.0);
   checkmodelpar_min(c, 0.0);

@@ -6,6 +6,7 @@
 #include "glafic.h"
 
 static float *array_call;
+static int flag_array_call;
 
 /*--------------------------------------------------------------
   initialization, quit
@@ -45,6 +46,7 @@ void glafic_set_primary(double in_omega, double in_lambda, double in_weos, doubl
   glafic_set_cosmo(in_omega, in_lambda, in_weos, in_hubble);
 
   set_npix();
+  glafic_unset_array_extend();
   if(verb == 1) out_para();
   
   return;
@@ -60,7 +62,7 @@ void glafic_set_cosmo(double in_omega, double in_lambda, double in_weos, double 
   ext_unset_table();
   poi_unset_table();
   poimg_unset_table();
-
+  
   return;
 }
 
@@ -72,6 +74,7 @@ void glafic_quit(void)
   poimg_unset_table();
   unset_srcs();
   unset_tab_calc_src();
+  glafic_unset_array_extend();
   gsl_rng_free(ran_gsl);
 
   return;
@@ -390,9 +393,12 @@ void glafic_set_array_extend(int id, double sky, double noise, int flag_source)
   int l, k, nn;
   double f, p;
 
-  array_call = (float*)malloc(sizeof(float) * nx_ext * ny_ext);
-  if(array_call == NULL) terminator("memory allocation failed");
-
+  if(flag_array_call != TFLAG_VALUE){
+    flag_array_call = TFLAG_VALUE;
+    array_call = (float*)malloc(sizeof(float) * nx_ext * ny_ext);
+    if(array_call == NULL) terminator("memory allocation failed");
+  }
+  
   flag_computeall = 1;
   i_ext_fid = -1;
   ext_set_image(id, flag_source, 1);
@@ -417,7 +423,10 @@ void glafic_set_array_extend(int id, double sky, double noise, int flag_source)
 
 void glafic_unset_array_extend(void)
 {
-  free(array_call);
+  if(flag_array_call == TFLAG_VALUE){
+    flag_array_call = 0;
+    free(array_call);
+  }
 
   return;
 }

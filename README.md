@@ -1,6 +1,8 @@
 # glafic version 2
 
-glafic is a software for studying gravitational lensing. Use it at your own risk; the author shall not take any responsibility for loss or damage caused by the use of this software. The binary files are available at [this URL](https://www.slac.stanford.edu/~oguri/glafic/). Please cite [M. Oguri, PASJ, 62, 1017 (2010)](https://ui.adsabs.harvard.edu/abs/2010PASJ...62.1017O/abstract) if you use this software for your research work. 
+glafic is a software for studying gravitational lensing. Use it at your own risk; the author shall not take any responsibility for loss or damage caused by the use of this software. The binary files are available at [this URL](https://www.slac.stanford.edu/~oguri/glafic/). If you use this software (or any modified version of it) for your research work, please cite the following paper:
+
+- [M. Oguri, PASJ, 62, 1017 (2010)](https://ui.adsabs.harvard.edu/abs/2010PASJ...62.1017O/abstract) 
 
 ## Installation
 

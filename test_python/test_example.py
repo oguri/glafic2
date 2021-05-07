@@ -40,5 +40,11 @@ print(a)
 
 #glafic.readpsf('../samples/out_psf.fits', verb = 1)
 
+# return extended image by tuple
+a = glafic.writeimage()
+i = 300
+j = 250
+print('pixel value at i = %d and j = %d is %f' % (i, j , a[j][i]))
+
 glafic.quit()
 

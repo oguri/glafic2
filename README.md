@@ -6,7 +6,7 @@ glafic is a software for studying gravitational lensing. Use it at your own risk
 
 ## Installation
 
-glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/).
+glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/), or can be installed with homebrew on OS X.
 
 ## Updates from version 1
 

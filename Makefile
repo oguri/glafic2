@@ -1,16 +1,36 @@
-CC	= gcc
-CFLAGS	= -O2 -Wall -fPIC
-CFLAGS2 = -static
-#LIBS    = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
-LIBS	= -lm /usr/local/lib/libcfitsio.a /usr/local/lib/libfftw3.a /usr/local/lib/libgsl.a /usr/local/lib/libgslcblas.a 
-
 UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
 
 ifeq ($(UNAME_S),Darwin)
-	CFLAGS2 = -lcurl
+	ifeq ($(UNAME_M),x86_64)
+		CFLAGS2 = -lcurl
+		LIBPATH = /usr/local/lib
+		INCPATH = /usr/local/include
+		PY_LIBS = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
+	else
+		CFLAGS2 = -lcurl
+		LIBPATH = /opt/homebrew/lib
+		INCPATH = /opt/homebrew/include
+		PY_LIBS = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
+	endif
 else
-	CFLAGS2 = 
+	ifeq ($(UNAME_S),Linux)
+		CFLAGS2 = 
+		LIBPATH = /usr/local/lib
+		INCPATH = /usr/local/include
+		PY_LIBS = -lm $(LIBPATH)/libcfitsio.so $(LIBPATH)/libfftw3.so $(LIBPATH)/libgsl.so $(LIBPATH)/libgslcblas.so
+	else
+		CFLAGS2 = 
+		LIBPATH =
+		INCPATH =
+		PY_LIBS = 
+	endif
 endif
+
+CC	= gcc
+CFLAGS	= -O2 -Wall -fPIC -I$(INCPATH)
+#LIBS    = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
+LIBS	= -lm $(LIBPATH)/libcfitsio.a $(LIBPATH)/libfftw3.a $(LIBPATH)/libgsl.a $(LIBPATH)/libgslcblas.a 
 
 # for binary program
 BIN	= glafic
@@ -32,8 +52,6 @@ OBJ_PY	= python.o
 CFLAGS3	= -Wall -shared 
 PY_INC  := $(shell python3-config --includes)
 PY_LDS  := $(shell python3-config --ldflags --embed)
-PY_LIBS = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
-#PY_LIBS = -lm /usr/local/lib/libcfitsio.so /usr/local/lib/libfftw3.so /usr/local/lib/libgsl.so /usr/local/lib/libgslcblas.so
 
 default: bin
 

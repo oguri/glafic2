@@ -4,7 +4,9 @@ CFLAGS2 = -static
 #LIBS    = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
 LIBS	= -lm /usr/local/lib/libcfitsio.a /usr/local/lib/libfftw3.a /usr/local/lib/libgsl.a /usr/local/lib/libgslcblas.a 
 
-ifeq ($(HOSTTYPE),intel-mac)
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Darwin)
 	CFLAGS2 = -lcurl
 else
 	CFLAGS2 = 

@@ -523,8 +523,8 @@ void kapgam_gals(double tx, double ty, double sig, double a, double alpha, doubl
   *ay = 0.0;
   
   for(i=0;i<num_gal;i++){
-    // dx = tx - (para_gals[i][0] - gals_offset_x[i]);
-    // dy = ty - (para_gals[i][1] - gals_offset_y[i]);
+    /* dx = tx - (para_gals[i][0] - gals_offset_x[i]); 
+       dy = ty - (para_gals[i][1] - gals_offset_y[i]); */
     dx = tx - para_gals[i][0];
     dy = ty - para_gals[i][1];
     
@@ -542,8 +542,8 @@ void kapgam_gals(double tx, double ty, double sig, double a, double alpha, doubl
     *phi = 0.0;
     
     for(i=0;i<num_gal;i++){
-      // dx = tx - (para_gals[i][0] - gals_offset_x[i]);
-      // dy = ty - (para_gals[i][1] - gals_offset_y[i]);
+      /* dx = tx - (para_gals[i][0] - gals_offset_x[i]);
+	 dy = ty - (para_gals[i][1] - gals_offset_y[i]); */
       dx = tx - para_gals[i][0];
       dy = ty - para_gals[i][1];
       

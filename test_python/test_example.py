@@ -2,6 +2,8 @@
 import glafic
 import numpy as np
 
+glafic.version()
+
 glafic.init(0.3, 0.7, -1.0, 0.7, 'out', -60.0, -60.0, 60.0, 60.0, 0.2, 3.0, 5, ran_seed = -10, verb = 0)
 
 glafic.set_secondary('chi2_splane 1', verb = 0)

@@ -6,7 +6,7 @@ glafic is a software for studying gravitational lensing. Use it at your own risk
 
 ## Installation
 
-glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/), or can install with homebrew on OS X.
+glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/), or can install with homebrew on macOS.
 
 ## Updates from version 1
 
@@ -16,7 +16,7 @@ Because of new implementation of multiple lens plane gravitational lensing, inpu
 
 * In version 2 routines from Numerical Recipes are no longer used in order to make the source code publicly available. Several routines such as numerical integrations, random number generation, optimizations, and interpolations, are changed from version 1 to version 2. In addition, some constants such as speed of light are also updated to include more digits. Because of these changes, output values can be slightly different between version 1 and 2, even for the exactly same input parameters. The differences should be small enough in most cases though.
 
-* Python interface is added such that some glafic routines can be called from python. The module can be created by running `make all`. Some examples can be found in `test_python` directory. 
+* Python interface is added such that some glafic routines can be called from python. The module `glafic.so` can be created by running `make all`. Some examples can be found in `test_python` directory. 
 
 ## Feedback
 
@@ -26,6 +26,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2021.05.19 | 2.0.0   | first release of version 2 |
 | 2021.05.03 | 2.0b6   | use a fast analytic calculation for `pow` by default |
 | 2021.04.30 | 2.0b5   | `jaffe` extended source model added |
 | 2021.04.27 | 2.0b2   | python interface added |

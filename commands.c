@@ -90,7 +90,7 @@ int do_command(char *buffer)
       }
        
       /*------------------------------------
-	extended sources
+		extended sources
       */
       if(strcmp(keyword, "writeimage") == 0){
 	x = DEF_COMMAND_SKY; y = DEF_COMMAND_NOISE;
@@ -135,7 +135,7 @@ int do_command(char *buffer)
        }
       
       /*------------------------------------
-	point sources
+		point sources
       */
       if(strcmp(keyword, "findimg") == 0){
 	i = DEF_COMMAND_I;
@@ -175,7 +175,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-	write both point and extended sources
+		write both point and extended sources
       */
       if(strcmp(keyword, "point_flux") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
@@ -195,7 +195,7 @@ int do_command(char *buffer)
       }
        
       /*------------------------------------
-	mock
+		mock
       */
       if(strcmp(keyword, "mock1") == 0){
 	zs = DEF_COMMAND_ZS;
@@ -261,7 +261,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-	reading (writing) opt-related data
+		reading (writing) opt-related data
       */
       if(strcmp(keyword, "readobs_extend") == 0){
 	i = sscanf(buffer, "%s %s %s", cdummy, fname, fname2);
@@ -301,7 +301,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-	optimizations
+		optimizations
       */
       if(strcmp(keyword, "optpoint") == 0){
 	sscanf(buffer, "%s", cdummy);
@@ -363,7 +363,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-	Markov Chain Monte Carlo
+		Markov Chain Monte Carlo
       */
       if(strcmp(keyword, "mcmc_sigma") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
@@ -409,7 +409,7 @@ int do_command(char *buffer)
       }
       
       /*------------------------------------
-	reset parameters
+		reset parameters
       */
       if(strcmp(keyword, "reset_par") == 0){
 	strncpy(cdummy, buffer + 9, strlen(buffer) - 9);
@@ -677,7 +677,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-	quit
+		quit
       */
       if(strcmp(keyword, "quit") == 0){
 	r = 1;

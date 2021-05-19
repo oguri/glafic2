@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.0b8"
-#define RELEASE_DATE "2021.5.7"
+#define VERSION "2.0.0"
+#define RELEASE_DATE "2021.5.19"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -79,9 +79,9 @@
 #define DEF_TOL_AMOEBA_LENS 1.0e-4
 /* minimum finding accuracy for amoeba (source) */
 #define DEF_TOL_AMOEBA 1.0e-5
-/* mamimum number of amoeba */
+/* maximum number of amoeba */
 #define DEF_NMAX_AMOEBA 10000
-/* mamimum number of amoeba for point source */
+/* maximum number of amoeba for point source */
 #define DEF_NMAX_AMOEBA_POINT 100
 /* dp for mass/norm (fractional) */
 #define DEF_AMOEBA_DP_MASS -0.5
@@ -275,7 +275,7 @@
 #define OFFSET_LOG 1.0e-300
 /* offset to avoid diverge of tdelay_fac */
 #define OFFSET_TDELAY_FAC 1.0e-300
-/* intial value in peak search in extend */
+/* initial value in peak search in extend */
 #define EXTEND_INIT_PEAK -1.0e30
 /* minimum error allowed in mapprior (for judging errors) */
 #define TOL_ERROR_MAPPRIOR 1.0e-30

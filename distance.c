@@ -142,7 +142,7 @@ double derivative_dis_proper_cpar(double z, cosmo_para *cpar)
 }
 
 /*--------------------------------------------------------------
-  distance moduls w/o hubble
+  distance modulus w/o hubble
 */
 
 double dis_mod(double z)

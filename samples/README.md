@@ -9,7 +9,7 @@ Here are a few examples of how the code works. Note that these examples may requ
  Fit observed arc images to derive the best-fit lens model. 
 
 3. `point.input`
- Fitting a standard quad lens system with sie+shear. The best-fit Hubble constant is also derived from time delay measurements.  Try both `chi2_splane 0` (image plane chi^2) and `chi2_splane 1` (source plane chi^2) to see the difference of them.
+ Fitting a standard quad lens system with SIE+shear. The best-fit Hubble constant is also derived from time delay measurements.  Try both `chi2_splane 0` (image plane chi^2) and `chi2_splane 1` (source plane chi^2) to see the difference of them.
 
 4. `clugal.input`  
  An example of cluster modeling that consists of a NFW halo and a number of member galaxies modeled by truncated isothermal ellipsoid (pseudo-Jaffe, actually). Run `plot_point.py` to check how the code resolves critical curves of small clumps.
@@ -26,5 +26,5 @@ Here are a few examples of how the code works. Note that these examples may requ
 8. `multilens_extend.input`  
  Similar to `multilens_point.input`, but fitting of extended sources. The foreground galaxy is also added. 
 
-last modified: 03/23/2021 (based on version 2.0)
+last modified: 05/19/2021 (based on version 2.0)
 

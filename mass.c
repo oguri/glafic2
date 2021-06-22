@@ -6,7 +6,7 @@
 
 #include "glafic.h"
 
-#define NM 21
+#define NM 23
 static char lmodelname[NM][10]={
 "gals",     /* 1 */
 "nfwpot",   /* 2 */
@@ -28,7 +28,9 @@ static char lmodelname[NM][10]={
 "tnfwpot",  /* 18 */
 "tnfw",     /* 19 */
 "einpot",   /* 20 */
-"ein"       /* 21 */
+"ein",      /* 21 */
+"anfw",     /* 22 */
+"ahern"     /* 23 */
 };
 
 static double alpha_gnfw_sav, x_gnfw_sav;
@@ -313,6 +315,13 @@ void lensmodel_get_i(int i, double tx, double ty, double *kap, double *gam1, dou
     kapgam_ein(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][7], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
     break;
 
+  case 22:
+    kapgam_anfw(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
+    break;
+
+  case 23:
+    kapgam_ahern(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
+    break;
   }
 
   return;
@@ -1069,6 +1078,64 @@ void kapgam_nfw(double tx, double ty, double tx0, double ty0, double m, double c
 } 
 
 /*--------------------------------------------------------------
+  NFW density, approximation using CSE
+*/
+
+void kapgam_anfw(double tx, double ty, double tx0, double ty0, double m, double c, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
+  static int ff;
+  static double papa, si, co;
+  double q, bb, tt, dx, dy, ddx, ddy, aax, aay;
+  double pxx, pyy, pxy, rpxx, rpyy, rpxy;
+
+  checkmodelpar_min(m, 0.0);
+  checkmodelpar_mineq(e, 0.0);
+  checkmodelpar_max(e, 1.0);
+  checkmodelpar_min(c, 0.0);
+
+  q = 1.0 - e;
+
+  calc_bbtt_nfw(m, c, &bb, &tt);
+  tt = tt / sqrt(q);
+
+  if((ff != 1) || (papa != pa)){
+    ff = 1;
+    papa = pa;
+    si = sin((-1.0) * (pa - 90.0) * M_PI / 180.0);
+    co = cos((-1.0) * (pa - 90.0) * M_PI / 180.0);
+  }
+
+  dx = (tx - tx0) / tt;
+  dy = (ty - ty0) / tt;
+
+  ddx = co * dx - si * dy;
+  ddy = si * dx + co * dy;
+
+  alpha_anfw_dl(ddx, ddy, q, &aax, &aay);
+
+  *ax = bb * (aax * co + aay * si) * tt;
+  *ay = bb * (aax * (-1.0) * si + aay * co) * tt;
+  
+  if(alponly != 1){
+    ddphi_anfw_dl(ddx, ddy, q, &pxx, &pxy, &pyy);
+
+    rpxx = co * co * pxx + 2.0 * co * si * pxy + si * si * pyy;
+    rpyy = si * si * pxx - 2.0 * co * si * pxy + co * co * pyy;
+    rpxy = si * co * (pyy - pxx) + (co * co - si * si) * pxy;
+
+    *kap = 0.5 * bb * (rpxx + rpyy);
+    *gam1 = 0.5 * bb * (rpxx - rpyy);
+    *gam2 = bb * rpxy;
+
+    if(alponly < 0){
+      *phi = bb * phi_anfw_dl(ddx, ddy, q) * tt * tt;
+    }
+  }
+
+  return;
+} 
+
+/*--------------------------------------------------------------
   generalized NFW potential
 */
 
@@ -1446,10 +1513,10 @@ double dphi_hern_dl(double x)
 
 double phi_hern_dl(double x)
 {
-  if(x > 1.0e-4){
+  if(x > 1.0e-3){
     return log(x * x / 4.0) + 2.0 * func_hern_dl(x); 
   } else {
-    return x * x * log(2.0 / x);
+    return x * x * (log(2.0 / x) - 0.5);
   }
 }
 
@@ -1536,6 +1603,64 @@ void kapgam_hern(double tx, double ty, double tx0, double ty0, double m, double 
    *gam1 = 0.5 * bb * (pxx - pyy);
    *gam2 = bb * pxy;
    if(alponly < 0) *phi = 0.5 * q * bb * ell_integ_i(dphi_hern_dl) * tt * tt;
+  }
+
+  return;
+} 
+
+/*--------------------------------------------------------------
+  Hernquist density, approximation using CSE
+*/
+
+void kapgam_ahern(double tx, double ty, double tx0, double ty0, double m, double rb, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
+  static int ff;
+  static double papa, si, co;
+  double q, bb, tt, dx, dy, ddx, ddy, aax, aay;
+  double pxx, pyy, pxy, rpxx, rpyy, rpxy;
+
+  checkmodelpar_min(m, 0.0);
+  checkmodelpar_mineq(e, 0.0);
+  checkmodelpar_max(e, 1.0);
+  checkmodelpar_min(rb, 0.0);
+
+  q = 1.0 - e;
+
+  bb = b_func_hern(m, rb);
+  tt = rb / sqrt(q);
+
+  if((ff != 1) || (papa != pa)){
+    ff = 1;
+    papa = pa;
+    si = sin((-1.0) * (pa - 90.0) * M_PI / 180.0);
+    co = cos((-1.0) * (pa - 90.0) * M_PI / 180.0);
+  }
+
+  dx = (tx - tx0) / tt;
+  dy = (ty - ty0) / tt;
+
+  ddx = co * dx - si * dy;
+  ddy = si * dx + co * dy;
+
+  alpha_ahern_dl(ddx, ddy, q, &aax, &aay);
+
+  *ax = bb * (aax * co + aay * si) * tt;
+  *ay = bb * (aax * (-1.0) * si + aay * co) * tt;
+  
+  if(alponly != 1){
+    ddphi_ahern_dl(ddx, ddy, q, &pxx, &pxy, &pyy);
+
+    rpxx = co * co * pxx + 2.0 * co * si * pxy + si * si * pyy;
+    rpyy = si * si * pxx - 2.0 * co * si * pxy + co * co * pyy;
+    rpxy = si * co * (pyy - pxx) + (co * co - si * si) * pxy;
+
+    *kap = 0.5 * bb * (rpxx + rpyy);
+    *gam1 = 0.5 * bb * (rpxx - rpyy);
+    *gam2 = bb * rpxy;
+
+    if(alponly < 0){
+      *phi = bb * phi_ahern_dl(ddx, ddy, q) * tt * tt;
+    }
   }
 
   return;

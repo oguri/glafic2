@@ -208,12 +208,12 @@ void ext_set_image(int isrc, int flag_source, int verb)
 	    pyy = 0.0;
 	  }
 	  array_ext_img[k + ii * nn] = (float)sourcemodel(sx, sy, ii, pxx, pxy, pyx, pyy, pix_psf);
-	  if(flag_seeing!=0){
+	  if(flag_seeing != 0){
 	    array_ext_img_ori[k + ii * nn] = array_ext_img[k + ii * nn];
 	    array_ext_img[k + ii * nn] = 0.0;
 	  }
 	} else {
-	  if(flag_seeing!= 0){
+	  if(flag_seeing != 0){
 	    array_ext_img_ori[k + ii * nn] = 0.0;
 	  }
 	}
@@ -221,7 +221,7 @@ void ext_set_image(int isrc, int flag_source, int verb)
     }
   }
 
-  if(flag_seeing!=0){
+  if(flag_seeing != 0){
 
     if(seeing_sub <= 0) terminator("invalid parameter");
 

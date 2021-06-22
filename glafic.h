@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.0.0"
-#define RELEASE_DATE "2021.5.19"
+#define VERSION "2.1.0"
+#define RELEASE_DATE "2021.6.22"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -395,6 +395,7 @@
 #define DEF_COMMAND_MCMC 10000
 #define DEF_COMMAND_RESET_I 1
 #define DEF_COMMAND_RESET_J 1
+#define DEF_COMMAND_RESET_K 1
 #define DEF_COMMAND_RESET_P 1.0
 #define DEF_COMMAND_RESET_F 0
 
@@ -416,6 +417,20 @@
 /*--------------------------------------------------------------
   glafic.c
 */
+
+/*--------------------------------------------------------------
+  app_ell.c
+*/
+
+double phi_anfw_dl(double x, double y, double q);
+void ddphi_anfw_dl(double x, double y, double q, double *pxx, double *pxy, double *pyy);
+void alpha_anfw_dl(double x, double y, double q, double *ax, double *ay);
+double phi_ahern_dl(double x, double y, double q);
+void ddphi_ahern_dl(double x, double y, double q, double *pxx, double *pxy, double *pyy);
+void alpha_ahern_dl(double x, double y, double q, double *ax, double *ay);
+double phi_cse_dl(double x, double y, double s, double q);
+void ddphi_cse_dl(double x, double y, double s, double q, double *pxx, double *pxy, double *pyy);
+void alpha_cse_dl(double x, double y, double s, double q, double *ax, double *ay);
 
 /*--------------------------------------------------------------
   amoeba_opt.c
@@ -513,6 +528,7 @@ void glafic_mapprior(char *fname, int verb);
 
 void glafic_optimize(int verb);
 double glafic_c2calc(void);
+void glafic_reset_obs_point(int i, int j, int k, double p);
 
 /*--------------------------------------------------------------
   commands.c
@@ -667,6 +683,7 @@ void readgals(void);
 void readsrcs(void);
 void unset_srcs(void);
 void readobs_point(char *infile, int verb);
+void reset_obs_point(int i, int j, int k, double p);
 
 /*--------------------------------------------------------------
   mass.c
@@ -717,17 +734,7 @@ double b_func(double m, double c);
 double hnfw(double c);
 
 void kapgam_nfw(double tx, double ty, double tx0, double ty0, double m, double c, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
-
-void kapgam_hernpot(double tx, double ty, double tx0, double ty0, double m, double rb, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
-double b_func_hern(double m, double rb);
-double ddphi_hern_dl(double x);
-double kappa_hern_dl(double x);
-double dkappa_hern_dl(double x);
-double dphi_hern_dl(double x);
-double phi_hern_dl(double x);
-double func_hern_dl(double x);
-
-void kapgam_hern(double tx, double ty, double tx0, double ty0, double m, double rb, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+void kapgam_anfw(double tx, double ty, double tx0, double ty0, double m, double c, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 
 void kapgam_gnfwpot(double tx, double ty, double tx0, double ty0, double m, double c, double alpha, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 void calc_bbtt_gnfw(double m, double c, double alpha, double *bb, double *tt);
@@ -747,6 +754,18 @@ double hgnfw_funcln(double lx);
 double b_func_gnfw(double m, double c, double alpha);
 
 void kapgam_gnfw(double tx, double ty, double tx0, double ty0, double m, double c, double alpha, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+
+void kapgam_hernpot(double tx, double ty, double tx0, double ty0, double m, double rb, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+double b_func_hern(double m, double rb);
+double ddphi_hern_dl(double x);
+double kappa_hern_dl(double x);
+double dkappa_hern_dl(double x);
+double dphi_hern_dl(double x);
+double phi_hern_dl(double x);
+double func_hern_dl(double x);
+
+void kapgam_hern(double tx, double ty, double tx0, double ty0, double m, double rb, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+void kapgam_ahern(double tx, double ty, double tx0, double ty0, double m, double rb, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 
 void kapgam_powpot(double tx, double ty, double tx0, double ty0, double zs_fid, double re, double gam, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 double ddphi_pow_dl(double x);

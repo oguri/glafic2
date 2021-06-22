@@ -525,3 +525,9 @@ double glafic_c2calc(void)
   return chi2calc_nopar();
 }
 
+void glafic_reset_obs_point(int i, int j, int k, double p)
+{
+  reset_obs_point(i, j, k, p);
+
+  return;
+}

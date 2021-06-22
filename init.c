@@ -547,7 +547,7 @@ void setopt_psf(char *buffer)
 
 void def_parameters(void)
 {
-  int i, j;
+  int i, j, k;
 
   omega = DEF_OMEGA;
   lambda = DEF_LAMBDA;
@@ -769,6 +769,16 @@ void def_parameters(void)
   hubble_min = INIT_HMIN;
   hubble_max = INIT_HMAX;
 
+  for(i=0;i<NMAX_POI;i++){
+    obs_numimg[i] = 0;
+    for(j=0;j<NMAX_POIMG;j++){
+      obs_parity[i][j] = 0;
+      for(k=0;k<NPAR_READOBS;k++){
+	tab_obs[i][j][k] = 0.0;
+      }
+    }
+  } 
+    
   return;
 }
 
@@ -1372,7 +1382,20 @@ void readobs_point(char *infile, int verb)
   fclose(fptr);
 
   return;
+}
 
+void reset_obs_point(int i, int j, int k, double p)
+{
+  if((i > num_poi) || (i <= 0)  || (j > obs_numimg[i - 1]) || (j <= 0) || (k > (NPAR_READOBS + 1)) || (k <= 0))
+    terminator("id irrelevant (reset_obs_point)"); 
+
+  if(k == (NPAR_READOBS + 1)){
+    obs_parity[i - 1][j - 1] = (int)p;
+  } else {
+    tab_obs[i - 1][j - 1][k - 1] = p;
+  }
+  
+  return;
 }
 
 #undef PAREADXE

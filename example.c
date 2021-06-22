@@ -59,7 +59,7 @@ void example_infile(void)
   printf("\n");
   printf("## define lenses and sources\n");
   printf("startup 2 2 1\n");
-  printf("lens nfwpot 0.3 7.2e14 0.0 0.0 0.3 -45.0 6.0  0.0\n");
+  printf("lens anfw   0.3 7.2e14 0.0 0.0 0.5 -45.0 6.0  0.0\n");
   printf("lens sie    0.5 300.0  2.0 2.0 0.2 -20.0 0.02 0.0\n");
   printf("extend sersic 1.5 150.0 -1.0 -1.5 0.3 90.0 0.8 1.0\n");
   printf("extend gauss  2.0 150.0  1.2  1.0 0.2 10.0 0.6 0.0\n");

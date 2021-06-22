@@ -149,6 +149,14 @@ double calcein_i(int i)
   case 21:
     ein = calcein_ein(i);
     break;
+
+  case 22:
+    ein = calcein_nfw(i);
+    break;
+
+  case 23:
+    ein = calcein_hern(i);
+    break;
   }
 
   return ein;
@@ -774,6 +782,17 @@ void calcmr_i(int i, double *mtot, double *mdel, double *rdel)
     *rdel = CALCEIN_NAN;
     break;
     
+  case 22:
+    *mtot = CALCEIN_NAN;
+    *mdel = para_lens[i][1];
+    *rdel = rs(para_lens[i][1], 1.0);
+    break;
+
+  case 23:
+    *mtot = para_lens[i][1];
+    *mdel = CALCEIN_NAN;
+    *rdel = CALCEIN_NAN;
+    break;
   }
 
   return;

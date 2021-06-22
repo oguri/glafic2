@@ -590,6 +590,19 @@ PyObject* python_c2calc(PyObject* self, PyObject* args)
   return Py_BuildValue("d", c2);
 }
 
+PyObject* python_reset_obs_point(PyObject* self, PyObject* args)
+{
+  int i, j, k;
+  double p;
+  
+  if(!PyArg_ParseTuple(args, "iiid", &i, &j, &k, &p))
+    return NULL;
+
+  glafic_reset_obs_point(i, j, k, p);
+
+  return Py_BuildValue("");
+}
+
 /*--------------------------------------------------------------
   define methods
 */
@@ -634,6 +647,7 @@ static PyMethodDef methods[] = {
   {"mapprior", (PyCFunction)python_mapprior, METH_VARARGS|METH_KEYWORDS},
   {"optimize", (PyCFunction)python_optimize, METH_VARARGS|METH_KEYWORDS},
   {"c2calc", python_c2calc, METH_VARARGS},
+  {"reset_obs_point", python_reset_obs_point, METH_VARARGS},
   {NULL, NULL, 0, NULL}
 };
 

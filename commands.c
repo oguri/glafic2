@@ -90,7 +90,7 @@ int do_command(char *buffer)
       }
        
       /*------------------------------------
-		extended sources
+	extended sources
       */
       if(strcmp(keyword, "writeimage") == 0){
 	x = DEF_COMMAND_SKY; y = DEF_COMMAND_NOISE;
@@ -135,7 +135,7 @@ int do_command(char *buffer)
        }
       
       /*------------------------------------
-		point sources
+	point sources
       */
       if(strcmp(keyword, "findimg") == 0){
 	i = DEF_COMMAND_I;
@@ -175,7 +175,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-		write both point and extended sources
+	write both point and extended sources
       */
       if(strcmp(keyword, "point_flux") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
@@ -195,7 +195,7 @@ int do_command(char *buffer)
       }
        
       /*------------------------------------
-		mock
+	mock
       */
       if(strcmp(keyword, "mock1") == 0){
 	zs = DEF_COMMAND_ZS;
@@ -261,7 +261,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-		reading (writing) opt-related data
+	reading (writing) opt-related data
       */
       if(strcmp(keyword, "readobs_extend") == 0){
 	i = sscanf(buffer, "%s %s %s", cdummy, fname, fname2);
@@ -301,7 +301,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-		optimizations
+	optimizations
       */
       if(strcmp(keyword, "optpoint") == 0){
 	sscanf(buffer, "%s", cdummy);
@@ -318,11 +318,19 @@ int do_command(char *buffer)
 	f = command_srcflag(keyword);
 	opt_lens(f, 1);
       }
+
+      if(strcmp(keyword, "c2calc") == 0){
+	sscanf(buffer, "%s %s", cdummy, keyword);
+	opt_lens_static(-1);
+	fprintf(stderr, "######## calculating chi^2\n\n");
+	fprintf(stderr, "chi^2 = %e\n", chi2calc_nopar());
+	fprintf(stderr, "\n");
+      }
       
       if(strcmp(keyword, "varyone") == 0){
 	sscanf(buffer, "%s %d %d %lf %lf %d %s", cdummy, &i, &j, &x1, &x2, &n, keyword);
-	 f = command_srcflag(keyword);
-	 varyone(i - 1, j - 1, x1, x2, n, f);
+	f = command_srcflag(keyword);
+	varyone(i - 1, j - 1, x1, x2, n, f);
       }
 
       if(strcmp(keyword, "varytwo") == 0){
@@ -363,7 +371,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-		Markov Chain Monte Carlo
+	Markov Chain Monte Carlo
       */
       if(strcmp(keyword, "mcmc_sigma") == 0){
 	sscanf(buffer, "%s %s", cdummy, fname);
@@ -409,7 +417,7 @@ int do_command(char *buffer)
       }
       
       /*------------------------------------
-		reset parameters
+	reset parameters
       */
       if(strcmp(keyword, "reset_par") == 0){
 	strncpy(cdummy, buffer + 9, strlen(buffer) - 9);
@@ -615,6 +623,15 @@ int do_command(char *buffer)
 	  terminator("invalid input parameter (mv_point)");
       }
 
+      if(strcmp(keyword, "reset_obs_point") == 0){
+	i = DEF_COMMAND_RESET_I; j = DEF_COMMAND_RESET_J;
+	k = DEF_COMMAND_RESET_K; x = DEF_COMMAND_RESET_P;
+	sscanf(buffer, "%s %d %d %d %lf", cdummy, &i, &j, &k, &x);
+	fprintf(stderr, "######## re-setting parameter for readobs_point\n\n");
+	fprintf(stderr, " point id = %d,  image no. = %d,  par no. = %d,  value = %e\n\n", i, j, k, x);
+
+	reset_obs_point(i, j, k, x);
+      }
       /*------------------------------------
         some utils
       */
@@ -677,7 +694,7 @@ int do_command(char *buffer)
       }
 
       /*------------------------------------
-		quit
+	quit
       */
       if(strcmp(keyword, "quit") == 0){
 	r = 1;

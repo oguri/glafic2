@@ -39,7 +39,7 @@ OBJS	= call.o ein_tab.o mass.o util.o fits.o \
 	  init.o distance.o gsl_zbrent.o gsl_integration.o \
 	  source.o extend.o point.o opt_extend.o opt_lens.o \
 	  opt_point.o example.o mock.o calcein.o vary.o \
-	  gnfw_tab.o commands.o mcmc.o amoeba_opt.o 
+	  gnfw_tab.o commands.o mcmc.o amoeba_opt.o app_ell.o
 
 # for C library
 LIB	= libglafic.a

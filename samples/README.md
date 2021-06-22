@@ -26,5 +26,5 @@ Here are a few examples of how the code works. Note that these examples may requ
 8. `multilens_extend.input`  
  Similar to `multilens_point.input`, but fitting of extended sources. The foreground galaxy is also added. 
 
-last modified: 05/19/2021 (based on version 2.0)
+last modified: 06/18/2021 (based on version 2.1)
 

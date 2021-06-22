@@ -4,6 +4,10 @@ glafic is a software for studying gravitational lensing. Use it at your own risk
 
 - [M. Oguri, PASJ, 62, 1017 (2010)](https://ui.adsabs.harvard.edu/abs/2010PASJ...62.1017O/abstract) 
 
+and if `anfw` or `ahern` model is used it would be appropriate to also cite the following paper:
+
+- M. Oguri, submitted
+
 ## Installation
 
 glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/), or can install with homebrew on macOS.
@@ -26,6 +30,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2021.06.22 | 2.1.0   | `anfw` and `ahern` lens models added, `c2calc` and `reset_obs_point` command added |
 | 2021.05.19 | 2.0.0   | first release of version 2 |
 | 2021.05.03 | 2.0b6   | use a fast analytic calculation for `pow` by default |
 | 2021.04.30 | 2.0b5   | `jaffe` extended source model added |

@@ -6,7 +6,7 @@ glafic is a software for studying gravitational lensing. Use it at your own risk
 
 and if `anfw` or `ahern` model is used it would be appropriate to also cite the following paper:
 
-- M. Oguri, submitted
+- [M. Oguri, arXiv:2106.11464](https://arxiv.org/abs/2106.11464) 
 
 ## Installation
 

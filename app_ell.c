@@ -6,7 +6,7 @@
 #include "glafic.h"
 
 /*--------------------------------------------------------------
-  parameters for approx. NFW and Hernquist profiles derived in Oguri (2021)
+  parameters for approx. NFW and Hernquist profiles derived in M. Oguri, arXiv:2106.11464
 */
 
 static int n_cse_nfw = 44;

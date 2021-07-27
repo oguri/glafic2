@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.0"
-#define RELEASE_DATE "2021.6.22"
+#define VERSION "2.1.1"
+#define RELEASE_DATE "2021.7.27"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -857,9 +857,11 @@ double mcmc_calc_par(int i, double x0);
 void mcmc_calc_init(char *infile);
 
 void mcmc_out_kappa_rad(char *infile, double nd, double zs, double x0, double y0, double r1, double r2, int n, int lensid);
+void mcmc_out_kappa_cum(char *infile, double nd, double zs, double x0, double y0, double r1, double r2, int n, int lensid);
 void mcmc_out_ein(char *infile, double nd, double zs, int lensid);
 void mcmc_out_ein2(char *infile, double nd, double zs, double x0, double y0, int lensid);
 void mcmc_out_calcim(char *infile, double nd, double zs, double x0, double y0);
+void mcmc_out_findimg(char *infile, double nd, int pid);
 
 /*--------------------------------------------------------------
   mock.c

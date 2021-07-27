@@ -393,6 +393,15 @@ int do_command(char *buffer)
 	mcmc_out_kappa_rad(fname, j, zs, x, y, r1, r2, n, i);
       }
 
+      if(strcmp(keyword, "mcmc_kapcum") == 0){
+	zs = DEF_COMMAND_ZS;
+	x = DEF_COMMAND_XY; y = DEF_COMMAND_XY;
+	r1 = DEF_COMMAND_R1; r2 = DEF_COMMAND_R2; n = DEF_COMMAND_N;
+	i = DEF_COMMAND_I;
+	sscanf(buffer, "%s %s %d %lf %lf %lf %lf %lf %d %d", cdummy, fname, &j, &zs, &x, &y, &r1, &r2, &n, &i);
+	mcmc_out_kappa_cum(fname, j, zs, x, y, r1, r2, n, i);
+      }
+
       if(strcmp(keyword, "mcmc_ein") == 0){
 	zs = DEF_COMMAND_ZS;
 	i = DEF_COMMAND_I;
@@ -410,10 +419,15 @@ int do_command(char *buffer)
       
       if(strcmp(keyword, "mcmc_calcim") == 0){
 	zs = DEF_COMMAND_ZS;
-	i = DEF_COMMAND_I;
 	x = DEF_COMMAND_XY; y = DEF_COMMAND_XY; 
 	sscanf(buffer, "%s %s %d %lf %lf %lf", cdummy, fname, &j, &zs, &x, &y);
 	mcmc_out_calcim(fname, j, zs, x, y);
+      }
+      
+      if(strcmp(keyword, "mcmc_findimg") == 0){
+	i = DEF_COMMAND_I;
+	sscanf(buffer, "%s %s %d %d", cdummy, fname, &j, &i);
+	mcmc_out_findimg(fname, j, i);
       }
       
       /*------------------------------------

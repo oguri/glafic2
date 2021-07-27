@@ -289,6 +289,76 @@ void mcmc_out_kappa_rad(char *infile, double nd, double zs, double x0, double y0
   fclose(fptr_r);
   fclose(fptr);
 
+  return;
+}
+
+void mcmc_out_kappa_cum(char *infile, double nd, double zs, double x0, double y0, double r1, double r2, int n, int lensid)
+{
+  int i, f, nn, ndim, flag;
+  double c2;
+  double kapbin[NMAX_KAPBIN + 1], rbin[NMAX_KAPBIN + 1];
+  double par[NDIMMAX + 1];
+  char fname[INPUT_MAXCHAR];
+  char keyword[INPUT_MAXCHAR];
+  FILE* fptr_r;
+  FILE* fptr;
+
+  fprintf(stderr, "######## kappa cumulative profiles from mcmc chain\n");
+  fprintf(stderr, " zs = %e,  lens id = %d,  step = %d\n", zs, lensid, n);
+  fprintf(stderr, " center = (%e, %e), range = [%e, %e]\n\n", x0, y0, r1, r2);
+  sprintf(fname, "%s_mcmc_kapcum.dat", file_prefix);
+  fprintf(stderr, " input file name  = %s\n", infile);
+  fprintf(stderr, " outfut file name = %s\n\n", fname);
+
+  if(n < 0){ nn = n * (-1); } else { nn = n; }
+
+  ndim = opt_lens_calcndim();
+
+  if(nd != ndim) terminator("invalid number of MCMC parameters");
+
+  fptr_r = fopen(infile, "r");
+  fptr = fopen(fname, "w");
+  if((fptr_r == NULL) || (fptr == NULL)) terminator("failed at fopen (mcmc_kapcum)");
+
+  flag = 0;
+  /* check file type */
+  fscanf(fptr_r, "%s ", keyword);
+  if(strcmp(keyword, "accept") == 0){ flag = 1;
+  } else if(strcmp(keyword, "reject") == 0){ flag = -1;
+  } else { rewind(fptr_r); }
+
+  f = 0;
+  while(fscanf(fptr_r, "%lf ", &c2) != EOF){
+    for(i=1;i<=nd;i++){
+      fscanf(fptr_r, "%lf ", &par[i]);
+    }
+    if(flag >= 0){
+      partopara(par);
+
+      kappa_cum(zs, x0, y0, r1, r2, n, lensid, kapbin, rbin, 0);
+      if(f == 0){
+	f = 1;
+	fprintf(fptr, "# zs = %e,  x0 = %e,  y0 = %e,  id = %d \n# r = ", zs, x0, y0, lensid);
+	for(i=0;i<=nn;i++) fprintf(fptr, "%e ", rbin[i]);
+	fprintf(fptr, "\n");
+      }
+      
+      fprintf(fptr, "%e ", c2);
+      for(i=0;i<=nn;i++) fprintf(fptr, "%e ", kapbin[i]);
+      fprintf(fptr, "\n");
+      fflush(fptr);
+    }
+    if(flag != 0){
+      fscanf(fptr_r, "%s ", keyword);
+      if(strcmp(keyword, "accept") == 0){ flag = 1;
+      } else if(strcmp(keyword, "reject") == 0){ flag = -1; } 
+    }
+  }
+
+  fclose(fptr_r);
+  fclose(fptr);
+
+  return;
 }
 
 void mcmc_out_ein(char *infile, double nd, double zs, int lensid)
@@ -354,6 +424,7 @@ void mcmc_out_ein(char *infile, double nd, double zs, int lensid)
   fclose(fptr_r);
   fclose(fptr);
 
+  return;
 }
 
 void mcmc_out_ein2(char *infile, double nd, double zs, double x0, double y0, int lensid)
@@ -413,6 +484,7 @@ void mcmc_out_ein2(char *infile, double nd, double zs, double x0, double y0, int
   fclose(fptr_r);
   fclose(fptr);
 
+  return;
 }
 
 void mcmc_out_calcim(char *infile, double nd, double zs, double x0, double y0)
@@ -473,4 +545,81 @@ void mcmc_out_calcim(char *infile, double nd, double zs, double x0, double y0)
   fclose(fptr_r);
   fclose(fptr);
  
+  return;
+}
+
+void mcmc_out_findimg(char *infile, double nd, int pid)
+{
+  int i, ndim, flag, ni;
+  double c2, zs, xs, ys;
+  double par[NDIMMAX + 1];
+  char fname[INPUT_MAXCHAR];
+  char keyword[INPUT_MAXCHAR];
+  double rr[NMAX_POIMG][NPAR_IMAGE];
+  double c2min[NMAX_POI][NPAR_CHI2];
+  FILE* fptr_r;
+  FILE* fptr;
+
+  fprintf(stderr, "######## finding images for point %d from mcmc chain\n", pid);
+  sprintf(fname, "%s_mcmc_findimg.dat", file_prefix);
+  fprintf(stderr, " input file name  = %s\n", infile);
+  fprintf(stderr, " outfut file name = %s\n\n", fname);
+
+  if((pid <= 0) || (pid > num_poi)) terminator("invalid input parameter (mcmc_findimg)");
+
+  ndim = opt_lens_calcndim();
+
+  if(nd != ndim) terminator("invalid number of MCMC parameters");
+
+  fptr_r = fopen(infile, "r");
+  fptr = fopen(fname, "w");
+  if((fptr_r == NULL) || (fptr == NULL)) terminator("failed at fopen (mcmc_findimg)");
+
+  flag = 0;
+  /* check file type */
+  fscanf(fptr_r, "%s ", keyword);
+  if(strcmp(keyword, "accept") == 0){ flag = 1;
+  } else if(strcmp(keyword, "reject") == 0){ flag = -1;
+  } else { rewind(fptr_r); }
+
+  fprintf(fptr, "# point id = %d\n", pid);
+  while(fscanf(fptr_r, "%lf ", &c2) != EOF){
+    for(i=1;i<=nd;i++){
+      fscanf(fptr_r, "%lf ", &par[i]);
+    }
+    if(flag >= 0){
+      partopara(par);
+
+      chi2calc_opt_point(c2min, 0);
+      zs = para_poi[pid - 1][0];
+      xs = para_poi[pid - 1][1];
+      ys = para_poi[pid - 1][2];
+      
+      findimg(xs, ys, zs, &ni, rr, 0);
+      
+      if(outformat_exp == 0){
+	fprintf(fptr, "%d %8.4f %9.4f %9.4f\n", ni, zs, xs, ys);
+      } else{
+	fprintf(fptr, "%d %13e %13e %13e\n", ni, zs, xs, ys);
+      }
+      for(i=0;i<ni;i++){
+	if(outformat_exp == 0){
+	  fprintf(fptr, "%9.4f %9.4f %9.4f %9.3f\n", rr[i][0], rr[i][1], rr[i][2], rr[i][3]);
+	} else {
+	  fprintf(fptr, "%13e %13e %13e %13e\n", rr[i][0], rr[i][1], rr[i][2], rr[i][3]);
+	}
+      }
+      fflush(fptr);
+    }
+     if(flag != 0){
+      fscanf(fptr_r, "%s ", keyword);
+      if(strcmp(keyword, "accept") == 0){ flag = 1;
+      } else if(strcmp(keyword, "reject") == 0){ flag = -1; } 
+    }
+  }   
+   
+  fclose(fptr_r);
+  fclose(fptr);
+
+  return;
 }

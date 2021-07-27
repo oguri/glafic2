@@ -30,6 +30,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2021.07.27 | 2.1.1   | `mcmc_kapcum` and `mcmc_findimg` command added |
 | 2021.06.22 | 2.1.0   | `anfw` and `ahern` lens models added, `c2calc` and `reset_obs_point` command added |
 | 2021.05.19 | 2.0.0   | first release of version 2 |
 | 2021.05.03 | 2.0b6   | use a fast analytic calculation for `pow` by default |

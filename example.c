@@ -35,6 +35,7 @@ void example_infile(void)
   printf("#ein_usetab     %d\n", DEF_EIN_USETAB);
   printf("#nfw_users      %d\n", DEF_NFW_USERS);
   printf("#flag_extnorm   %d\n", DEF_FLAG_EXTNORM);
+  printf("#flatfix        %d\n", DEF_FLATFIX);
   printf("#chi2_checknimg %d\n", DEF_CHI2_CHECKNIMG);
   printf("#chi2_splane    %d\n", DEF_CHI2_POINT_SPLANE);
   printf("#chi2_usemag    %d\n", DEF_CHI2_USEMAG);

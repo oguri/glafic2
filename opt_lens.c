@@ -343,8 +343,8 @@ void partopara(double par[NDIMMAX + 1])
       }
     }
   }
-  if(ovary != 0){ k++; omega = par[k];  }
-  if(lvary != 0){ k++; lambda = par[k]; }
+  if(ovary != 0){ k++; omega = par[k];  if(flatfix != 0 ){ lambda = 1.0 - omega; } }
+  if(lvary != 0){ k++; lambda = par[k]; if(flatfix != 0 ){ omega = 1.0 - lambda; } }
   if(wvary != 0){ k++; weos = par[k];   }
   if(hvary != 0){ k++; hubble = par[k]; }
   

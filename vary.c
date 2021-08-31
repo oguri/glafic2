@@ -370,8 +370,10 @@ void varycosmo(char *keyword, double pmin, double pmax, int n, int flag)
 
     if(strcmp(keyword, "omega") == 0){
       omega = p;
+      if(flatfix != 0 ){ lambda = 1.0 - omega; }
     } else if(strcmp(keyword, "lambda") == 0){
       lambda = p;
+      if(flatfix != 0 ){ omega = 1.0 - lambda; }
     } else if(strcmp(keyword, "weos") == 0){
       weos = p;
     } else if(strcmp(keyword, "hubble") == 0){
@@ -526,10 +528,20 @@ void randomize(int verb)
     }
   }
 
-  if(ovary != 0){ omega = omega_min + gsl_rng_uniform(ran_gsl) * (omega_max - omega_min);  }
-  if(lvary != 0){ lambda = lambda_min + gsl_rng_uniform(ran_gsl) * (lambda_max - lambda_min); }
-  if(wvary != 0){ weos = weos_min + gsl_rng_uniform(ran_gsl) * (weos_max - weos_min);   }
-  if(hvary != 0){ hubble = hubble_min + gsl_rng_uniform(ran_gsl) * (hubble_max - hubble_min); }
+  if(ovary != 0){
+    omega = omega_min + gsl_rng_uniform(ran_gsl) * (omega_max - omega_min);
+    if(flatfix != 0 ){ lambda = 1.0 - omega; }
+  }
+  if(lvary != 0){
+    lambda = lambda_min + gsl_rng_uniform(ran_gsl) * (lambda_max - lambda_min);
+    if(flatfix != 0 ){ omega = 1.0 - lambda; }
+  }
+  if(wvary != 0){
+    weos = weos_min + gsl_rng_uniform(ran_gsl) * (weos_max - weos_min);
+  }
+  if(hvary != 0){
+    hubble = hubble_min + gsl_rng_uniform(ran_gsl) * (hubble_max - hubble_min);
+  }
 
   nn = 0;
   for(i=0;i<num_ext;i++){

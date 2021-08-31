@@ -6,7 +6,7 @@ glafic is a software for studying gravitational lensing. Use it at your own risk
 
 and if `anfw` or `ahern` model is used it would be appropriate to also cite the following paper:
 
-- [M. Oguri, arXiv:2106.11464](https://arxiv.org/abs/2106.11464) 
+- [M. Oguri, PASP, 133, 074504 (2021)](https://ui.adsabs.harvard.edu/abs/2021PASP..133g4504O/abstract) 
 
 ## Installation
 
@@ -30,6 +30,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2021.08.31 | 2.1.2   | `flatfix` added, bug fix |
 | 2021.07.27 | 2.1.1   | `mcmc_kapcum` and `mcmc_findimg` command added |
 | 2021.06.22 | 2.1.0   | `anfw` and `ahern` lens models added, `c2calc` and `reset_obs_point` command added |
 | 2021.05.19 | 2.0.0   | first release of version 2 |

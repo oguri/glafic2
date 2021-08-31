@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.1"
-#define RELEASE_DATE "2021.7.27"
+#define VERSION "2.1.2"
+#define RELEASE_DATE "2021.8.31"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -72,6 +72,8 @@
 #define DEF_IMAG_CEIL 1.0e-10
 /* small core at the center of each lens, to avoid divergence */
 #define DEF_SMALLCORE 1.0e-10
+/* whether to fix to the flat Universe */
+#define DEF_FLATFIX 0
 
 /* parameters for amoeba */
 
@@ -1041,6 +1043,7 @@ GLOBAL double omedian, lmedian, wmedian, hmedian;
 GLOBAL double o_error, l_error, w_error, h_error;
 GLOBAL double omega_min, lambda_min, weos_min, hubble_min;
 GLOBAL double omega_max, lambda_max, weos_max, hubble_max;
+GLOBAL int flatfix;
 
 GLOBAL double xmin, xmax, ymin, ymax;
 GLOBAL double pix_ext;

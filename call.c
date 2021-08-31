@@ -112,6 +112,7 @@ void glafic_set_lens(int id, char *model, double p1, double p2, double p3, doubl
     terminator("id out of range (glafic_set_lens)");
 
   model_lens[id - 1] = lmodeltoint(model);
+  if((strcmp(model, "gals") == 0) && (num_gal == 0)) readgals(); 
   
   para_lens[id - 1][0] = p1;
   para_lens[id - 1][1] = p2;
@@ -121,7 +122,7 @@ void glafic_set_lens(int id, char *model, double p1, double p2, double p3, doubl
   para_lens[id - 1][5] = p6;
   para_lens[id - 1][6] = p7;
   para_lens[id - 1][7] = p8;
-  
+
   return;
 }
 
@@ -131,6 +132,7 @@ void glafic_set_extend(int id, char *model, double p1, double p2, double p3, dou
     terminator("id out of range (glafic_set_extend)");
 
   model_ext[id - 1] = emodeltoint(model);
+  if((strcmp(model, "srcs") == 0) && (num_src == 0)) readsrcs(); 
   
   para_ext[id - 1][0] = p1;
   para_ext[id - 1][1] = p2;

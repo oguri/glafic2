@@ -8,7 +8,7 @@ ifeq ($(UNAME_S),Darwin)
 		INCPATH = /usr/local/include
 		PY_LIBS = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
 	else
-		CFLAGS2 = -lcurl
+		CFLAGS2 = -lcurl -lz
 		LIBPATH = /opt/homebrew/lib
 		INCPATH = /opt/homebrew/include
 		PY_LIBS = -lm -lcfitsio -lfftw3 -lgsl -lgslcblas
@@ -49,7 +49,7 @@ AFLAGS	= r
 # for python interface
 PY	= glafic.so
 OBJ_PY	= python.o
-CFLAGS3	= -Wall -shared 
+CFLAGS3	= -Wall -shared -L$(LIBPATH) 
 PY_INC  := $(shell python3-config --includes)
 PY_LDS  := $(shell python3-config --ldflags --embed)
 

@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.2"
-#define RELEASE_DATE "2021.8.31"
+#define VERSION "2.1.3"
+#define RELEASE_DATE "2022.5.5"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -483,6 +483,7 @@ void calcmr_i(int i, double *mtot, double *mdel, double *rdel);
   call.c 
 */
 
+void glafic_init_file(char *infile, int verb);
 void glafic_init(double in_omega, double in_lambda, double in_weos, double in_hubble, char *in_file_prefix, double in_xmin, double in_ymin, double in_xmax, double in_ymax, double in_pix_ext, double in_pix_poi, int in_maxlev, int in_ran_seed, int verb);
 void glafic_set_primary(double in_omega, double in_lambda, double in_weos, double in_hubble, char *in_file_prefix, double in_xmin, double in_ymin, double in_xmax, double in_ymax, double in_pix_ext, double in_pix_poi, int in_maxlev, int verb);
 void glafic_set_cosmo(double in_omega, double in_lambda, double in_weos, double in_hubble);
@@ -657,18 +658,18 @@ double gsl_zbrent(double (*func)(double), double x_lo, double x_hi, double tol);
   init.c
 */
 
-void init_para(char *infile);
+void init_para(char *infile, int verb);
 void set_npix(void);
 void init_para_body(char *keyword, char *buffer, int verb);
-void init_para2(char *infile);
+void init_para2(char *infile, int verb);
 void init_para2_body(char *keyword, char *buffer, int verb);
-void startup(char *infile);
+void startup(char *infile, int verb);
 void startup_lens(char *buffer, int n1);
 void startup_extend(char *buffer, int n2);
 void startup_point(char *buffer, int n3);
 void startup_psf(char *buffer);
 void gen_lensplane(int verb);
-void setopt(char *infile);
+void setopt(char *infile, int verb);
 void setopt_lens(char *buffer, int n1);
 void setopt_extend(char *buffer, int n2);
 void setopt_point(char *buffer, int n3);

@@ -30,6 +30,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2022.05.05 | 2.1.3   | `init_file` added for the python interface |
 | 2021.08.31 | 2.1.2   | `flatfix` added, bug fix |
 | 2021.07.27 | 2.1.1   | `mcmc_kapcum` and `mcmc_findimg` command added |
 | 2021.06.22 | 2.1.0   | `anfw` and `ahern` lens models added, `c2calc` and `reset_obs_point` command added |

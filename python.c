@@ -31,6 +31,20 @@ PyObject* python_init(PyObject* self, PyObject* args, PyObject* kwds)
   return Py_BuildValue("");
 }
 
+PyObject* python_init_file(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"fname", "verb", NULL};
+  int verb = 0;
+  char *fname;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", argnames, &fname, &verb))
+    return NULL;
+
+  glafic_init_file(fname, verb);
+
+  return Py_BuildValue("");
+}
+
 PyObject* python_set_primary(PyObject* self, PyObject* args, PyObject* kwds)
 {
   static char* argnames[] = {"omgea", "lambda", "weos", "hubble", "prefix", "xmin", "ymin", "xmax", "ymax", "pix_ext", "pix_poi", "maxlev", "verb", NULL};
@@ -609,6 +623,7 @@ PyObject* python_reset_obs_point(PyObject* self, PyObject* args)
 
 static PyMethodDef methods[] = {
   {"init", (PyCFunction)python_init, METH_VARARGS|METH_KEYWORDS},
+  {"init_file", (PyCFunction)python_init_file, METH_VARARGS|METH_KEYWORDS},
   {"set_primary", (PyCFunction)python_set_primary, METH_VARARGS|METH_KEYWORDS},
   {"set_cosmo", python_set_cosmo, METH_VARARGS},
   {"quit", python_quit, METH_VARARGS},

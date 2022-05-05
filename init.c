@@ -21,7 +21,7 @@ static int order_opt[NMAX_LEN + NMAX_EXT + NMAX_POI + 1];
   read input file
 */
 
-void init_para(char *infile)
+void init_para(char *infile, int verb)
 {
   char buffer[INPUT_MAXCHAR];
   char keyword[INPUT_MAXCHAR];
@@ -52,7 +52,7 @@ void init_para(char *infile)
   fclose(fptr);
   
   set_npix();
-  out_para();
+  if(verb == 1) out_para();
   
   return;
 }
@@ -103,7 +103,7 @@ void init_para_body(char *keyword, char *buffer, int verb)
   return;
 }
 
-void init_para2(char *infile)
+void init_para2(char *infile, int verb)
 {
   char buffer[INPUT_MAXCHAR];
   char keyword[INPUT_MAXCHAR];
@@ -113,14 +113,14 @@ void init_para2(char *infile)
 
   if(fptr == NULL) terminator("failed at fopen (input file)");
   
-  fprintf(stderr, "\n");
+  if(verb == 1) fprintf(stderr, "\n");
 
   while(fgets(buffer, INPUT_MAXCHAR, fptr)){
     if(sscanf(buffer, "%s", keyword) != EOF){
       if(keyword[0] != '#'){
 	
 	/* secondary parameters */
-	init_para2_body(keyword, buffer, 1);
+	init_para2_body(keyword, buffer, verb);
 
 	/* end of parameter setting */
 	if(strcmp(keyword, "startup") == 0) break;
@@ -225,7 +225,7 @@ void init_para2_body(char *keyword, char *buffer, int verb)
   startup
 */
 
-void startup(char *infile)
+void startup(char *infile, int verb)
 {
   int n0, n1, n2, n3, n4;
   char buffer[INPUT_MAXCHAR];
@@ -233,7 +233,7 @@ void startup(char *infile)
   char cdummy[INPUT_MAXCHAR];
   FILE* fptr;
 
-  fprintf(stderr, "\n######## startup");
+  if(verb == 1) fprintf(stderr, "\n######## startup");
 
   fptr = fopen(infile, "r");
 
@@ -304,7 +304,7 @@ void startup(char *infile)
 
   fclose(fptr);
 
-  dump_model(stderr);
+  if(verb == 1) dump_model(stderr);
 
   return;
 }
@@ -419,7 +419,7 @@ void gen_lensplane(int verb)
   setopt
 */
 
-void setopt(char *infile)
+void setopt(char *infile, int verb)
 {
   int i, j, n0, n1, n2, n3, n4;
   char buffer[INPUT_MAXCHAR];
@@ -497,7 +497,7 @@ void setopt(char *infile)
 
   fclose(fptr);
 
-  dump_opt_flag(stderr);
+  if(verb == 1) dump_opt_flag(stderr);
 
   return;
 }

@@ -32,6 +32,28 @@ void glafic_init(double in_omega, double in_lambda, double in_weos, double in_hu
   return;
 }
 
+void glafic_init_file(char *infile, int verb)
+{
+  init_flags();
+
+  /* read parameters */
+  init_para(infile, verb);
+  init_para2(infile, verb);
+  /* startup */
+  startup(infile, verb);
+  /* set para for opt */
+  setopt(infile, verb);
+  /* prepare lens planes */
+  gen_lensplane(verb);
+  
+  ran_gsl = gsl_rng_alloc(gsl_rng_default);
+  gsl_rng_set(ran_gsl, ran_seed);
+
+  set_distance_lpl_init();
+
+  return;
+}
+
 void glafic_set_primary(double in_omega, double in_lambda, double in_weos, double in_hubble, char *in_file_prefix, double in_xmin, double in_ymin, double in_xmax, double in_ymax, double in_pix_ext, double in_pix_poi, int in_maxlev, int verb)
 {
   sprintf(file_prefix, "%s", in_file_prefix);

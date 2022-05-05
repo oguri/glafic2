@@ -33,12 +33,12 @@ int main(int argc, char **argv)
   fname_input = argv[1];
   
   /* read parameters */
-  init_para(argv[1]);
-  init_para2(argv[1]);
+  init_para(argv[1], 1);
+  init_para2(argv[1], 1);
   /* startup */
-  startup(argv[1]);
+  startup(argv[1], 1);
   /* set para for opt */
-  setopt(argv[1]);
+  setopt(argv[1], 1);
   /* prepare lens planes */
   gen_lensplane(1);
   

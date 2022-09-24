@@ -20,7 +20,19 @@ Because of new implementation of multiple lens plane gravitational lensing, inpu
 
 * In version 2 routines from Numerical Recipes are no longer used in order to make the source code publicly available. Several routines such as numerical integrations, random number generation, optimizations, and interpolations, are changed from version 1 to version 2. In addition, some constants such as speed of light are also updated to include more digits. Because of these changes, output values can be slightly different between version 1 and 2, even for the exactly same input parameters. The differences should be small enough in most cases though.
 
-* Python interface is added such that some glafic routines can be called from python. The module `glafic.so` is created by running `make all`. Some examples can be found in `test_python` directory. 
+* Python interface is added such that some glafic routines can be called from python (see below).
+
+## Python interface
+
+glafic can be run with python. Some examples can be found in `test_python` directory. To run glafic on python, please first try
+```
+make python
+```
+in your python environment to see if a library file is successfully created as `python/glafic/glafic.so`. Then you can run
+```
+pip install .
+```
+in the home directry where `setup.py` is located to install glafic. Once glafic is installed, you can use glafic in your python scripts simply by importing the module as `import glafic`. 
 
 ## Feedback
 

@@ -47,7 +47,7 @@ AR	= ar
 AFLAGS	= r
 
 # for python interface
-PY	= glafic.so
+PY	= python/glafic/glafic.so
 OBJ_PY	= python.o
 CFLAGS3	= -Wall -shared -L$(LIBPATH) 
 PY_INC  := $(shell python3-config --includes)
@@ -64,7 +64,7 @@ lib: $(OBJS)
 	$(AR) $(AFLAGS) $(LIB) $(OBJS) 
 
 python: $(OBJ_PY) $(OBJS)
-	$(CC) $(CFLAGS3) -o $(PY) $(OBJ_PY) $(OBJS) $(PY_LDS) $(PY_LIBS) 
+	$(CC) $(CFLAGS3) -o $(PY) $(OBJ_PY) $(OBJS) $(PY_LDS) $(PY_LIBS)
 
 python.o:python.c glafic.h 
 	$(CC) $(CFLAGS) $(PY_INC) -c $< -o $@

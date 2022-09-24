@@ -10,7 +10,11 @@ and if `anfw` or `ahern` model is used it would be appropriate to also cite the 
 
 ## Installation
 
-glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/), or can install with homebrew on macOS.
+glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have the library and header files in your system. If not, you can download them at [this URL for cfitsio](https://heasarc.gsfc.nasa.gov/fitsio/), [this URL for fftw](http://www.fftw.org/index.html), and [this URL for gsl](https://www.gnu.org/software/gsl/), or can install with homebrew on macOS. After installing those libraries, you can simply run
+```
+make
+```
+to complie glafic and create an executable file. 
 
 ## Updates from version 1
 

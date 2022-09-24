@@ -32,7 +32,7 @@ in your python environment to see if a library file is successfully created as `
 ```
 pip install .
 ```
-in the home directry where `setup.py` is located to install glafic. Once glafic is installed, you can use glafic in your python scripts simply by importing the module as `import glafic`. 
+in the directry where `setup.py` is located to install glafic. Once glafic is installed, you can use glafic in your python scripts simply by importing the module as `import glafic`. 
 
 ## Feedback
 

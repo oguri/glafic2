@@ -14,7 +14,7 @@ glafic requires cfitsio, fftw3, and gsl to compile. Please make sure you have th
 ```
 make
 ```
-to complie glafic and create an executable file. 
+to compile glafic and create an executable file. 
 
 ## Updates from version 1
 
@@ -36,7 +36,7 @@ in your python environment to see if a library file is successfully created as `
 ```
 pip install .
 ```
-in the directry where `setup.py` is located to install glafic. Once glafic is installed, you can use glafic in your python scripts simply by importing the module as `import glafic`. 
+in the directory where `setup.py` is located to install glafic. Once glafic is installed, you can use glafic in your python scripts simply by importing the module as `import glafic`. 
 
 ## Feedback
 
@@ -46,6 +46,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2022.09.26 | 2.1.4   | `crline` lens model added, `flag_outpot` added |
 | 2022.05.05 | 2.1.3   | `init_file` added for the python interface |
 | 2021.08.31 | 2.1.2   | `flatfix` added, bug fix |
 | 2021.07.27 | 2.1.1   | `mcmc_kapcum` and `mcmc_findimg` command added |

@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.3"
-#define RELEASE_DATE "2022.5.5"
+#define VERSION "2.1.4"
+#define RELEASE_DATE "2022.9.26"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -74,6 +74,8 @@
 #define DEF_SMALLCORE 1.0e-10
 /* whether to fix to the flat Universe */
 #define DEF_FLATFIX 0
+/* output lens potential for single lens plane case */
+#define DEF_FLAG_OUTPOT 0
 
 /* parameters for amoeba */
 
@@ -708,6 +710,8 @@ void kapgam_clus3(double tx, double ty, double tx0, double ty0, double zs_fid, d
 void kapgam_mpole(double tx, double ty, double tx0, double ty0, double zs_fid, double g, double tg, double m, double n, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 double fac_pert(double zs_fid);
 
+void kapgam_crline(double tx, double ty, double tx0, double ty0, double zs_fid, double k, double pa, double epsilon, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+
 void kapgam_gals(double tx, double ty, double sig, double a, double alpha, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 
 void kapgam_point(double tx, double ty, double tx0, double ty0, double m, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
@@ -1067,6 +1071,7 @@ GLOBAL int center_ang_step;
 GLOBAL double imag_ceil;
 GLOBAL double smallcore;
 GLOBAL int outformat_exp;
+GLOBAL int flag_outpot;
 
 GLOBAL double tol_amoeba_lens;
 GLOBAL double tol_amoeba;

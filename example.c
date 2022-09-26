@@ -50,6 +50,7 @@ void example_infile(void)
   printf("#flag_srcsbin   %d\n", DEF_FLAG_SRCSBIN);
   printf("#srcsbinsize    %f\n", DEF_SRCSBINSIZE);
   printf("#flag_mcmcall   %d\n", DEF_FLAG_MCMCALL);
+  printf("#flag_outpot    %d\n", DEF_FLAG_OUTPOT);
   printf("#addwcs         %d\n", DEF_FLAG_ADDWCS);
   printf("#wcs_ra0        %f\n", DEF_WCS_RA0);
   printf("#wcs_dec0       %f\n", DEF_WCS_DEC0);

@@ -162,6 +162,7 @@ void init_para2_body(char *keyword, char *buffer, int verb)
   PAREADXE(smallcore, smallcore, verb)
   PAREADXD(outformat_exp, outformat_exp, verb)
   PAREADXD(flatfix, flatfix, verb)
+  PAREADXD(flag_outpot, flag_outpot, verb)
   
   PAREADXE(amoeba_tol1, tol_amoeba_lens, verb)
   PAREADXE(amoeba_tol2, tol_amoeba, verb)
@@ -587,6 +588,7 @@ void def_parameters(void)
   smallcore = DEF_SMALLCORE;
   outformat_exp = DEF_OUTFORMAT_EXP;
   flatfix = DEF_FLATFIX;
+  flag_outpot = DEF_FLAG_OUTPOT;
   
   tol_amoeba_lens = DEF_TOL_AMOEBA_LENS;
   tol_amoeba = DEF_TOL_AMOEBA;

@@ -6,7 +6,7 @@
 
 #include "glafic.h"
 
-#define NM 23
+#define NM 24
 static char lmodelname[NM][10]={
 "gals",     /* 1 */
 "nfwpot",   /* 2 */
@@ -30,7 +30,8 @@ static char lmodelname[NM][10]={
 "einpot",   /* 20 */
 "ein",      /* 21 */
 "anfw",     /* 22 */
-"ahern"     /* 23 */
+"ahern",    /* 23 */
+"crline"    /* 24 */
 };
 
 static double alpha_gnfw_sav, x_gnfw_sav;
@@ -322,6 +323,10 @@ void lensmodel_get_i(int i, double tx, double ty, double *kap, double *gam1, dou
   case 23:
     kapgam_ahern(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
     break;
+
+  case 24:
+    kapgam_crline(tx, ty, cx, cy, para_lens[i][1], para_lens[i][7], para_lens[i][5], para_lens[i][6], kap, gam1, gam2, phi, ax, ay, alponly);
+    break;
   }
 
   return;
@@ -501,6 +506,44 @@ double fac_pert(double zs_fid)
   }
 
   return fac;
+}
+
+/*--------------------------------------------------------------
+  straight critical line
+*/
+
+void kapgam_crline(double tx, double ty, double tx0, double ty0, double zs_fid, double k, double pa, double epsilon, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
+  static int ff;
+  static double papa, si, co;
+  double g, dx, dy;
+  double fac;
+
+  fac = fac_pert(zs_fid);
+
+  if((ff != 1) || (papa != pa)){
+    ff = 1;
+    papa = pa;
+    si = sin((-1.0) * pa * M_PI / 180.0);
+    co = cos((-1.0) * pa * M_PI / 180.0);
+  }
+
+  g = 1.0 - k;
+  
+  dx = (tx - tx0) * co - (ty - ty0) * si;
+  dy = (tx - tx0) * si + (ty - ty0) * co;
+  
+  *ax = fac * (dx * k + dx * g - 0.5 * epsilon * dx * dx);
+  *ay = fac * (dx * k - dy * g);
+
+  if(alponly != 1){
+    *kap = fac * (k - 0.5 * epsilon * dx);
+    *gam1 = fac * (g - 0.5 * epsilon * dx);
+    *gam2 = 0.0;
+    if(alponly < 0) *phi = fac * (0.5 * (dx * dx + dy * dy) * k + 0.5 * (dx * dx - dy * dy) * g - (1.0 / 6.0) * epsilon * dx * dx * dx);
+  }
+
+  return;
 }
 
 /*--------------------------------------------------------------

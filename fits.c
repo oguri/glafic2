@@ -46,7 +46,11 @@ void writelens(double zs)
     lensmodel(tx, ty, pout, -1, 0);
     array[k] = pout[0];
     array[k + nn] = pout[1];
-    array[k + nn * 2] = pout[2];
+    if((flag_outpot != 0) && (nlp == 1)){
+      array[k + nn * 2] = 0.5 * (pout[0] * pout[0] + pout[1] * pout[1]) - (pout[2] / dis_tdelay[0][1]);
+    } else {
+      array[k + nn * 2] = pout[2];
+    }
     array[k + nn * 3] = pout[3];
     array[k + nn * 4] = pout[4];
     array[k + nn * 5] = pout[5];
@@ -65,7 +69,11 @@ void writelens(double zs)
   fits_write_key(fptr, TDOUBLE, "ZS", (void*)&zs, "source redshift", &status);
   fits_write_comment(fptr, "cube 1: alpha_x", &status);
   fits_write_comment(fptr, "cube 2: alpha_y", &status);
-  fits_write_comment(fptr, "cube 3: time delay", &status);
+  if((flag_outpot != 0) && (nlp == 1)){
+    fits_write_comment(fptr, "cube 3: phi", &status);
+  } else {
+    fits_write_comment(fptr, "cube 3: time delay", &status);
+  }
   fits_write_comment(fptr, "cube 4: kappa", &status);
   fits_write_comment(fptr, "cube 5: gamma1", &status);
   fits_write_comment(fptr, "cube 6: gamma2", &status);
@@ -509,7 +517,7 @@ void writetd_ext(void)
       
       lensmodel(tx, ty, pout, -1, 0);
       
-      array[k + ii * nn] = pout[2] - tdelay_fac(zl_ext, dis_os, dis_ol, dis_ls) * 0.5 * (pout[0] * pout[0] + pout[1] * pout[1] - (tx - xs) * (tx - xs) - (ty - ys) * (ty - ys));
+      array[k + ii * nn] = pout[2] - dis_tdelay[0][1] * 0.5 * (pout[0] * pout[0] + pout[1] * pout[1] - (tx - xs) * (tx - xs) - (ty - ys) * (ty - ys));
     }
   }
   
@@ -579,7 +587,7 @@ void writetd_poi(void)
       
       lensmodel(tx, ty, pout, -1, 0);
       
-      array[k + ii * nn] = pout[2] - tdelay_fac(zl_ext, dis_os, dis_ol, dis_ls) * 0.5 * (pout[0] * pout[0] + pout[1] * pout[1] - (tx - xs) * (tx - xs) - (ty - ys) * (ty - ys));
+      array[k + ii * nn] = pout[2] - dis_tdelay[0][1] * 0.5 * (pout[0] * pout[0] + pout[1] * pout[1] - (tx - xs) * (tx - xs) - (ty - ys) * (ty - ys));
     }
   }
   

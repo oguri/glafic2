@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.4"
-#define RELEASE_DATE "2022.9.26"
+#define VERSION "2.1.5"
+#define RELEASE_DATE "2022.10.29"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -631,6 +631,8 @@ void writenoise(void);
 void addnoise(double sky, double sigma);
 void writepsf(void);
 void read_psffits(char *infile, int verb);
+void xytocoord(double x, double y, double *ra, double *dec);
+void coordtoxy(double ra, double dec, double *x, double *y);
 
 /*--------------------------------------------------------------
   gnfw_tab.c
@@ -891,6 +893,7 @@ double chi2calc(double par[]);
 double chi2calc_nopar(void);
 double chi2tot(double chi2min_point[][NPAR_CHI2], double chi2min_extend[]);
 void partopara(double par[]);
+void partopara_all(double par[]);
 int opt_lens_calcndim(void);
 void opt_lens_static(int flag);
 void dump_opt(char *infile, double c2, int ndim, int res, int nfunc, int nd, double chi2min_point[][NPAR_CHI2], double chi2min_extend[]);

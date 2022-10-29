@@ -264,7 +264,7 @@ void mcmc_out_kappa_rad(char *infile, double nd, double zs, double x0, double y0
       fscanf(fptr_r, "%lf ", &par[i]);
     }
     if(flag >= 0){
-      partopara(par);
+      partopara_all(par);
 
       kappa_rad(zs, x0, y0, r1, r2, n, lensid, kapbin, rbin, 0);
       if(f == 0){
@@ -333,7 +333,7 @@ void mcmc_out_kappa_cum(char *infile, double nd, double zs, double x0, double y0
       fscanf(fptr_r, "%lf ", &par[i]);
     }
     if(flag >= 0){
-      partopara(par);
+      partopara_all(par);
 
       kappa_cum(zs, x0, y0, r1, r2, n, lensid, kapbin, rbin, 0);
       if(f == 0){
@@ -400,13 +400,13 @@ void mcmc_out_ein(char *infile, double nd, double zs, int lensid)
       fscanf(fptr_r, "%lf ", &par[i]);
     }
     if(flag >= 0){
-      partopara(par);
+      partopara_all(par);
 
       fprintf(fptr, "%e ", c2);
       
       for(i=0;i<num_len;i++){
 	if((lensid == (i + 1)) || (lensid == 0)){
-	  ein = calcein_i(i);
+	  ein = calcein_i_calc(i, zs);
 	  if(ein < 0.0){ ein = 0.0; }
 	  fprintf(fptr, "%e ", ein);
 	}
@@ -467,7 +467,7 @@ void mcmc_out_ein2(char *infile, double nd, double zs, double x0, double y0, int
       fscanf(fptr_r, "%lf ", &par[i]);
     }
     if(flag >= 0){
-      partopara(par);
+      partopara_all(par);
       
       ein = calcein2_calc(zs, x0, y0, lensid);
       
@@ -528,7 +528,7 @@ void mcmc_out_calcim(char *infile, double nd, double zs, double x0, double y0)
       fscanf(fptr_r, "%lf ", &par[i]);
     }
     if(flag >= 0){
-      partopara(par);
+      partopara_all(par);
 
       lensmodel(x0, y0, pout, 0, 0);
 
@@ -588,7 +588,7 @@ void mcmc_out_findimg(char *infile, double nd, int pid)
       fscanf(fptr_r, "%lf ", &par[i]);
     }
     if(flag >= 0){
-      partopara(par);
+      partopara_all(par);
 
       chi2calc_opt_point(c2min, 0);
       zs = para_poi[pid - 1][0];

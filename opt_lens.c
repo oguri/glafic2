@@ -243,10 +243,7 @@ double opt_lens(int flag, int verb)
  
     for(j=1;j<=ndim;j++){ par[j] = p[1][j]; } 
 
-    partopara(par);
-    parmatch_lens();
-    parmatch_ext();
-    set_distance_lpl_init();
+    partopara_all(par);
 
     c2old = c2;
     c2 = chi2tot(chi2min_point, chi2min_extend);
@@ -376,6 +373,16 @@ void partopara(double par[NDIMMAX + 1])
       para_psf[j] = par[k];
     }
   }
+
+  return;
+}
+
+void partopara_all(double par[NDIMMAX + 1])
+{
+  partopara(par);
+  parmatch_lens();
+  parmatch_ext();
+  set_distance_lpl_init();
 
   return;
 }

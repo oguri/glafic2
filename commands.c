@@ -707,6 +707,34 @@ int do_command(char *buffer)
 	fprintf(stderr, "\n");
       }
 
+      if(strcmp(keyword, "xy2coord") == 0){
+	sscanf(buffer, "%s %lf %lf", cdummy, &x, &y);
+	fprintf(stderr, "######## coordinates for x = %e,  y = %e \n\n", x, y);
+	xytocoord(x, y, &x1, &y1);
+	if(outformat_exp == 0){
+	  fprintf(stderr, "RA  = %11.7f\n", x1);
+	  fprintf(stderr, "Dec = %11.7f\n", y1);
+	} else {
+	  fprintf(stderr, "RA  = %.10e\n", x1);
+	  fprintf(stderr, "Dec = %.10e\n", y1);
+	}
+	fprintf(stderr, "\n");
+      }
+
+      if(strcmp(keyword, "coord2xy") == 0){
+	sscanf(buffer, "%s %lf %lf", cdummy, &x1, &y1);
+	fprintf(stderr, "######## xy positions for RA = %e,  Dec = %e \n\n", x1, y1);
+	coordtoxy(x1, y1, &x, &y);
+	if(outformat_exp == 0){
+	  fprintf(stderr, "x = %9.4f\n", x);
+	  fprintf(stderr, "y = %9.4f\n", y);
+	} else {
+	  fprintf(stderr, "x = %e\n", x);
+	  fprintf(stderr, "y = %e\n", y);
+	}
+	fprintf(stderr, "\n");
+      }
+
       /*------------------------------------
 	quit
       */

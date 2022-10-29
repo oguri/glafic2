@@ -114,8 +114,7 @@ void fits_header(fitsfile *fptr)
     jj = (int)(((0.0 - ymin) / pix_ext) - 0.5);
     x = xmin + pix_ext * (ii + 0.5);
     y = ymin + pix_ext * (jj + 0.5);
-    x0 = wcs_ra0 - x / (3600.0 * cos((M_PI / 180.0) * wcs_dec0));
-    y0 = wcs_dec0 + y / 3600.0;
+    xytocoord(x, y, &x0, &y0);
     fits_write_key(fptr, TSTRING, "CTYPE1", (void*)"RA---CAR", "", &status);
     fits_write_key(fptr, TSTRING, "CTYPE2", (void*)"DEC--CAR", "", &status);
     fits_write_key(fptr, TDOUBLE, "CRVAL1", (void*)&x0, "", &status);
@@ -221,8 +220,7 @@ void writelens_splane(double zs, double sxmin, double sxmax, double symin, doubl
     jj = (int)(((0.0 - symin) / spix) - 0.5);
     x = sxmin + spix * (ii + 0.5);
     y = symin + spix * (jj + 0.5);
-    x0 = wcs_ra0 - x / (3600.0 * cos((M_PI / 180.0) * wcs_dec0));
-    y0 = wcs_dec0 + y / 3600.0;
+    xytocoord(x, y, &x0, &y0);
     fits_write_key(fptr, TSTRING, "CTYPE1", (void*)"RA---CAR", "", &status);
     fits_write_key(fptr, TSTRING, "CTYPE2", (void*)"DEC--CAR", "", &status);
     fits_write_key(fptr, TDOUBLE, "CRVAL1", (void*)&x0, "", &status);
@@ -1087,5 +1085,28 @@ void read_psffits(char *infile, int verb)
   
   for(i=0;i<nnfpsf;i++) array_fpsf[i] = array_fpsf[i] / f;
   
+  return;
+}
+
+/*--------------------------------------------------------------
+  conversion between xy and coordinates
+*/
+void xytocoord(double x, double y, double *ra, double *dec)
+{
+  if(flag_addwcs == 0) terminator("addwcs needs to be set");
+
+  *ra  = wcs_ra0 - x / (3600.0 * cos((M_PI / 180.0) * wcs_dec0));
+  *dec = wcs_dec0 + y / 3600.0;
+
+  return;
+}
+
+void coordtoxy(double ra, double dec, double *x, double *y)
+{
+  if(flag_addwcs == 0) terminator("addwcs needs to be set");
+
+  *x = (wcs_ra0 - ra) * 3600.0 * cos((M_PI / 180.0) * wcs_dec0);
+  *y = (dec - wcs_dec0) * 3600.0;
+
   return;
 }

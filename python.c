@@ -617,6 +617,36 @@ PyObject* python_reset_obs_point(PyObject* self, PyObject* args)
   return Py_BuildValue("");
 }
 
+/*------------------------------------
+  utils
+*/
+
+PyObject* python_xy2coord(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"x", "y", NULL};
+  double x, y, ra, dec;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "dd", argnames, &x, &y))
+    return NULL;
+
+  xytocoord(x, y, &ra, &dec);
+
+  return Py_BuildValue("dd", ra, dec);
+}
+
+PyObject* python_coord2xy(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"ra", "dec", NULL};
+  double x, y, ra, dec;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "dd", argnames, &ra, &dec))
+    return NULL;
+
+  coordtoxy(ra, dec, &x, &y);
+
+  return Py_BuildValue("dd", x, y);
+}
+
 /*--------------------------------------------------------------
   define methods
 */
@@ -663,7 +693,9 @@ static PyMethodDef methods[] = {
   {"optimize", (PyCFunction)python_optimize, METH_VARARGS|METH_KEYWORDS},
   {"c2calc", python_c2calc, METH_VARARGS},
   {"reset_obs_point", python_reset_obs_point, METH_VARARGS},
-  {NULL, NULL, 0, NULL}
+  {"xy2coord", (PyCFunction)python_xy2coord, METH_VARARGS|METH_KEYWORDS},
+  {"coord2xy", (PyCFunction)python_coord2xy, METH_VARARGS|METH_KEYWORDS},
+ {NULL, NULL, 0, NULL}
 };
 
 static struct PyModuleDef glafic =

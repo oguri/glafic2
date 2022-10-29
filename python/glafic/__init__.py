@@ -39,5 +39,7 @@ from .glafic import (
   mapprior, 
   optimize, 
   c2calc, 
-  reset_obs_point, 
+  reset_obs_point,
+  coord2xy,
+  xy2coord,  
 )

@@ -46,7 +46,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
-| 2022.10.29 | 2.1.5   | `coord2xy` and 'xy2coord` added, bug fix |
+| 2022.10.29 | 2.1.5   | `coord2xy` and `xy2coord` added, bug fix |
 | 2022.09.26 | 2.1.4   | `crline` lens model added, `flag_outpot` added |
 | 2022.05.05 | 2.1.3   | `init_file` added for the python interface |
 | 2021.08.31 | 2.1.2   | `flatfix` added, bug fix |

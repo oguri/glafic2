@@ -38,6 +38,8 @@ from .glafic import (
   parprior, 
   mapprior, 
   optimize, 
+  optpoint, 
+  optextend, 
   c2calc, 
   reset_obs_point,
   coord2xy,

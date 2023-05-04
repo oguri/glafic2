@@ -595,6 +595,32 @@ PyObject* python_optimize(PyObject* self, PyObject* args, PyObject* kwds)
   return Py_BuildValue("");
 }
 
+PyObject* python_optpoint(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"verb", NULL};
+  int verb = 1;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", argnames, &verb))
+    return NULL;
+
+  glafic_optpoint(verb);
+
+  return Py_BuildValue("");
+}
+
+PyObject* python_optextend(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"verb", NULL};
+  int verb = 1;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", argnames, &verb))
+    return NULL;
+
+  glafic_optextend(verb);
+
+  return Py_BuildValue("");
+}
+
 PyObject* python_c2calc(PyObject* self, PyObject* args)
 {
   double c2;
@@ -691,6 +717,8 @@ static PyMethodDef methods[] = {
   {"parprior", (PyCFunction)python_parprior, METH_VARARGS|METH_KEYWORDS},
   {"mapprior", (PyCFunction)python_mapprior, METH_VARARGS|METH_KEYWORDS},
   {"optimize", (PyCFunction)python_optimize, METH_VARARGS|METH_KEYWORDS},
+  {"optpoint", (PyCFunction)python_optpoint, METH_VARARGS|METH_KEYWORDS},
+  {"optextend", (PyCFunction)python_optextend, METH_VARARGS|METH_KEYWORDS},
   {"c2calc", python_c2calc, METH_VARARGS},
   {"reset_obs_point", python_reset_obs_point, METH_VARARGS},
   {"xy2coord", (PyCFunction)python_xy2coord, METH_VARARGS|METH_KEYWORDS},

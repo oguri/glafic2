@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.5"
-#define RELEASE_DATE "2022.10.29"
+#define VERSION "2.1.6"
+#define RELEASE_DATE "2023.05.04"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -532,6 +532,8 @@ void glafic_parprior(char *fname, int verb);
 void glafic_mapprior(char *fname, int verb);
 
 void glafic_optimize(int verb);
+void glafic_optpoint(int verb);
+void glafic_optextend(int verb);
 double glafic_c2calc(void);
 void glafic_reset_obs_point(int i, int j, int k, double p);
 

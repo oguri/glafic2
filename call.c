@@ -542,6 +542,24 @@ void glafic_optimize(int verb)
   return;
 }
 
+void glafic_optpoint(int verb)
+{
+  double c2min[NMAX_POI][NPAR_CHI2];
+
+  chi2calc_opt_point(c2min, verb);
+
+  return;
+}
+
+void glafic_optextend(int verb)
+{
+  double chi2min[NPAR_CHI2MIN];
+  
+  chi2calc_opt_extend(chi2min, verb, 0);
+
+  return;
+}
+
 double glafic_c2calc(void)
 {
   opt_lens_static(-1);

@@ -1260,7 +1260,7 @@ void read_poimg_flux(char *infile)
 	    if(nn == 1) j++;
 	  }
 	}
-	if(np != j) terminator("invalid format (point_flu)");
+	if(np != j) terminator("invalid format (point_flux)");
       }
     }
   }

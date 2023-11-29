@@ -15,7 +15,7 @@
   if(strcmp(keyword, #s1) == 0){ sscanf(buffer, "%s %s", cdummy, s2); \
      if(f == 1){ fprintf(stderr, "%-15s =  %s\n", cdummy, s2); } }
 
-static int order_opt[NMAX_LEN + NMAX_EXT + NMAX_POI + 1];
+static int order_opt[NMAX_LEN + NMAX_EXT + NMAX_POI + 2];
 
 /*--------------------------------------------------------------
   read input file
@@ -294,6 +294,8 @@ void startup(char *infile, int verb)
       }
     }
   }while(strcmp(keyword, "end_startup") != 0);
+
+  order_opt[n0] = 0;
   
   if((num_len != n1) || (num_ext != n2) || (num_poi != n3) || (n4 > 1)){
     terminator("startup failed (number mismatch)");
@@ -458,7 +460,7 @@ void setopt(char *infile, int verb)
 	fgets(buffer, INPUT_MAXCHAR, fptr);
 	if(sscanf(buffer, "%s", keyword) != EOF){
 	  if(keyword[0] != '#'){
-            
+
 	    switch(order_opt[n0]){
 	      
 	    case 1:

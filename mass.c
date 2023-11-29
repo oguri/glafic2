@@ -73,7 +73,7 @@ void lensmodel(double tx, double ty, double pout[NPAR_LMODEL], int alponly, int 
     lensmodel_get_i(lensid - 1, tx, ty, &kap, &gam1, &gam2, &phi, &ax, &ay, alponly);
     pout[0] = ax;
     pout[1] = ay;
-    pout[2] = tdelay_fac(zl_ext, dis_os, dis_ol, dis_ls) * (0.5 * (ax * ax + ay + ay) - phi);
+    pout[2] = tdelay_fac(zl_ext, dis_os, dis_ol, dis_ls) * (0.5 * (ax * ax + ay * ay) - phi);
     pout[3] = kap;
     pout[4] = gam1;
     pout[5] = gam2;

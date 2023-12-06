@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.7"
-#define RELEASE_DATE "2023.11.30"
+#define VERSION "2.1.8"
+#define RELEASE_DATE "2023.12.06"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -536,6 +536,16 @@ void glafic_optpoint(int verb);
 void glafic_optextend(int verb);
 double glafic_c2calc(void);
 void glafic_reset_obs_point(int i, int j, int k, double p);
+
+double glafic_getpar_lens(int id, int ip);
+double glafic_getpar_extend(int id, int ip);
+double glafic_getpar_point(int id, int ip);
+double glafic_getpar_psf(int ip);
+double glafic_getpar_omega(void);
+double glafic_getpar_lambda(void);
+double glafic_getpar_hubble(void);
+double glafic_getpar_weos(void);
+double glafic_getpar_sky(void);
 
 /*--------------------------------------------------------------
   commands.c

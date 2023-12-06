@@ -573,3 +573,65 @@ void glafic_reset_obs_point(int i, int j, int k, double p)
 
   return;
 }
+
+/*------------------------------------
+  get parameters
+*/
+
+double glafic_getpar_lens(int id, int ip)
+{
+  if((id <= 0) || (id > num_len) || (ip <= 0) || (ip > NPAR_LEN)) 
+    terminator("id out of range (glafic_getpar_lens)");
+
+  return para_lens[id - 1][ip - 1];
+}
+
+double glafic_getpar_extend(int id, int ip)
+{
+  if((id <= 0) || (id > num_ext) || (ip <= 0) || (ip > NPAR_EXT))
+    terminator("id out of range (glafic_getpar_extend)");
+
+  return para_ext[id - 1][ip - 1];
+}
+
+double glafic_getpar_point(int id, int ip)
+{
+  if((id <= 0) || (id > num_poi) || (ip <= 0) || (ip > NPAR_POI))
+    terminator("id out of range (glafic_getpar_point)");
+
+  return para_poi[id - 1][ip - 1];
+}
+
+double glafic_getpar_psf(int ip)
+{
+
+  if((flag_seeing == 0) || (ip <= 0) || (ip > NPAR_PSF))
+    terminator("id out of range (glafic_getpar_psf)");
+
+  return para_psf[ip - 1];
+}
+
+double glafic_getpar_omega(void)
+{
+  return omega;
+}
+
+double glafic_getpar_lambda(void)
+{
+  return lambda;
+}
+
+double glafic_getpar_hubble(void)
+{
+  return hubble;
+}
+
+double glafic_getpar_weos(void)
+{
+  return weos;
+}
+
+double glafic_getpar_sky(void)
+{
+  return skymed;
+}

@@ -673,6 +673,107 @@ PyObject* python_coord2xy(PyObject* self, PyObject* args, PyObject* kwds)
   return Py_BuildValue("dd", x, y);
 }
 
+PyObject* python_getpar_lens(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"id", "ip", NULL};
+  int id, ip;
+  double p;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "ii", argnames, &id, &ip))
+    return NULL;
+
+  p = glafic_getpar_lens(id, ip);
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_extend(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"id", "ip", NULL};
+  int id, ip;
+  double p;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "ii", argnames, &id, &ip))
+    return NULL;
+
+  p = glafic_getpar_extend(id, ip);
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_point(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"id", "ip", NULL};
+  int id, ip;
+  double p;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "ii", argnames, &id, &ip))
+    return NULL;
+
+  p = glafic_getpar_point(id, ip);
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_psf(PyObject* self, PyObject* args, PyObject* kwds)
+{
+  static char* argnames[] = {"ip", NULL};
+  int ip;
+  double p;
+  
+  if(!PyArg_ParseTupleAndKeywords(args, kwds, "i", argnames, &ip))
+    return NULL;
+
+  p = glafic_getpar_psf(ip);
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_omega(PyObject* self, PyObject* args)
+{
+  double p;
+  
+  p = glafic_getpar_omega();
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_lambda(PyObject* self, PyObject* args)
+{
+  double p;
+  
+  p = glafic_getpar_lambda();
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_hubble(PyObject* self, PyObject* args)
+{
+  double p;
+  
+  p = glafic_getpar_hubble();
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_weos(PyObject* self, PyObject* args)
+{
+  double p;
+  
+  p = glafic_getpar_weos();
+
+  return Py_BuildValue("d", p);
+}
+
+PyObject* python_getpar_sky(PyObject* self, PyObject* args)
+{
+  double p;
+  
+  p = glafic_getpar_sky();
+
+  return Py_BuildValue("d", p);
+}
+
 /*--------------------------------------------------------------
   define methods
 */
@@ -723,6 +824,15 @@ static PyMethodDef methods[] = {
   {"reset_obs_point", python_reset_obs_point, METH_VARARGS},
   {"xy2coord", (PyCFunction)python_xy2coord, METH_VARARGS|METH_KEYWORDS},
   {"coord2xy", (PyCFunction)python_coord2xy, METH_VARARGS|METH_KEYWORDS},
+  {"getpar_lens", (PyCFunction)python_getpar_lens, METH_VARARGS|METH_KEYWORDS},
+  {"getpar_extend", (PyCFunction)python_getpar_extend, METH_VARARGS|METH_KEYWORDS},
+  {"getpar_point", (PyCFunction)python_getpar_point, METH_VARARGS|METH_KEYWORDS},
+  {"getpar_psf", (PyCFunction)python_getpar_psf, METH_VARARGS|METH_KEYWORDS},
+  {"getpar_omega", python_getpar_omega, METH_VARARGS},
+  {"getpar_lambda", python_getpar_lambda, METH_VARARGS},
+  {"getpar_hubble", python_getpar_hubble, METH_VARARGS},
+  {"getpar_weos", python_getpar_weos, METH_VARARGS},
+  {"getpar_sky", python_getpar_sky, METH_VARARGS},
  {NULL, NULL, 0, NULL}
 };
 

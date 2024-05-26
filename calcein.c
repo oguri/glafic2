@@ -157,6 +157,10 @@ double calcein_i(int i)
   case 23:
     ein = calcein_hern(i);
     break;
+
+  case 25:
+    ein = calcein_gau(i);
+    break;
   }
 
   return ein;
@@ -313,6 +317,21 @@ double calcein_ein(int i)
   return r;
 }
 
+double calcein_gau(int i)
+{
+  double x, r;
+
+  b_sav = fac_pert(para_lens[i][1]) * para_lens[i][7];
+  x = para_lens[i][6];
+  if((calcein_gau_func(smallcore) > 0.0) && (calcein_gau_func(XMAX_CALCEIN) < 0.0)){
+      r = gsl_zbrent(calcein_gau_func, smallcore, XMAX_CALCEIN, TOL_ZBRENT_CALCEIN) * x;
+  } else {
+    r = CALCEIN_NAN;
+  }
+
+  return r;
+}
+
 /*--------------------------------------------------------------
   for solving equations
 */
@@ -355,6 +374,11 @@ double calcein_sers_func(double x)
 double calcein_ein_func(double x)
 {
   return b_sav * dphi_ein_dl(x) / x - 1.0;
+}
+
+double calcein_gau_func(double x)
+{
+  return b_sav * dphi_gau_dl(x) / x - 1.0;
 }
 
 /*--------------------------------------------------------------

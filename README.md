@@ -46,6 +46,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2024.05.27 | 2.1.9   |  `gaupot` lens model added |
 | 2023.12.06 | 2.1.8   | `getpar_*` commands added for the python interface |
 | 2023.11.30 | 2.1.7   | minor bug fix |
 | 2023.05.04 | 2.1.6   | `optpoint` and `optextend` added for the python interface |

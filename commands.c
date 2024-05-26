@@ -785,6 +785,5 @@ void interactive(void)
 
 void deb(void)
 {
-  return;
 }
 

@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.8"
-#define RELEASE_DATE "2023.12.06"
+#define VERSION "2.1.9"
+#define RELEASE_DATE "2024.05.27"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -241,9 +241,9 @@
 /* tolerance of redshift difference when defining lens planes */
 #define TOL_ZLPL 1.0e-3
 /* maximum characters in each column of the input file */
-#define INPUT_MAXCHAR 200
+#define INPUT_MAXCHAR 250
 /* max prefix for output files */
-#define PREFIX_MAXCHAR 40
+#define PREFIX_MAXCHAR 100
 /* maximum number of pixels (nx_ext or ny_ext) */
 #define NMAX_PIXEL 20000
 /* maximum number of total pixels for each sublevel 
@@ -457,6 +457,7 @@ double calcein_hern(int i);
 double calcein_sers(int i);
 double calcein_pow(int i);
 double calcein_ein(int i);
+double calcein_gau(int i);
 double calcein_jaffe_func(double x);
 double calcein_nfw_func(double x);
 double calcein_gnfw_func(double x);
@@ -464,6 +465,8 @@ double calcein_tnfw_func(double x);
 double calcein_hern_func(double x);
 double calcein_sers_func(double x);
 double calcein_ein_func(double x);
+double calcein_gau_func(double x);
+double calcein_gau_func(double x);
 
 void kappa_rad_out(double zs, double x0, double y0, double r1, double r2, int n, int lensid);
 void kappa_cum_out(double zs, double x0, double y0, double r1, double r2, int n, int lensid);
@@ -849,6 +852,11 @@ double hein(double x);
 double b_func_ein(double m, double c, double alpha);
 
 void kapgam_ein(double tx, double ty, double tx0, double ty0, double m, double c, double alpha, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+
+void kapgam_gaupot(double tx, double ty, double tx0, double ty0, double zs_fid, double sig, double kap0, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
+double ddphi_gau_dl(double x);
+double dphi_gau_dl(double x);
+double phi_gau_dl(double x);
 
 void u_calc(double dx, double dy, double e, double si, double co, double u[]);
 

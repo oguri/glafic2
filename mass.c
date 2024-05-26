@@ -3,10 +3,11 @@
 #include <string.h>
 #include <math.h>
 #include <gsl/gsl_sf_gamma.h>
+#include <gsl/gsl_sf_expint.h>
 
 #include "glafic.h"
 
-#define NM 24
+#define NM 25
 static char lmodelname[NM][10]={
 "gals",     /* 1 */
 "nfwpot",   /* 2 */
@@ -31,7 +32,8 @@ static char lmodelname[NM][10]={
 "ein",      /* 21 */
 "anfw",     /* 22 */
 "ahern",    /* 23 */
-"crline"    /* 24 */
+"crline",   /* 24 */
+"gaupot"    /* 25 */
 };
 
 static double alpha_gnfw_sav, x_gnfw_sav;
@@ -326,6 +328,10 @@ void lensmodel_get_i(int i, double tx, double ty, double *kap, double *gam1, dou
 
   case 24:
     kapgam_crline(tx, ty, cx, cy, para_lens[i][1], para_lens[i][7], para_lens[i][5], para_lens[i][6], kap, gam1, gam2, phi, ax, ay, alponly);
+    break;
+
+  case 25:
+    kapgam_gaupot(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][7], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
     break;
   }
 
@@ -2843,6 +2849,81 @@ void kapgam_ein(double tx, double ty, double tx0, double ty0, double m, double c
 
   return;
 } 
+
+/*--------------------------------------------------------------
+  Gaussian potential
+*/
+
+void kapgam_gaupot(double tx, double ty, double tx0, double ty0, double zs_fid, double sig, double kap0, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
+  static int ff;
+  static double papa, si, co;
+  double fac, a, b, pxx, pxy, pyy;
+  double u[6];
+
+  checkmodelpar_mineq(e, 0.0);
+  checkmodelpar_max(e, 1.0);
+  checkmodelpar_min(sig, 0.0);
+
+  fac = fac_pert(zs_fid) * kap0;
+  
+  if((ff != 1) || (papa != pa)){
+    ff = 1;
+    papa = pa;
+    si = sin((-1.0) * pa * M_PI / 180.0);
+    co = cos((-1.0) * pa * M_PI / 180.0);
+  }
+  
+  u_calc((tx - tx0) / sig, (ty - ty0) / sig, e, si, co, u);
+  
+  a = fac * dphi_gau_dl(u[0]);
+  *ax = a * u[1] * sig;
+  *ay = a * u[2] * sig;
+  
+  if(alponly != 1){
+    b = fac * ddphi_gau_dl(u[0]);
+    
+    pxx = b * u[1] * u[1] + a * u[3];
+    pxy = b * u[1] * u[2] + a * u[4];
+    pyy = b * u[2] * u[2] + a * u[5];
+    
+    *kap = 0.5 * (pxx + pyy);
+    *gam1 = 0.5 * (pxx - pyy);
+    *gam2 = pxy;
+    if(alponly < 0) *phi = fac * phi_gau_dl(u[0]) * sig * sig;
+  }
+
+  return;
+} 
+
+double ddphi_gau_dl(double x)
+{
+  if(x < 1.0e-4){
+    return 1.0 - 3.0 * x * x / 4.0;
+  } else {
+    return 2.0 * exp((-0.5) * x * x) - (dphi_gau_dl(x) / x);
+  }
+}
+
+double dphi_gau_dl(double x)
+{
+  if(x < 1.0e-4){
+    return x - (x * x * x) / 4.0;
+  } else {
+    return 2.0 * (1.0 - exp((-0.5) * x * x)) / x;
+  }
+}
+
+double phi_gau_dl(double x)
+{
+  if(x < 9.0e-5){
+    return log(2.0) - 0.57721566490153286 + 0.5 * x * x;
+  } else if(x < 1.0e1){
+    return 2.0 * log(x) - gsl_sf_expint_Ei((-0.5) * x * x);
+  } else {
+    return 2.0 * log(x);
+  }
+}
 
 /*--------------------------------------------------------------
   for elliptical potential

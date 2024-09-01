@@ -57,10 +57,20 @@ sy4 = data[: ,7]
 rfile = 'out_point.dat'
 data = np.loadtxt(rfile, comments = '#')
 
-sxx = data[0, 2]
-syy = data[0, 3]
-ixx = data[1: ,0]
-iyy = data[1: ,1]
+nimg = 0
+sxx = []
+syy = []
+ixx = []
+iyy = []
+for i in range(data.shape[0]):
+    if nimg == 0:
+        nimg = data[i, 0]
+        sxx.append(data[i, 2])
+        syy.append(data[i, 3])
+    else:
+        nimg -= 1
+        ixx.append(data[i ,0])
+        iyy.append(data[i ,1])
 
 plt.figure(figsize = (8, 16))
 

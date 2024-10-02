@@ -272,7 +272,9 @@ double chi2calc_point_iplane(int i, double xs, double ys, double c2[NPAR_CHI2])
     if(tab_obs[i][j][4] > 0.0){
       if(chi2_usemag == 0){
 	c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2]) * para_poi[i][3]) * (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2]) * para_poi[i][3]) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
-      } else {
+      } else if(chi2_usemag == -1){
+	c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2])) * (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2])) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
+      }else {
 	c2[2] = c2[2] + (tab_obs[i][j][2] + 2.5 * log10(fabs(rr[kk[j]][2])) - para_poi[i][3]) * (tab_obs[i][j][2] + 2.5 * log10(fabs(rr[kk[j]][2])) - para_poi[i][3]) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
       }
     }
@@ -526,6 +528,8 @@ double chi2calc_point_splane(int i, double xs, double ys, double c2[NPAR_CHI2])
     if(tab_obs[i][k][4] > 0.0){
       if(chi2_usemag == 0){
 	c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - fabs(mumod[k]) * para_poi[i][3]) * (fabs(tab_obs[i][k][2]) - fabs(mumod[k]) * para_poi[i][3]) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
+      } else if(chi2_usemag == -1){
+	c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - fabs(mumod[k])) * (fabs(tab_obs[i][k][2]) - fabs(mumod[k])) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
       } else {
 	c2[2] = c2[2] + (tab_obs[i][k][2] + 2.5 * log10(fabs(mumod[k])) - para_poi[i][3]) * (tab_obs[i][k][2] + 2.5 * log10(fabs(mumod[k])) - para_poi[i][3]) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
       }

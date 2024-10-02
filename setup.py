@@ -25,7 +25,7 @@ def make_cmd_class(base):
 
 setup(
     name = 'glafic',
-    version = '2.1.9',
+    version = '2.1.10',
     author = 'Masamune Oguri',
     description = 'Library for gravitational lensing analyses',
     url = 'https://github.com/oguri/glafic2',

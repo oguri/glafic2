@@ -250,19 +250,19 @@ double opt_lens(int flag, int verb)
     
     poi_unset_table();
 
-    if(verb > 0){
-      nd = 0;
-      if(ne > 0){
-	for(i=0;i<(nx_ext*ny_ext);i++){
-	  if(array_ext_mask[i] == 0) nd++;
-	}
+    nd = 0;
+    if(ne > 0){
+      for(i=0;i<(nx_ext*ny_ext);i++){
+	if(array_ext_mask[i] == 0) nd++;
       }
-      
+    }
+    
+    if(verb > 0){
       fprintf(stderr, "\n");
       dump_opt(NULL, c2, nl + np + ne, res + 1, nfunc, nd, chi2min_point, chi2min_extend);
       fprintf(stderr, "\nwriting result to %s\n\n", fname);
-      dump_opt(fname, c2, nl + np + ne, res + 1, nfunc, nd, chi2min_point, chi2min_extend);
     }
+    dump_opt(fname, c2, nl + np + ne, res + 1, nfunc, nd, chi2min_point, chi2min_extend);
 
   }while((nfunc > 0) && ((res < chi2_restart) || ((chi2_restart < 0) && (fabs((c2 - c2old) / c2) > (0.5 * tol_amoeba_lens)))) && (res < chi2_restart_max));
 

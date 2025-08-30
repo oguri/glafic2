@@ -266,7 +266,7 @@ double opt_lens(int flag, int verb)
 
   }while((nfunc > 0) && ((res < chi2_restart) || ((chi2_restart < 0) && (fabs((c2 - c2old) / c2) > (0.5 * tol_amoeba_lens)))) && (res < chi2_restart_max));
 
-  if((verb < 0) && (c2 <= chi2_dumplimit)){
+  if((c2 <= chi2_dumplimit)){
     nd = 0;
     if(ne > 0){
       for(i=0;i<(nx_ext*ny_ext);i++){

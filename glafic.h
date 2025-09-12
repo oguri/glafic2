@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.10"
-#define RELEASE_DATE "2024.10.02"
+#define VERSION "2.1.11"
+#define RELEASE_DATE "2025.09.12"
 
 /*--------------------------------------------------------------
   primary default parameters

@@ -46,6 +46,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2025.09.12 | 2.1.11  |  a bug in `crline` fixed |
 | 2024.10.02 | 2.1.10  |  another option for `chi2_usemag` added |
 | 2024.05.27 | 2.1.9   |  `gaupot` lens model added |
 | 2023.12.06 | 2.1.8   | `getpar_*` commands added for the python interface |

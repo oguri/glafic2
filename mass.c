@@ -540,7 +540,7 @@ void kapgam_crline(double tx, double ty, double tx0, double ty0, double zs_fid, 
   dy = (tx - tx0) * si + (ty - ty0) * co;
   
   *ax = fac * (dx * k + dx * g - 0.5 * epsilon * dx * dx);
-  *ay = fac * (dx * k - dy * g);
+  *ay = fac * (dy * k - dy * g);
 
   if(alponly != 1){
     *kap = fac * (k - 0.5 * epsilon * dx);

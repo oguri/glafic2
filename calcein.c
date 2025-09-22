@@ -558,7 +558,7 @@ double calc_kappa_ave(double r, double x0, double y0, int lensid)
   y0_calkap_sav = y0;
   r_calkap_sav = r;
 
-  return gsl_romberg3(calc_kappa_ave_func, 0.0, 2.0 * M_PI, TOL_ROMBERG_AVE) / (2.0 * M_PI);
+  return gsl_qgaus(calc_kappa_ave_func, 0.0, 2.0 * M_PI) / (2.0 * M_PI);
 }
 
 double calc_kappa_ave_func(double t)

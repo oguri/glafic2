@@ -46,6 +46,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2025.09.22 | 2.1.12  |  integration method for `kappaave` changed |
 | 2025.09.12 | 2.1.11  |  a bug in `crline` fixed |
 | 2024.10.02 | 2.1.10  |  another option for `chi2_usemag` added |
 | 2024.05.27 | 2.1.9   |  `gaupot` lens model added |

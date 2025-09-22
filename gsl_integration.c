@@ -8,7 +8,9 @@
 #include "glafic.h"
 
 double gsl_qgaus_func(double x, void *p);
+double gsl_qgaus2_func(double x, void *p);
 static double (*func_qgaus_sav)(double);
+static double (*func_qgaus2_sav)(double);
 
 double gsl_romberg1_func(double x, void *p);
 double gsl_romberg2_func(double x, void *p);
@@ -34,6 +36,25 @@ double gsl_qgaus(double (*func)(double), double a, double b)
 
   func_qgaus_sav = func;
   F.function = &gsl_qgaus_func;
+  
+  gsl_integration_qng(&F, a, b, TOL_QGAUS, TOL_QGAUS, &integral, &err, &neval);
+
+  return integral;
+}
+
+double gsl_qgaus2_func(double x, void *p)
+{
+  return (*func_qgaus2_sav)(x);
+}
+
+double gsl_qgaus2(double (*func)(double), double a, double b)
+{
+  double integral, err;
+  size_t neval;
+  gsl_function F;
+
+  func_qgaus2_sav = func;
+  F.function = &gsl_qgaus2_func;
   
   gsl_integration_qng(&F, a, b, TOL_QGAUS, TOL_QGAUS, &integral, &err, &neval);
 

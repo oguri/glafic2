@@ -663,6 +663,7 @@ double dphi_gnfw_dl_tab(double x, double alpha);
 */
 
 double gsl_qgaus(double (*func)(double), double a, double b);
+double gsl_qgaus2(double (*func)(double), double a, double b);
 double gsl_romberg1(double (*func)(double), double a, double b, double eps);
 double gsl_romberg2(double (*func)(double), double a, double b, double eps);
 double gsl_romberg3(double (*func)(double), double a, double b, double eps);

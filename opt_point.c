@@ -666,12 +666,19 @@ int check_para_poi(int i, double xs, double ys)
 
 int check_para_poi_zs(int i)
 {
+  double pl, ph;
+
   if((para_poi[i][0] < para_poi_min[i][0]) || (para_poi[i][0] > para_poi_max[i][0])){
     return 1;
-  } else {
-    return 0;
-  }
-    
+  } else if((para_poi_rerai[i][0] != i) || (para_poi_reraj[i][0] != 0)){
+    pl = para_poi_reral[i][0] * para_poi[para_poi_rerai[i][0]][para_poi_reraj[i][0]];
+    ph = para_poi_rerah[i][0] * para_poi[para_poi_rerai[i][0]][para_poi_reraj[i][0]];
+    if((para_poi[i][0] < pl) || (para_poi[i][0] > ph)){
+      return 1;
+    } 
+  } 
+
+  return 0;
 }
 
 int check_para_poi_all(void)

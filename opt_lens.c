@@ -512,12 +512,19 @@ int check_para_cosmo(void)
 
 int check_para_lens(int i, int j)
 {
+  double pl, ph;
+  
   if((para_lens[i][j] < para_lens_min[i][j]) || (para_lens[i][j] > para_lens_max[i][j])){
     return 1;
-  } else {
-    return 0;
-  }
-    
+  } else if((para_lens_rerai[i][j] != i) || (para_lens_reraj[i][j] != j)){
+    pl = para_lens_reral[i][j] * para_lens[para_lens_rerai[i][j]][para_lens_reraj[i][j]];
+    ph = para_lens_rerah[i][j] * para_lens[para_lens_rerai[i][j]][para_lens_reraj[i][j]];
+    if((para_lens[i][j] < pl) || (para_lens[i][j] > ph)){
+      return 1;
+    } 
+  } 
+
+  return 0;
 }
 
 int check_para_lens_all(void)

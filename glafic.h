@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.12"
-#define RELEASE_DATE "2025.09.22"
+#define VERSION "2.1.13"
+#define RELEASE_DATE "2025.12.15"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -1163,6 +1163,10 @@ GLOBAL double para_lens_rat[NMAX_LEN][NPAR_LEN];
 GLOBAL double para_lens_ras[NMAX_LEN][NPAR_LEN];
 GLOBAL int para_lens_rai[NMAX_LEN][NPAR_LEN];
 GLOBAL int para_lens_raj[NMAX_LEN][NPAR_LEN];
+GLOBAL double para_lens_reral[NMAX_LEN][NPAR_LEN];
+GLOBAL double para_lens_rerah[NMAX_LEN][NPAR_LEN];
+GLOBAL int para_lens_rerai[NMAX_LEN][NPAR_LEN];
+GLOBAL int para_lens_reraj[NMAX_LEN][NPAR_LEN];
 
 GLOBAL double para_ext[NMAX_EXT][NPAR_EXT];
 GLOBAL int model_ext[NMAX_EXT];
@@ -1176,6 +1180,10 @@ GLOBAL double para_ext_rat[NMAX_EXT][NPAR_EXT];
 GLOBAL double para_ext_ras[NMAX_EXT][NPAR_EXT];
 GLOBAL int para_ext_rai[NMAX_EXT][NPAR_EXT];
 GLOBAL int para_ext_raj[NMAX_EXT][NPAR_EXT];
+GLOBAL double para_ext_reral[NMAX_EXT][NPAR_EXT];
+GLOBAL double para_ext_rerah[NMAX_EXT][NPAR_EXT];
+GLOBAL int para_ext_rerai[NMAX_EXT][NPAR_EXT];
+GLOBAL int para_ext_reraj[NMAX_EXT][NPAR_EXT];
 GLOBAL double para_extlen_rat[NMAX_EXT][NPAR_EXT];
 GLOBAL double para_extlen_ras[NMAX_EXT][NPAR_EXT];
 GLOBAL int para_extlen_rai[NMAX_EXT][NPAR_EXT];
@@ -1190,6 +1198,9 @@ GLOBAL double para_psf_sig[NPAR_PSF];
 GLOBAL double para_psf_rat[NPAR_PSF];
 GLOBAL double para_psf_ras[NPAR_PSF];
 GLOBAL int para_psf_raj[NPAR_PSF];
+GLOBAL double para_psf_reral[NPAR_PSF];
+GLOBAL double para_psf_rerah[NPAR_PSF];
+GLOBAL int para_psf_reraj[NPAR_PSF];
 
 GLOBAL double para_poi[NMAX_POI][NPAR_POITAB];
 GLOBAL int flag_para_poi[NMAX_POI][NPAR_POITAB];
@@ -1201,6 +1212,10 @@ GLOBAL double para_poi_rat[NMAX_POI][NPAR_POITAB];
 GLOBAL double para_poi_ras[NMAX_POI][NPAR_POITAB];
 GLOBAL int para_poi_rai[NMAX_POI][NPAR_POITAB];
 GLOBAL int para_poi_raj[NMAX_POI][NPAR_POITAB];
+GLOBAL double para_poi_reral[NMAX_POI][NPAR_POITAB];
+GLOBAL double para_poi_rerah[NMAX_POI][NPAR_POITAB];
+GLOBAL int para_poi_rerai[NMAX_POI][NPAR_POITAB];
+GLOBAL int para_poi_reraj[NMAX_POI][NPAR_POITAB];
 GLOBAL double para_poilen_rat[NMAX_POI][NPAR_POITAB];
 GLOBAL double para_poilen_ras[NMAX_POI][NPAR_POITAB];
 GLOBAL int para_poilen_rai[NMAX_POI][NPAR_POITAB];

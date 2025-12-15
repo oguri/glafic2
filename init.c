@@ -671,6 +671,10 @@ void def_parameters(void)
       para_lens_raj[i][j] = j;
       para_lens_rat[i][j] = 1.0;
       para_lens_ras[i][j] = 0.0;
+      para_lens_rerai[i][j] = i;
+      para_lens_reraj[i][j] = j;
+      para_lens_reral[i][j] = -1.0e30;
+      para_lens_rerah[i][j] = 1.0e30;
     }
   }
 
@@ -698,6 +702,10 @@ void def_parameters(void)
       para_ext_raj[i][j] = j;
       para_ext_rat[i][j] = 1.0;
       para_ext_ras[i][j] = 0.0;
+      para_ext_rerai[i][j] = i;
+      para_ext_reraj[i][j] = j;
+      para_ext_reral[i][j] = -1.0e30;
+      para_ext_rerah[i][j] = 1.0e30;
       para_extlen_rai[i][j] = -1;
       para_extlen_raj[i][j] = -1;
       para_extlen_rat[i][j] = 1.0;
@@ -721,6 +729,10 @@ void def_parameters(void)
       para_poi_raj[i][j] = j;
       para_poi_rat[i][j] = 1.0;
       para_poi_ras[i][j] = 0.0;
+      para_poi_rerai[i][j] = i;
+      para_poi_reraj[i][j] = j;
+      para_poi_reral[i][j] = -1.0e30;
+      para_poi_rerah[i][j] = 1.0e30;
       para_poilen_rai[i][j] = -1;
       para_poilen_raj[i][j] = -1;
       para_poilen_rat[i][j] = 1.0;
@@ -764,6 +776,9 @@ void def_parameters(void)
     para_psf_raj[j] = j;
     para_psf_rat[j] = 1.0;
     para_psf_ras[j] = 0.0;
+    para_psf_reraj[j] = j;
+    para_psf_reral[j] = -1.0e30;
+    para_psf_rerah[j] = 1.0e30;
   }
 
   omega_min = INIT_OMMIN;
@@ -919,7 +934,7 @@ void out_para(void)
 void parprior(char *infile, int verb)
 {
   int i, j, k, ii, jj, n, nn;
-  double xx, yy, min, max, med, rat, sig;
+  double xx, yy, min, max, med, rat, sig, ral, rah;
   char buffer[INPUT_MAXCHAR];
   char keyword[INPUT_MAXCHAR];
   char ptype[INPUT_MAXCHAR];
@@ -1048,34 +1063,7 @@ void parprior(char *infile, int verb)
 	}
 
 	if(strcmp(ptype, "match") == 0){
-	  nn = sscanf(buffer, "%s %s %d %d %d %d %lf %lf", ptype, keyword, &i, &j, &ii, &jj, &rat, &sig);
-	  if(nn != 8) terminator("input file format irrelevant (parprior)"); 
-	  
-	  if(strcmp(keyword, "lens") == 0){
-	    if((i > num_len) || (j > NPAR_LEN) || (i < 1) || (j < 1)){ terminator("lens id irrelevant (parprior)"); }
-	    if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
-	    para_lens_rai[i - 1][j - 1] = ii - 1;
-	    para_lens_raj[i - 1][j - 1] = jj - 1;
-	    para_lens_rat[i - 1][j - 1] = rat;
-	    para_lens_ras[i - 1][j - 1] = sig;
-	    n++;
-	  } else if(strcmp(keyword, "extend") == 0){
-	    if((i > num_ext) || (j > NPAR_EXT) || (i < 1) || (j < 1)){ terminator("extend id irrelevant (parprior)"); }
-	    if((ii > num_ext) || (jj > NPAR_EXT) || (ii < 1) || (jj < 1)){ terminator("extend id irrelevant (parprior)"); }
-	    para_ext_rai[i - 1][j - 1] = ii - 1;
-	    para_ext_raj[i - 1][j - 1] = jj - 1;
-	    para_ext_rat[i - 1][j - 1] = rat;
-	    para_ext_ras[i - 1][j - 1] = sig;
-	    n++;
-	  } else if(strcmp(keyword, "point") == 0){
-	    if((i > num_poi) || (i < 1) || (j != 1)){ terminator("point id irrelevant (parprior)"); }
-	    if((ii > num_poi) || (ii < 1) || (jj != 1)){ terminator("point id irrelevant (parprior)"); }
-	    para_poi_rai[i - 1][j - 1] = ii - 1;
-	    para_poi_raj[i - 1][j - 1] = jj - 1;
-	    para_poi_rat[i - 1][j - 1] = rat;
-	    para_poi_ras[i - 1][j - 1] = sig;
-	    n++;
-	  } else if(strcmp(keyword, "psf") == 0){
+	  if(strcmp(keyword, "psf") == 0){
 	    nn = sscanf(buffer, "%s %s %d %d %lf %lf", ptype, keyword, &j, &jj, &rat, &sig);
 	    if(nn != 6) terminator("input file format irrelevant (parprior)"); 
 	    if((j > NPAR_PSF) || (j < 1) || (jj > NPAR_PSF) || (jj < 1)){ terminator("psf id irrelevant (parprior)"); }
@@ -1083,24 +1071,94 @@ void parprior(char *infile, int verb)
 	    para_psf_rat[j - 1] = rat;
 	    para_psf_ras[j - 1] = sig;
 	    n++;
-	  } else if(strcmp(keyword, "extlens") == 0){
-	    if((i > num_ext) || (j > NPAR_EXT) || (i < 1) || (j < 1)){ terminator("extend id irrelevant (parprior)"); }
-	    if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
-	    para_extlen_rai[i - 1][j - 1] = ii - 1;
-	    para_extlen_raj[i - 1][j - 1] = jj - 1;
-	    para_extlen_rat[i - 1][j - 1] = rat;
-	    para_extlen_ras[i - 1][j - 1] = sig;
+	  } else {
+	    nn = sscanf(buffer, "%s %s %d %d %d %d %lf %lf", ptype, keyword, &i, &j, &ii, &jj, &rat, &sig);
+	    if(nn != 8) terminator("input file format irrelevant (parprior)"); 
+	    
+	    if(strcmp(keyword, "lens") == 0){
+	      if((i > num_len) || (j > NPAR_LEN) || (i < 1) || (j < 1)){ terminator("lens id irrelevant (parprior)"); }
+	      if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
+	      para_lens_rai[i - 1][j - 1] = ii - 1;
+	      para_lens_raj[i - 1][j - 1] = jj - 1;
+	      para_lens_rat[i - 1][j - 1] = rat;
+	      para_lens_ras[i - 1][j - 1] = sig;
+	      n++;
+	    } else if(strcmp(keyword, "extend") == 0){
+	      if((i > num_ext) || (j > NPAR_EXT) || (i < 1) || (j < 1)){ terminator("extend id irrelevant (parprior)"); }
+	      if((ii > num_ext) || (jj > NPAR_EXT) || (ii < 1) || (jj < 1)){ terminator("extend id irrelevant (parprior)"); }
+	      para_ext_rai[i - 1][j - 1] = ii - 1;
+	      para_ext_raj[i - 1][j - 1] = jj - 1;
+	      para_ext_rat[i - 1][j - 1] = rat;
+	      para_ext_ras[i - 1][j - 1] = sig;
+	      n++;
+	    } else if(strcmp(keyword, "point") == 0){
+	      if((i > num_poi) || (i < 1) || (j != 1)){ terminator("point id irrelevant (parprior)"); }
+	      if((ii > num_poi) || (ii < 1) || (jj != 1)){ terminator("point id irrelevant (parprior)"); }
+	      para_poi_rai[i - 1][j - 1] = ii - 1;
+	      para_poi_raj[i - 1][j - 1] = jj - 1;
+	      para_poi_rat[i - 1][j - 1] = rat;
+	      para_poi_ras[i - 1][j - 1] = sig;
+	      n++;
+	    } else if(strcmp(keyword, "extlens") == 0){
+	      if((i > num_ext) || (j > NPAR_EXT) || (i < 1) || (j < 1)){ terminator("extend id irrelevant (parprior)"); }
+	      if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
+	      para_extlen_rai[i - 1][j - 1] = ii - 1;
+	      para_extlen_raj[i - 1][j - 1] = jj - 1;
+	      para_extlen_rat[i - 1][j - 1] = rat;
+	      para_extlen_ras[i - 1][j - 1] = sig;
+	      n++;
+	    } else if(strcmp(keyword, "poilens") == 0){
+	      if((i > num_poi) || (j > NPAR_POI) || (i < 1) || (j < 1)){ terminator("point id irrelevant (parprior)"); }
+	      if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
+	      para_poilen_rai[i - 1][j - 1] = ii - 1;
+	      para_poilen_raj[i - 1][j - 1] = jj - 1;
+	      para_poilen_rat[i - 1][j - 1] = rat;
+	      para_poilen_ras[i - 1][j - 1] = sig;
+	      n++;
+	    } 
+	  }
+	}
+	
+	if(strcmp(ptype, "relrange") == 0){
+	  if(strcmp(keyword, "psf") == 0){
+	    nn = sscanf(buffer, "%s %s %d %d %lf %lf", ptype, keyword, &j, &jj, &rat, &sig);
+	    if(nn != 6) terminator("input file format irrelevant (parprior)"); 
+	    if((j > NPAR_PSF) || (j < 1) || (jj > NPAR_PSF) || (jj < 1)){ terminator("psf id irrelevant (parprior)"); }
+	    para_psf_reraj[j - 1] = jj - 1;
+	    para_psf_reral[j - 1] = ral;
+	    para_psf_rerah[j - 1] = rah;
 	    n++;
-	  } else if(strcmp(keyword, "poilens") == 0){
-	    if((i > num_poi) || (j > NPAR_POI) || (i < 1) || (j < 1)){ terminator("point id irrelevant (parprior)"); }
-	    if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
-	    para_poilen_rai[i - 1][j - 1] = ii - 1;
-	    para_poilen_raj[i - 1][j - 1] = jj - 1;
-	    para_poilen_rat[i - 1][j - 1] = rat;
-	    para_poilen_ras[i - 1][j - 1] = sig;
-	    n++;
-	  } 
-	} 
+	  }  else {
+	    nn = sscanf(buffer, "%s %s %d %d %d %d %lf %lf", ptype, keyword, &i, &j, &ii, &jj, &ral, &rah);
+	    if(nn != 8) terminator("input file format irrelevant (parprior)"); 
+	  
+	    if(strcmp(keyword, "lens") == 0){
+	      if((i > num_len) || (j > NPAR_LEN) || (i < 1) || (j < 1)){ terminator("lens id irrelevant (parprior)"); }
+	      if((ii > num_len) || (jj > NPAR_LEN) || (ii < 1) || (jj < 1)){ terminator("lens id irrelevant (parprior)"); }
+	      para_lens_rerai[i - 1][j - 1] = ii - 1;
+	      para_lens_reraj[i - 1][j - 1] = jj - 1;
+	      para_lens_reral[i - 1][j - 1] = ral;
+	      para_lens_rerah[i - 1][j - 1] = rah;
+	      n++;
+	  } else if(strcmp(keyword, "extend") == 0){
+	      if((i > num_ext) || (j > NPAR_EXT) || (i < 1) || (j < 1)){ terminator("extend id irrelevant (parprior)"); }
+	      if((ii > num_ext) || (jj > NPAR_EXT) || (ii < 1) || (jj < 1)){ terminator("extend id irrelevant (parprior)"); }
+	      para_ext_rerai[i - 1][j - 1] = ii - 1;
+	      para_ext_reraj[i - 1][j - 1] = jj - 1;
+	      para_ext_reral[i - 1][j - 1] = ral;
+	      para_ext_rerah[i - 1][j - 1] = rah;
+	      n++;
+	    } else if(strcmp(keyword, "point") == 0){
+	      if((i > num_poi) || (i < 1) || (j != 1)){ terminator("point id irrelevant (parprior)"); }
+	      if((ii > num_poi) || (ii < 1) || (jj != 1)){ terminator("point id irrelevant (parprior)"); }
+	      para_poi_rerai[i - 1][j - 1] = ii - 1;
+	      para_poi_reraj[i - 1][j - 1] = jj - 1;
+	      para_poi_reral[i - 1][j - 1] = ral;
+	      para_poi_rerah[i - 1][j - 1] = rah;
+	      n++;
+	    }
+	  }
+	}
 	
 	if(strcmp(ptype, "obsext") == 0){
 	  nn = sscanf(buffer, "%s %d %lf %lf", ptype, &i, &xx, &yy);

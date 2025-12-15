@@ -366,22 +366,36 @@ double chi2calc_extend(double chi2min[NPAR_CHI2MIN])
 
 int check_para_ext(int i, int j)
 {
+  double pl, ph;
+
   if((para_ext[i][j] < para_ext_min[i][j]) || (para_ext[i][j] > para_ext_max[i][j])){
     return 1;
-  } else {
-    return 0;
+  } else if((para_ext_rerai[i][j] != i) || (para_ext_reraj[i][j] != j)){
+    pl = para_ext_reral[i][j] * para_ext[para_ext_rerai[i][j]][para_ext_reraj[i][j]];
+    ph = para_ext_rerah[i][j] * para_ext[para_ext_rerai[i][j]][para_ext_reraj[i][j]];
+    if((para_ext[i][j] < pl) || (para_ext[i][j] > ph)){
+      return 1;
+    }
   }
-    
+
+  return 0;
 }
 
 int check_para_psf(int j)
 {
+  double pl, ph;
+
   if((para_psf[j] < para_psf_min[j]) || (para_psf[j] > para_psf_max[j])){
     return 1;
-  } else {
-    return 0;
-  }
-    
+  } else if(para_psf_reraj[j] != j){
+    pl = para_psf_reral[j] * para_psf[para_psf_reraj[j]];
+    ph = para_psf_rerah[j] * para_psf[para_psf_reraj[j]];
+    if((para_psf[j] < pl) || (para_psf[j] > ph)){
+      return 1;
+    }
+  } 
+
+  return 0;
 }
 
 int check_para_ext_all(void)

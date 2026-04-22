@@ -161,6 +161,10 @@ double calcein_i(int i)
   case 25:
     ein = calcein_gau(i);
     break;
+    
+  case 26:
+    ein = calcein_cnfw(i);
+    break;
   }
 
   return ein;
@@ -244,6 +248,28 @@ double calcein_tnfw(int i)
   tnfw_set_tau(para_lens[i][7] * para_lens[i][6]);
   if((calcein_tnfw_func(smallcore) > 0.0) && (calcein_tnfw_func(XMAX_CALCEIN) < 0.0)){
     r = gsl_zbrent(calcein_tnfw_func, smallcore, XMAX_CALCEIN, TOL_ZBRENT_CALCEIN) * x;
+  } else {
+    r = CALCEIN_NAN;
+  }
+
+  return r;
+}
+
+double calcein_cnfw(int i)
+{
+  double x, r, c;
+
+  if(nfw_users == 0){
+    b_sav = b_func(para_lens[i][1], para_lens[i][6]);
+    x = rtotheta(rs(para_lens[i][1], para_lens[i][6]));
+  } else {
+    x = para_lens[i][6];
+    c = rs(para_lens[i][1], 1.0) / thetator(para_lens[i][6]);
+    b_sav = b_func(para_lens[i][1], c);
+  }
+  set_b_cnfw(para_lens[i][7]);
+  if((calcein_cnfw_func(smallcore) > 0.0) && (calcein_cnfw_func(XMAX_CALCEIN) < 0.0)){
+    r = gsl_zbrent(calcein_cnfw_func, smallcore, XMAX_CALCEIN, TOL_ZBRENT_CALCEIN) * x;
   } else {
     r = CALCEIN_NAN;
   }
@@ -359,6 +385,11 @@ double calcein_gnfw_func(double x)
 double calcein_tnfw_func(double x)
 {
   return b_sav * dphi_tnfw_dl(x) / x - 1.0;
+}
+
+double calcein_cnfw_func(double x)
+{
+  return b_sav * dphi_cnfw_dl(x) / x - 1.0;
 }
 
 double calcein_hern_func(double x)
@@ -817,6 +848,7 @@ void calcmr_i(int i, double *mtot, double *mdel, double *rdel)
     *mdel = CALCEIN_NAN;
     *rdel = CALCEIN_NAN;
     break;
+
   }
 
   return;

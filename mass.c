@@ -7,7 +7,7 @@
 
 #include "glafic.h"
 
-#define NM 25
+#define NM 26
 static char lmodelname[NM][10]={
 "gals",     /* 1 */
 "nfwpot",   /* 2 */
@@ -33,7 +33,8 @@ static char lmodelname[NM][10]={
 "anfw",     /* 22 */
 "ahern",    /* 23 */
 "crline",   /* 24 */
-"gaupot"    /* 25 */
+"gaupot",   /* 25 */
+"acnfw"     /* 26 */
 };
 
 static double alpha_gnfw_sav, x_gnfw_sav;
@@ -333,9 +334,13 @@ void lensmodel_get_i(int i, double tx, double ty, double *kap, double *gam1, dou
   case 25:
     kapgam_gaupot(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][7], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
     break;
+
+  case 26:
+    kapgam_acnfw(tx, ty, cx, cy, para_lens[i][1], para_lens[i][6], para_lens[i][7], para_lens[i][4], para_lens[i][5], kap, gam1, gam2, phi, ax, ay, alponly);
+    break;
   }
 
-  return;
+    return;
 }
 
 void lensmodel_sum(double *ax, double *ay, double *phi, double *kap, double *gam1, double *gam2, double tax, double tay, double tph, double tk, double tg1, double tg2, int alponly)
@@ -2924,6 +2929,67 @@ double phi_gau_dl(double x)
     return 2.0 * log(x);
   }
 }
+
+/*--------------------------------------------------------------
+  cored NFW density, approximation using CSE
+*/
+
+void kapgam_acnfw(double tx, double ty, double tx0, double ty0, double m, double c, double b, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly)
+{
+  static int ff;
+  static double papa, si, co;
+  double q, bb, tt, dx, dy, ddx, ddy, aax, aay;
+  double pxx, pyy, pxy, rpxx, rpyy, rpxy;
+
+  checkmodelpar_min(m, 0.0);
+  checkmodelpar_mineq(e, 0.0);
+  checkmodelpar_max(e, 1.0);
+  checkmodelpar_min(c, 0.0);
+  checkmodelpar_mineq(b, 0.0);
+  // maximum b should correspond to CNFW_LB_MAX in app_cnfw.c
+  checkmodelpar_max(b, 100.0);
+
+  q = 1.0 - e;
+
+  calc_bbtt_nfw(m, c, &bb, &tt);
+  tt = tt / sqrt(q);
+
+  if((ff != 1) || (papa != pa)){
+    ff = 1;
+    papa = pa;
+    si = sin((-1.0) * (pa - 90.0) * M_PI / 180.0);
+    co = cos((-1.0) * (pa - 90.0) * M_PI / 180.0);
+  }
+
+  dx = (tx - tx0) / tt;
+  dy = (ty - ty0) / tt;
+
+  ddx = co * dx - si * dy;
+  ddy = si * dx + co * dy;
+
+  alpha_acnfw_dl(ddx, ddy, q, b, &aax, &aay);
+
+  *ax = bb * (aax * co + aay * si) * tt;
+  *ay = bb * (aax * (-1.0) * si + aay * co) * tt;
+  
+  if(alponly != 1){
+    ddphi_acnfw_dl(ddx, ddy, q, b, &pxx, &pxy, &pyy);
+
+    rpxx = co * co * pxx + 2.0 * co * si * pxy + si * si * pyy;
+    rpyy = si * si * pxx - 2.0 * co * si * pxy + co * co * pyy;
+    rpxy = si * co * (pyy - pxx) + (co * co - si * si) * pxy;
+
+    *kap = 0.5 * bb * (rpxx + rpyy);
+    *gam1 = 0.5 * bb * (rpxx - rpyy);
+    *gam2 = bb * rpxy;
+
+    if(alponly < 0){
+      *phi = bb * phi_acnfw_dl(ddx, ddy, q, b) * tt * tt;
+    }
+  }
+
+  return;
+} 
 
 /*--------------------------------------------------------------
   for elliptical potential

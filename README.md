@@ -46,6 +46,7 @@ If you have any questions, suggestions, or comments regarding glafic, please con
 
 | date       | version | comments |
 |:---        |:---     |:---      |
+| 2026.04.22 | 2.1.14  |  `acnfw` lens model added |
 | 2025.12.15 | 2.1.13  |  a new prior `relrange` added for `parprior`|
 | 2025.09.22 | 2.1.12  |  integration method for `kapparad` and `kappacum` changed |
 | 2025.09.12 | 2.1.11  |  a bug in `crline` fixed |

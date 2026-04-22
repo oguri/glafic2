@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.13"
-#define RELEASE_DATE "2025.12.15"
+#define VERSION "2.1.14"
+#define RELEASE_DATE "2026.04.22"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -423,6 +423,21 @@
 */
 
 /*--------------------------------------------------------------
+  app_cnfw.c
+*/
+
+double phi_acnfw_dl(double x, double y, double q, double b);
+void ddphi_acnfw_dl(double x, double y, double q, double b, double *pxx, double *pxy, double *pyy);
+void alpha_acnfw_dl(double x, double y, double q, double b, double *ax, double *ay);
+void calc_jp_acnfw(double b, int *j, double *p);
+void set_b_cnfw(double b);
+double dphi_cnfw_dl(double x);
+double bkappa_cnfw_dl(double x, double b);
+double bkappa_nfw_dl_cnfw(double x);
+double kappa_cnfw_dl(double x, double b);
+double f_cnfw(double x);
+
+/*--------------------------------------------------------------
   app_ell.c
 */
 
@@ -453,6 +468,7 @@ double calcein_jaffe(int i, double rco);
 double calcein_nfw(int i);
 double calcein_gnfw(int i);
 double calcein_tnfw(int i);
+double calcein_cnfw(int i);
 double calcein_hern(int i);
 double calcein_sers(int i);
 double calcein_pow(int i);
@@ -462,6 +478,7 @@ double calcein_jaffe_func(double x);
 double calcein_nfw_func(double x);
 double calcein_gnfw_func(double x);
 double calcein_tnfw_func(double x);
+double calcein_cnfw_func(double x);
 double calcein_hern_func(double x);
 double calcein_sers_func(double x);
 double calcein_ein_func(double x);
@@ -858,6 +875,8 @@ void kapgam_gaupot(double tx, double ty, double tx0, double ty0, double zs_fid, 
 double ddphi_gau_dl(double x);
 double dphi_gau_dl(double x);
 double phi_gau_dl(double x);
+
+void kapgam_acnfw(double tx, double ty, double tx0, double ty0, double m, double c, double b, double e, double pa, double *kap, double *gam1, double *gam2, double *phi, double *ax, double *ay, int alponly);
 
 void u_calc(double dx, double dy, double e, double si, double co, double u[]);
 

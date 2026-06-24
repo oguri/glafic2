@@ -252,7 +252,7 @@ double opt_lens(int flag, int verb)
 
     if(verb > 0){
       nd = 0;
-      if(ne > 0){
+      if((ne > 0) && (array_ext_mask != NULL)){
 	for(i=0;i<(nx_ext*ny_ext);i++){
 	  if(array_ext_mask[i] == 0) nd++;
 	}
@@ -268,7 +268,7 @@ double opt_lens(int flag, int verb)
 
   if((verb < 0) && (c2 <= chi2_dumplimit)){
     nd = 0;
-    if(ne > 0){
+    if((ne > 0) && (array_ext_mask != NULL)){
       for(i=0;i<(nx_ext*ny_ext);i++){
 	if(array_ext_mask[i] == 0) nd++;
       }

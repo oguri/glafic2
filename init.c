@@ -188,6 +188,7 @@ void init_para2_body(char *keyword, char *buffer, int verb)
   PAREADXD(chi2_splane, chi2_point_splane, verb)
   PAREADXD(chi2_checknimg, chi2_checknimg, verb)
   PAREADXD(chi2_usemag, chi2_usemag, verb)
+  PAREADXD(chi2_usedl, chi2_usedl, verb)
   PAREADXD(chi2_restart, chi2_restart, verb)
   PAREADXE(chi2pen_range, chi2pen_range, verb)
   PAREADXE(chi2pen_nimg, chi2pen_nimg, verb)
@@ -318,6 +319,9 @@ void startup_lens(char *buffer, int n1)
   char cdummy[INPUT_MAXCHAR];
   char cdummy2[INPUT_MAXCHAR];
 
+  if(n1 >= NMAX_LEN)
+    terminator("number exceeds maximum");
+
   nn = sscanf(buffer, "%s %s %lf %lf %lf %lf %lf %lf %lf %lf", cdummy, cdummy2, &para_lens[n1][0], &para_lens[n1][1], &para_lens[n1][2], &para_lens[n1][3], &para_lens[n1][4], &para_lens[n1][5], &para_lens[n1][6], &para_lens[n1][7]);
   if(nn != (NPAR_LEN + 2)) terminator("startup failed (invalid 'lens' format)"); 
   model_lens[n1] = lmodeltoint(cdummy2);
@@ -333,6 +337,9 @@ void startup_extend(char *buffer, int n2)
   char cdummy[INPUT_MAXCHAR];
   char cdummy2[INPUT_MAXCHAR];
 
+  if(n2 >= NMAX_EXT)
+    terminator("number exceeds maximum");
+
   nn = sscanf(buffer, "%s %s %lf %lf %lf %lf %lf %lf %lf %lf", cdummy, cdummy2, &para_ext[n2][0], &para_ext[n2][1], &para_ext[n2][2], &para_ext[n2][3], &para_ext[n2][4], &para_ext[n2][5], &para_ext[n2][6], &para_ext[n2][7]);
   if(nn != (NPAR_EXT + 2)) terminator("startup failed (invalid 'extend' format)"); 
   model_ext[n2] = emodeltoint(cdummy2);
@@ -346,6 +353,9 @@ void startup_point(char *buffer, int n3)
 {
   int nn;
   char cdummy[INPUT_MAXCHAR];
+
+  if(n3 >= NMAX_POI)
+    terminator("number exceeds maximum");
 
   nn = sscanf(buffer, "%s %lf %lf %lf", cdummy, &para_poi[n3][0], &para_poi[n3][1], &para_poi[n3][2]);
   if(nn != (NPAR_POI + 1)) terminator("startup failed (invalid 'point' format)"); 
@@ -616,6 +626,7 @@ void def_parameters(void)
   chi2_point_splane = DEF_CHI2_POINT_SPLANE;
   chi2_checknimg = DEF_CHI2_CHECKNIMG;
   chi2_usemag = DEF_CHI2_USEMAG;
+  chi2_usedl = DEF_CHI2_USEDL;
   chi2_restart = DEF_CHI2_RESTART;
   chi2pen_range = DEF_CHI2PEN_RANGE;
   chi2pen_nimg = DEF_CHI2PEN_NIMG;
@@ -1121,7 +1132,7 @@ void parprior(char *infile, int verb)
 	
 	if(strcmp(ptype, "relrange") == 0){
 	  if(strcmp(keyword, "psf") == 0){
-	    nn = sscanf(buffer, "%s %s %d %d %lf %lf", ptype, keyword, &j, &jj, &rat, &sig);
+	    nn = sscanf(buffer, "%s %s %d %d %lf %lf", ptype, keyword, &j, &jj, &ral, &rah);
 	    if(nn != 6) terminator("input file format irrelevant (parprior)"); 
 	    if((j > NPAR_PSF) || (j < 1) || (jj > NPAR_PSF) || (jj < 1)){ terminator("psf id irrelevant (parprior)"); }
 	    para_psf_reraj[j - 1] = jj - 1;

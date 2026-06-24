@@ -17,8 +17,8 @@
   glafic version
 */
 
-#define VERSION "2.1.14"
-#define RELEASE_DATE "2026.04.22"
+#define VERSION "2.1.15"
+#define RELEASE_DATE "2026.06.24"
 
 /*--------------------------------------------------------------
   primary default parameters
@@ -126,6 +126,8 @@
 #define DEF_CHI2_CHECKNIMG 1
 /* use mag instead of flux for flux constraints? */
 #define DEF_CHI2_USEMAG 0
+/* use luminosity distance instead of flux/mag for flux constraints? */
+#define DEF_CHI2_USEDL 0
 /* number of optimization */
 #define DEF_CHI2_RESTART 0
 /* chi2 penalty */
@@ -1069,7 +1071,7 @@ void randomize(int verb);
 
 GLOBAL char *fname_input;
 
-GLOBAL double delome, dis_ol, dis_os, dis_ls, zl_ext;
+GLOBAL double delome, dis_ol, dis_os, dis_ls, zl_ext, dis_lum;
 GLOBAL double omega, lambda, weos, hubble;
 GLOBAL int num_len, num_ext, num_poi, num_gal, num_src;
 
@@ -1140,6 +1142,7 @@ GLOBAL double amoeba_dp_psff;
 GLOBAL int chi2_point_splane;
 GLOBAL int chi2_checknimg;
 GLOBAL int chi2_usemag;
+GLOBAL int chi2_usedl;
 GLOBAL int chi2_restart;
 GLOBAL double chi2pen_range;
 GLOBAL double chi2pen_nimg;

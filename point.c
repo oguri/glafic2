@@ -147,7 +147,7 @@ void poi_set_table(double zs, int flag_setlcenter, int verb)
 		}
 	      } else {
 		for(l=0;l<num_gal;l++){
-		  dd = mag_matrix_dr2(def_lpl[j][2], def_lpl[j][3], def_lpl[j][4], def_lpl[j][5], ttx - para_gals[l][0], tty - para_lens[l][1]);
+		  dd = mag_matrix_dr2(def_lpl[j][2], def_lpl[j][3], def_lpl[j][4], def_lpl[j][5], ttx - para_gals[l][0], tty - para_gals[l][1]);
 		  
 		  pp = dr_lens_center * dp_lev(0);
 		  if(dd < (pp * pp)){

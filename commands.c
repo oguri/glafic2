@@ -689,7 +689,7 @@ int do_command(char *buffer)
 	zs = DEF_COMMAND_ZS;
 	zl = DEF_COMMAND_ZL;
 	sscanf(buffer, "%s %lf %lf", cdummy, &zl, &zs);
-	fprintf(stderr, "######## critical density for  zl = %e and zs = %e \n\n", zl, zs);
+	fprintf(stderr, "######## critical density for zl = %e and zs = %e \n\n", zl, zs);
 	
 	if((zl <= 0.0) || (zs <= 0.0) || (zl >= zs))
 	  terminator("redshift irrelevant (critdens)"); 
@@ -704,6 +704,33 @@ int do_command(char *buffer)
 	fprintf(stderr, "######## distance modulus for zs = %e\n\n", zs);
 	fprintf(stderr, "DM = %e\n", dis_mod(zs) - 5.0 * log10(hubble));
 	fprintf(stderr, "DM = %e [hubble=1]\n", dis_mod(zs));
+	fprintf(stderr, "\n");
+      }
+
+      if(strcmp(keyword, "dis_ad") == 0){
+	zs = DEF_COMMAND_ZS;
+	zl = DEF_COMMAND_ZL;
+	sscanf(buffer, "%s %lf %lf", cdummy, &zl, &zs);
+	fprintf(stderr, "######## angular diameter distance for zl = %e and zs = %e \n\n", zl, zs);
+	
+	if((zl < 0.0) || (zs <= 0.0) || (zl >= zs))
+	  terminator("redshift irrelevant (dis_ad)"); 
+
+	fprintf(stderr, "D_A = %e [h^-1 Mpc]\n", COVERH_MPCH * dis_angulard(zl, zs));
+	fprintf(stderr, "D_A = %e [Mpc]\n", COVERH_MPCH * dis_angulard(zl, zs) / hubble);
+	fprintf(stderr, "\n");
+      }
+
+      if(strcmp(keyword, "dis_lum") == 0){
+	zs = DEF_COMMAND_ZS;
+	sscanf(buffer, "%s %lf", cdummy, &zs);
+	fprintf(stderr, "######## luminosity distance for z = %e \n\n", zs);
+	
+	if(zs < 0.0)
+	  terminator("redshift irrelevant (dis_lum)"); 
+
+	fprintf(stderr, "D_L = %e [h^-1 Mpc]\n", COVERH_MPCH * dis_luminosity(0.0, zs));
+	fprintf(stderr, "D_L = %e [Mpc]\n", COVERH_MPCH * dis_luminosity(0.0, zs) / hubble);
 	fprintf(stderr, "\n");
       }
 

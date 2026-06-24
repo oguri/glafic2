@@ -7,7 +7,7 @@ ifeq ($(UNAME_S),Darwin)
                 LIBPATH = /usr/local/lib
                 INCPATH = /usr/local/include
         else
-                CFLAGS2 = -lcurl
+                CFLAGS2 = -lcurl -lz
                 LIBPATH = /opt/homebrew/lib
                 INCPATH = /opt/homebrew/include
         endif

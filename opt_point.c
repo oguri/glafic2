@@ -200,7 +200,7 @@ double chi2calc_point_iplane(int i, double xs, double ys, double c2[NPAR_CHI2])
 {
   int j, k, ni, fp;
   int flag[NMAX_POIMG], kk[NMAX_POIMG];
-  double dm, dis2;
+  double dm, dis2, dl_obs;
   double f1, f2;
   double t1, t2;
   double rr[NMAX_POIMG][NPAR_IMAGE];
@@ -270,12 +270,17 @@ double chi2calc_point_iplane(int i, double xs, double ys, double c2[NPAR_CHI2])
   for(j=0;j<obs_numimg[i];j++){
     if((obs_parity[i][j] != 0) && ((((double)obs_parity[i][j]) * rr[kk[j]][2]) < 0.0)) fp = 1;
     if(tab_obs[i][j][4] > 0.0){
-      if(chi2_usemag == 0){
-	c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2]) * para_poi[i][3]) * (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2]) * para_poi[i][3]) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
-      } else if(chi2_usemag == -1){
-	c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2])) * (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2])) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
-      }else {
-	c2[2] = c2[2] + (tab_obs[i][j][2] + 2.5 * log10(fabs(rr[kk[j]][2])) - para_poi[i][3]) * (tab_obs[i][j][2] + 2.5 * log10(fabs(rr[kk[j]][2])) - para_poi[i][3]) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
+      if(chi2_usedl == 0){
+	if(chi2_usemag == 0){
+	  c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2]) * para_poi[i][3]) * (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2]) * para_poi[i][3]) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
+	} else if(chi2_usemag == -1){
+	  c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2])) * (fabs(tab_obs[i][j][2]) - fabs(rr[kk[j]][2])) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
+	} else {
+	  c2[2] = c2[2] + (tab_obs[i][j][2] + 2.5 * log10(fabs(rr[kk[j]][2])) - para_poi[i][3]) * (tab_obs[i][j][2] + 2.5 * log10(fabs(rr[kk[j]][2])) - para_poi[i][3]) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
+	}
+      } else {
+	dl_obs = dis_lum / (hubble * sqrt(fabs(rr[kk[j]][2])));
+	c2[2] = c2[2] + (fabs(tab_obs[i][j][2]) - dl_obs) * (fabs(tab_obs[i][j][2]) - dl_obs) / (tab_obs[i][j][4] * tab_obs[i][j][4]);
       }
     }
     if(tab_obs[i][j][6] > 0.0){ 
@@ -407,7 +412,7 @@ double chi2calc_opt_splane(double c2min[NMAX_POI][NPAR_CHI2], int verb)
 double chi2calc_point_splane(int i, double xs, double ys, double c2[NPAR_CHI2])
 {
   int j, k, l, fp;
-  double cc, f1, f2, t1, t2, dx, dy;
+  double cc, f1, f2, t1, t2, dx, dy, dl_obs;
   double pout[NPAR_LMODEL];
   double m1, m2, mumod[NMAX_POIMG], tdmod[NMAX_POIMG];
   double aa[2][2], bb[2];
@@ -526,14 +531,19 @@ double chi2calc_point_splane(int i, double xs, double ys, double c2[NPAR_CHI2])
   for(k=0;k<obs_numimg[i];k++){
     if((obs_parity[i][k] != 0) && ((((double)obs_parity[i][k]) * mumod[k]) < 0.0)) fp = 1;
     if(tab_obs[i][k][4] > 0.0){
-      if(chi2_usemag == 0){
-	c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - fabs(mumod[k]) * para_poi[i][3]) * (fabs(tab_obs[i][k][2]) - fabs(mumod[k]) * para_poi[i][3]) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
-      } else if(chi2_usemag == -1){
-	c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - fabs(mumod[k])) * (fabs(tab_obs[i][k][2]) - fabs(mumod[k])) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
+      if(chi2_usedl == 0){
+	if(chi2_usemag == 0){
+	  c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - fabs(mumod[k]) * para_poi[i][3]) * (fabs(tab_obs[i][k][2]) - fabs(mumod[k]) * para_poi[i][3]) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
+	} else if(chi2_usemag == -1){
+	  c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - fabs(mumod[k])) * (fabs(tab_obs[i][k][2]) - fabs(mumod[k])) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
+	} else {
+	  c2[2] = c2[2] + (tab_obs[i][k][2] + 2.5 * log10(fabs(mumod[k])) - para_poi[i][3]) * (tab_obs[i][k][2] + 2.5 * log10(fabs(mumod[k])) - para_poi[i][3]) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
+	}
       } else {
-	c2[2] = c2[2] + (tab_obs[i][k][2] + 2.5 * log10(fabs(mumod[k])) - para_poi[i][3]) * (tab_obs[i][k][2] + 2.5 * log10(fabs(mumod[k])) - para_poi[i][3]) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
+	dl_obs = dis_lum / (hubble * sqrt(fabs(mumod[k])));
+	c2[2] = c2[2] + (fabs(tab_obs[i][k][2]) - dl_obs) * (fabs(tab_obs[i][k][2]) - dl_obs) / (tab_obs[i][k][4] * tab_obs[i][k][4]);
       }
-    } 
+    }
     if(tab_obs[i][k][6] > 0.0) c2[3] = c2[3] + (tab_obs[i][k][5] - tdmod[k] - para_poi[i][4]) * (tab_obs[i][k][5] - tdmod[k] - para_poi[i][4]) / (tab_obs[i][k][6] * tab_obs[i][k][6]);
   }
   

@@ -39,6 +39,7 @@ void example_infile(void)
   printf("#chi2_checknimg %d\n", DEF_CHI2_CHECKNIMG);
   printf("#chi2_splane    %d\n", DEF_CHI2_POINT_SPLANE);
   printf("#chi2_usemag    %d\n", DEF_CHI2_USEMAG);
+  printf("#chi2_usedl     %d\n", DEF_CHI2_USEDL);
   printf("#chi2_restart   %d\n", DEF_CHI2_RESTART);
   printf("#obs_gain       %f\n", DEF_OBS_GAIN);
   printf("#obs_ncomb      %d\n", DEF_OBS_NCOMB);

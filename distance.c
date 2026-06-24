@@ -208,8 +208,9 @@ void set_distance_lpl_zs(double zs)
   }
 
   dis_os = dis_angulard(0.0, zs);
+  dis_lum = COVERH_MPCH * dis_luminosity(0.0, zs);
 
-  for(i=0;i<nlp;i++){
+    for(i=0;i<nlp;i++){
     dis_ls_lpl[i] = dis_angulard(zl_lpl[i], zs);
   }
     
